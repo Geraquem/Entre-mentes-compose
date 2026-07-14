@@ -39,3 +39,9 @@ val BlueTransparent = Color(0x6695B7EE)
 val BlueLight = Color(0xFF84ADEE)
 val BlueMedium = Color(0xFF4B87E7)
 val BlueHard = Color(0xFF0449BF)
+
+/** Backgrounds */
+val Background = Color(0xFFEDEDED)
+val BackgroundBlack = Color(0xFF353741)
+val BackgroundBlackSoft = Color(0xFF4C4F5C)
+val BackgroundLogo = Color(0xFF72737A)

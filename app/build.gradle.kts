@@ -86,6 +86,13 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    // Lottie
+    implementation(libs.lottie.compose)
+
+    //Animate BG
+    implementation("nl.dionsegijn:konfetti-xml:2.0.5")
+    implementation("com.github.doctoror.particlesdrawable:library:2.0.2")
+
     /** Testing */
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

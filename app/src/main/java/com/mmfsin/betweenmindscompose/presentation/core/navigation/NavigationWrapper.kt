@@ -1,25 +1,38 @@
-package com.mmfsin.betweenmindscompose.presentation.core.navigation.navigation
+package com.mmfsin.betweenmindscompose.presentation.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mmfsin.betweenmindscompose.presentation.menu.MenuScreen
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavCreateEvent() {
+fun NavigationWrapper() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = CreateEvent
+        startDestination = Menu
     ) {
-        composable<CreateEvent> {
-//            CreateEventScreen()
+        composable<Menu> {
+            MenuScreen()
         }
     }
 }
 
 /** SCREENS */
 @Serializable
-object CreateEvent
+object Menu
+
+@Serializable
+object Selection
+
+@Serializable
+object Questions
+
+@Serializable
+object Ranges
+
+@Serializable
+object Packs

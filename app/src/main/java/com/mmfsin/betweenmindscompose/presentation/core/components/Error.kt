@@ -51,8 +51,6 @@ fun ErrorDialog(accept: () -> Unit) {
             ) {
                 MediumText(text = R.string.error_title)
 
-                SpacerSmall()
-
                 MediumText(text = R.string.error_description)
 
                 SpacerLarge()
