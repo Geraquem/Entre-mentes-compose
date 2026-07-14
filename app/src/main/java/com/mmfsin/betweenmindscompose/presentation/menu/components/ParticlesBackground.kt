@@ -1,6 +1,5 @@
-package com.mmfsin.betweenmindscompose.presentation.menu
+package com.mmfsin.betweenmindscompose.presentation.menu.components
 
-import android.R.attr.scaleY
 import android.content.Context
 import android.util.TypedValue
 import androidx.compose.foundation.layout.Box
@@ -9,14 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.doctoror.particlesdrawable.ParticlesView
 import com.mmfsin.betweenmindscompose.R
-import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueMedium
-import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeMedium
 
 @Composable
 fun ParticlesBackground() {

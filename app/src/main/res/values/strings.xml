@@ -15,4 +15,11 @@
     <string name="error_joining_room_description">Parece que no ha sido posible unirte.</string>
     <string name="error_joining_room_description_2">Revisa el código de la sala, que estéis en el mismo modo de juego o tu conexión a internet y vuelve a intentarlo.</string>
 
+    <!-- MENU -->
+    <string name="menu_play">Jugar</string>
+    <string name="menu_packs">Ver packs</string>
+    <string name="selector_how_to_play">Aprender</string>
+    <string name="selector_questions">Preguntas</string>
+    <string name="selector_ranges">Escalas</string>
+
 </resources>

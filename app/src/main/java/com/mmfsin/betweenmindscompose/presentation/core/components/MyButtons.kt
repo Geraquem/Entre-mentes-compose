@@ -17,12 +17,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.presentation.core.theme.Black
+import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayLight
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
+
+val alphazetFont = FontFamily(
+    Font(R.font.alphazet, weight = FontWeight.Normal),
+)
 
 @Preview
 @Composable
@@ -32,11 +41,13 @@ fun ButtonCustomPV() {
             onClick = {},
             text = R.string.app_name
         )
+        SpacerSmall()
         ButtonCustomIcon(
             onClick = {},
             text = R.string.app_name,
             icon = R.drawable.ic_error,
         )
+        SpacerSmall()
         OutlinedButtonCustom(
             onClick = {},
             text = R.string.app_name
@@ -51,8 +62,8 @@ fun ButtonCustom(
     textModifier: Modifier = Modifier,
     text: Int,
     enabled: Boolean = true,
-    color: Color = OrangeMedium,
-    textColor: Color = White
+    color: Color = GrayMedium,
+    textColor: Color = Black
 ) {
     Button(
         onClick = { onClick() },
@@ -61,12 +72,15 @@ fun ButtonCustom(
         colors = ButtonDefaults.buttonColors(
             containerColor = color
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(50)
     ) {
         MediumText(
             text = text,
             color = textColor,
-            modifier = textModifier
+            modifier = textModifier.padding(vertical = 4.dp),
+            fontFamily = alphazetFont,
+            allCaps = true,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }
@@ -84,7 +98,7 @@ fun ButtonCustomIcon(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(50))
             .background(if (enabled) color else GrayMedium)
             .clickable(onClick = { if (enabled) onClick() })
             .padding(horizontal = 12.dp, vertical = 8.dp),
@@ -98,7 +112,9 @@ fun ButtonCustomIcon(
         MediumText(
             text = text,
             color = textColor,
-            modifier = textModifier
+            modifier = textModifier.padding(vertical = 4.dp),
+            fontFamily = alphazetFont,
+            allCaps = true
         )
     }
 }
@@ -107,6 +123,7 @@ fun ButtonCustomIcon(
 fun OutlinedButtonCustom(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    textModifier: Modifier = Modifier,
     text: Int,
     enabled: Boolean = true,
     textColor: Color = OrangeMedium
@@ -116,11 +133,14 @@ fun OutlinedButtonCustom(
         modifier = modifier,
         enabled = enabled,
         border = BorderStroke(1.dp, textColor),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(50)
     ) {
         MediumText(
             text = text,
-            color = textColor
+            color = textColor,
+            modifier = textModifier.padding(vertical = 4.dp),
+            fontFamily = alphazetFont,
+            allCaps = true
         )
     }
 }

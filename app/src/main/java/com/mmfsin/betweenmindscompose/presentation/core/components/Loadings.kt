@@ -91,9 +91,9 @@ fun LoadingDialog(text: Int? = null) {
 
 @Preview
 @Composable
-fun LoadingLottie() {
+fun LoadingLottie(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         val composition by rememberLottieComposition(

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,16 +32,19 @@ fun SmallText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontFamily: FontFamily = FontFamily.SansSerif,
+    allCaps: Boolean = false
 ) {
     Text(
-        text = text,
         modifier = modifier,
+        text = if (allCaps) text.uppercase() else text,
         style = MaterialTheme.typography.bodySmall,
         color = color,
         fontWeight = fontWeight,
         textAlign = gravity,
-        fontSize = fontSize
+        fontSize = fontSize,
+        fontFamily = fontFamily
     )
 }
 
@@ -51,16 +55,20 @@ fun SmallText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontFamily: FontFamily = FontFamily.SansSerif,
+    allCaps: Boolean = false
 ) {
+    val text = stringResource(text)
     Text(
-        text = stringResource(text),
         modifier = modifier,
+        text = if (allCaps) text.uppercase() else text,
         style = MaterialTheme.typography.bodySmall,
         color = color,
         fontWeight = fontWeight,
         textAlign = gravity,
-        fontSize = fontSize
+        fontSize = fontSize,
+        fontFamily = fontFamily
     )
 }
 
@@ -71,16 +79,19 @@ fun MediumText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontFamily: FontFamily = FontFamily.SansSerif,
+    allCaps: Boolean = false
 ) {
     Text(
         modifier = modifier,
-        text = text,
+        text = if (allCaps) text.uppercase() else text,
         style = MaterialTheme.typography.bodyLarge,
         color = color,
         fontWeight = fontWeight,
         textAlign = gravity,
-        fontSize = fontSize
+        fontSize = fontSize,
+        fontFamily = fontFamily
     )
 }
 
@@ -91,16 +102,20 @@ fun MediumText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontFamily: FontFamily = FontFamily.SansSerif,
+    allCaps: Boolean = false
 ) {
+    val text = stringResource(text)
     Text(
         modifier = modifier,
-        text = stringResource(text),
+        text = if (allCaps) text.uppercase() else text,
         style = MaterialTheme.typography.bodyLarge,
         color = color,
         fontWeight = fontWeight,
         textAlign = gravity,
-        fontSize = fontSize
+        fontSize = fontSize,
+        fontFamily = fontFamily
     )
 }
 
@@ -111,16 +126,19 @@ fun BigText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontFamily: FontFamily = FontFamily.SansSerif,
+    allCaps: Boolean = false
 ) {
     Text(
         modifier = modifier,
-        text = text,
+        text = if (allCaps) text.uppercase() else text,
         style = MaterialTheme.typography.titleLarge,
         color = color,
         fontWeight = fontWeight,
         textAlign = gravity,
-        fontSize = fontSize
+        fontSize = fontSize,
+        fontFamily = fontFamily
     )
 }
 
@@ -131,15 +149,19 @@ fun BigText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontFamily: FontFamily = FontFamily.SansSerif,
+    allCaps: Boolean = false
 ) {
+    val text = stringResource(text)
     Text(
         modifier = modifier,
-        text = stringResource(text),
+        text = if (allCaps) text.uppercase() else text,
         style = MaterialTheme.typography.titleLarge,
         color = color,
         fontWeight = fontWeight,
         textAlign = gravity,
-        fontSize = fontSize
+        fontSize = fontSize,
+        fontFamily = fontFamily
     )
 }
