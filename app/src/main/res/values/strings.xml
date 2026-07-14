@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Between Minds Compose</string>
+
+    <string name="empty"> </string>
+
+    <!-- CONTENT DESCRIPTIONS -->
+    <string name="cd_arrow_back">Atrás</string>
+
+    <!-- ERROR -->
+    <string name="error_title">Ha ocurrido un problema</string>
+    <string name="error_description">Inténtalo de nuevo más tarde</string>
+    <string name="error_btn">Aceptar</string>
+
+    <string name="error_joining_room_title">Algo ha salido mal</string>
+    <string name="error_joining_room_description">Parece que no ha sido posible unirte.</string>
+    <string name="error_joining_room_description_2">Revisa el código de la sala, que estéis en el mismo modo de juego o tu conexión a internet y vuelve a intentarlo.</string>
+
 </resources>

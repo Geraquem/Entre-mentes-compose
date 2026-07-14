@@ -1,6 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.kotlin.parecelize)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+//    id("com.google.gms.google-services")
 }
 
 android {
@@ -45,6 +50,43 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    /** ViewModel */
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    /** Constraint Layout */
+    implementation(libs.androidx.constraintlayout.compose)
+
+    /** Coil -> Imágenes */
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+    /** Navigation */
+    implementation(libs.androidx.navigation.compose)
+
+    /** Serialization */
+    implementation(libs.kotlin.serialization.json)
+
+    /** Hilt */
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    ksp(libs.hilt.compiler)
+
+    /** Firebase */
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
+
+    /** Google SingIn */
+    implementation(libs.play.services.auth)
+
+    /** Room DDBB */
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    /** Testing */
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
