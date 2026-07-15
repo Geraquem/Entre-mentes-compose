@@ -8,26 +8,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenmindscompose.R
 
-val barlowRegular = FontFamily(
-    Font(R.font.alphazet, weight = FontWeight.Normal),
-)
+val alphazet = FontFamily(Font(R.font.alphazet, weight = FontWeight.Normal))
+val august_shining = FontFamily(Font(R.font.august_shining, weight = FontWeight.Normal))
+val barlow = FontFamily(Font(R.font.barlow, weight = FontWeight.Normal))
+val courier = FontFamily(Font(R.font.courier, weight = FontWeight.Normal))
+val kineks = FontFamily(Font(R.font.kineks, weight = FontWeight.Normal))
+val manaspace = FontFamily(Font(R.font.manaspace, weight = FontWeight.Normal))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodySmall = TextStyle(
-        fontFamily = barlowRegular,
+        fontFamily = barlow,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
     ),
 
     bodyLarge = TextStyle(
-        fontFamily = barlowRegular,
+        fontFamily = barlow,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
     ),
 
     titleLarge = TextStyle(
-        fontFamily = barlowRegular,
+        fontFamily = barlow,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
     ),

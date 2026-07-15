@@ -58,9 +58,9 @@ fun ButtonCustomPV() {
 @Composable
 fun ButtonCustom(
     onClick: () -> Unit,
+    text: Int,
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
-    text: Int,
     enabled: Boolean = true,
     color: Color = GrayMedium,
     textColor: Color = Black
@@ -88,9 +88,9 @@ fun ButtonCustom(
 @Composable
 fun ButtonCustomIcon(
     onClick: () -> Unit,
+    text: Int,
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
-    text: Int,
     icon: Int,
     enabled: Boolean = true,
     color: Color = OrangeMedium,
@@ -122,9 +122,9 @@ fun ButtonCustomIcon(
 @Composable
 fun OutlinedButtonCustom(
     onClick: () -> Unit,
+    text: Int,
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
-    text: Int,
     enabled: Boolean = true,
     textColor: Color = OrangeMedium
 ) {

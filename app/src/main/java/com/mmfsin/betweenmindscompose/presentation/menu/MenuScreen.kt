@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.GameType
 import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.LoadingLottie
@@ -36,16 +37,23 @@ fun MenuScreenPV() {
         uiState = MenuStates(
             positonButtons = 0f
         ),
-        {}
+        {}, {},
     )
 }
 
 @Composable
-fun MenuScreen(viewModel: MenuViewModel = hiltViewModel()) {
+fun MenuScreen(
+    viewModel: MenuViewModel = hiltViewModel(),
+    goToChooseFragment: (String) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MenuContent(
         uiState = uiState,
-        showSelectorSheet = { value -> viewModel.showSelectorSheet(value) }
+        showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
+        goToChooseFragment = { id ->
+            viewModel.showSelectorSheet(false)
+            goToChooseFragment(id)
+        }
     )
 }
 
@@ -53,6 +61,7 @@ fun MenuScreen(viewModel: MenuViewModel = hiltViewModel()) {
 fun MenuContent(
     uiState: MenuStates,
     showSelectorSheet: (value: Boolean) -> Unit,
+    goToChooseFragment: (String) -> Unit
 ) {
 
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
@@ -78,7 +87,6 @@ fun MenuContent(
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
     ) {
-
         Spacer(Modifier.weight(1f))
 
         AnimateY(
@@ -106,7 +114,11 @@ fun MenuContent(
 
     if (uiState.showSelectorSheet) {
         SelectorSheet(
-            onDismiss = { showSelectorSheet(false) }
+            onDismiss = { showSelectorSheet(false) },
+            questionsInstructions = {},
+            questions = { goToChooseFragment(GameType.QUESTIONS.id) },
+            rangesInstructions = {},
+            ranges = { goToChooseFragment(GameType.RANGES.id) },
         )
     }
 

@@ -3,6 +3,7 @@
 package com.mmfsin.betweenmindscompose.presentation.menu.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,12 +43,16 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 @Preview
 @Composable
 fun SelectorSheetPV() {
-    SelectorSheet({})
+    SelectorSheet({}, {}, {}, {}, {})
 }
 
 @Composable
 fun SelectorSheet(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    questionsInstructions: () -> Unit,
+    questions: () -> Unit,
+    ranges: () -> Unit,
+    rangesInstructions: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -100,19 +106,19 @@ fun SelectorSheet(
                     icon = R.drawable.ic_book,
                     text = R.string.selector_how_to_play,
                     modifier = Modifier.weight(1f),
-                    onClick = {}
+                    onClick = { questionsInstructions() }
                 )
                 SelectorButton(
                     icon = null,
                     text = R.string.menu_play,
                     modifier = Modifier.weight(1f),
-                    onClick = {}
+                    onClick = { questions() }
                 )
             }
 
             SpacerLarge()
 
-            Box(Modifier.fillMaxWidth().height(1.dp).background(White).padding(horizontal = 64.dp))
+            Box(Modifier.fillMaxWidth().padding(horizontal = 24.dp).height(1.dp).background(White))
 
             SpacerLarge()
 
@@ -123,7 +129,8 @@ fun SelectorSheet(
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_arrow), null,
-                    tint = White
+                    tint = White,
+                    modifier = Modifier.graphicsLayer { scaleX = -1f }
                 )
                 SpacerSmall(horizontal = true)
                 BigText(text = stringResource(R.string.selector_ranges), allCaps = true, color = White)
@@ -145,13 +152,13 @@ fun SelectorSheet(
                     icon = R.drawable.ic_book,
                     text = R.string.selector_how_to_play,
                     modifier = Modifier.weight(1f),
-                    onClick = {}
+                    onClick = { rangesInstructions() }
                 )
                 SelectorButton(
                     icon = null,
                     text = R.string.menu_play,
                     modifier = Modifier.weight(1f),
-                    onClick = {}
+                    onClick = { ranges() }
                 )
             }
 
@@ -177,7 +184,8 @@ fun SelectorButton(icon: Int?, text: Int, modifier: Modifier, onClick: () -> Uni
             .height(40.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(White)
-            .padding(vertical = 8.dp, horizontal = 12.dp),
+            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .clickable(onClick = { onClick() }),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
