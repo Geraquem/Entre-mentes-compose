@@ -15,11 +15,206 @@
     <string name="error_joining_room_description">Parece que no ha sido posible unirte.</string>
     <string name="error_joining_room_description_2">Revisa el código de la sala, que estéis en el mismo modo de juego o tu conexión a internet y vuelve a intentarlo.</string>
 
+    <!-- EXIT -->
+    <string name="exit">Salir</string>
+    <string name="stay">No salir</string>
+    <string name="exit_text_1">¿Quieres salir? Si sales, saldrás. Pulsa <b>salir</b> para salir de la partida.</string>
+    <string name="exit_text_2">Si sales de la partida habrás salido y perderás todo por haber salido.</string>
+
+    <!-- ADS -->
+<!--    <string name="banner">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="banner">ca-app-pub-4515698012373396/1214969812</string>-->
+    <!--        <string name="interstitial">ca-app-pub-3940256099942544/1033173712</string>-->
+    <!--    <string name="interstitial">ca-app-pub-4515698012373396/5631649980</string>-->
+
     <!-- MENU -->
     <string name="menu_play">Jugar</string>
     <string name="menu_packs">Ver packs</string>
     <string name="selector_how_to_play">Aprender</string>
     <string name="selector_questions">Preguntas</string>
     <string name="selector_ranges">Escalas</string>
+
+    <!-- DASHBOARD -->
+    <string name="zero">0</string>
+    <string name="fifty">50</string>
+    <string name="question">\?</string>
+    <string name="percent">\%</string>
+    <string name="set_percent">%1s\%</string>
+    <string name="slash">/</string>
+    <string name="three_dots">…</string>
+    <string name="curtain_text">Top secret</string>
+    <string name="code_hint">----</string>
+    <string name="btn_hide">Listo</string>
+    <string name="btn_check">Comprobar</string>
+    <string name="btn_next_round">Siguiente ronda</string>
+    <string name="name_blue">Nombre azul</string>
+    <string name="name_orange">Nombre naranja</string>
+    <string name="controller_limited">Desliza desde aquí para mover la flecha y opinar</string>
+    <string name="controller_text">Desliza desde cualquier parte de la pantalla para mover la flecha</string>
+    <string name="round">Ronda</string>
+    <string name="back">Volver</string>
+    <string name="how_to_play">Cómo jugar</string>
+
+    <!-- PACKS -->
+    <string name="pack_questions">Modo preguntas</string>
+    <string name="pack_ranges">Modo rangos</string>
+    <string name="pack_include_questions_as">Incluye 50 preguntas como:</string>
+    <string name="pack_include_ranges_as">Incluye 50 rangos como:</string>
+    <string name="pack_change"><u>Cambiar</u></string>
+    <string name="pack_price">%1s€</string>
+    <string name="pack_purchase_btn">Comprar</string>
+    <string name="pack_selected_btn">Seleccionar</string>
+    <string name="pack_selected">Seleccionado</string>
+    <string name="pack_loading">Un momentito…</string>
+    <string name="pack_free_set">de nada ;)</string>
+
+    <!-- QUESTIONS -->
+    <string name="questions_welcome">Dos personas juegan para ver si opinan igual sobre ellos mismos o sobre otras personas.</string>
+    <string name="questions_welcome_two">Se lee una pregunta, primero opina una persona, se oculta su respuesta y después opina la otra persona.</string>
+    <string name="questions_welcome_three">El objetivo es <b>coincidir</b> para obtener la mayor puntuación.</string>
+    <string name="questions_welcome_three_extra">El objetivo es <b>coincidir</b> para obtener la mayor puntuación en las <b>4 rondas</b> que dura la partida.</string>
+    <string name="questions_welcome_four">¿Qué dos personas van a ser juzgadas?</string>
+    <string name="questions_welcome_you_are">Eres el jugador</string>
+    <string name="questions_welcome_you_move_white">Manejas la flecha blanca.</string>
+    <string name="questions_welcome_you_move_red">Manejas la flecha roja</string>
+    <string name="questions_blue_player">Jugador azul</string>
+    <string name="questions_orange_player">Jugador naranja</string>
+
+    <!-- RANGES -->
+    <string name="ranges_start_quick_resume">Resumen rápido</string>
+    <string name="ranges_start_resume">Un jugador ve en secreto la zona de puntos dentro de un segmento con dos conceptos opuestos y da una pista para orientar al resto.</string>
+    <string name="ranges_start_resume_other">Un jugador da una pista para ayudar a conseguir puntos.</string>
+    <string name="ranges_start_resume_two">Usando esa pista, hay que mover una flecha para intentar acertar la posición.</string>
+    <string name="ranges_start_resume_three">Entre todos hay que tratar de obtener la mayor puntuación posible en <b>4 rondas</b>.</string>
+    <string name="ranges_start_play">Empezar</string>
+    <string name="ranges_start_instructions">Cómo se juega</string>
+    <string name="ranges_another_range">Quiero uno nuevo</string>
+
+    <string name="ranges_points_one">1</string>
+    <string name="ranges_points_two">2</string>
+    <string name="ranges_points_five">5</string>
+
+    <string name="ranges_start_online"><b>Objetivo:</b> Ayudar a vuestro compañero a conseguir puntos.</string>
+    <string name="ranges_start_online_1">Para ello deberéis mandar pistas para orientar al otro jugador a poner la flecha en la zona marcada para ganar puntos, y luego mover la flecha en función de la pista recibida.</string>
+    <string name="ranges_start_online_2"><b>3 rondas</b> seguidas de mandar pistas, <b>3 rondas</b> seguidas de conseguir puntos con la pista de vuestro compañero.</string>
+    <string name="ranges_start_online_3">Hay que tratar de obtener la <b>mayor puntuación posible</b>.</string>
+
+    <string name="ranges_no_clue">No hay pista</string>
+    <string name="ranges_write_a_clue">Escribe una pista</string>
+    <string name="ranges_clue_title">La pista es:</string>
+    <string name="ranges_see_points">Ver puntos</string>
+    <string name="ranges_partner_sent">Esto es lo que te ha mandado tu compañer@</string>
+    <string name="ranges_rounds_done">Rondas:</string>
+    <string name="ranges_one">1</string>
+    <string name="ranges_slash_three">/3</string>
+
+    <!-- SCOREBOARD -->
+    <string name="scoreboard_rounds">Rondas</string>
+    <string name="scoreboard_pt">pt</string>
+    <string name="scoreboard_pts">pts</string>
+
+    <!-- ENDGAME -->
+    <string name="endgame_top_text">Habéis conseguido</string>
+    <string name="endgame_one_point">1 punto</string>
+    <string name="endgame_pts">%s puntos</string>
+    <string name="endgame_phrase_perfect">Ha sido todo tan perfecto y milimétrico que seguro que habéis hecho trampas</string>
+    <string name="endgame_phrase_one">Os conocéis tanto que casi os comunicáis por telepatía</string>
+    <string name="endgame_phrase_two">Sois como uña y carne</string>
+    <string name="endgame_phrase_three">No lo habéis hecho mal pero se puede mejorar</string>
+    <string name="endgame_phrase_four">Tenéis que pasar más tiempo juntos…</string>
+    <string name="endgame_phrase_five">¿Estáis seguros de que os conocéis de algo?</string>
+    <string name="endgame_exit">Salir</string>
+    <string name="endgame_save">Guardar</string>
+    <string name="endgame_replay">Volver a jugar</string>
+    <string name="endgame_replay_new_names">Cambiar nombres</string>
+
+    <string name="endgame_online_ranges_you">Tú has conseguido</string>
+    <string name="endgame_online_ranges_your_teammate">Tu compañero ha conseguido</string>
+    <string name="endgame_online_ranges_total_points">Puntuación total</string>
+
+    <!-- ONLINE -->
+    <string name="online_join_room">Unirse a sala</string>
+    <string name="online_create_room">Crear sala</string>
+    <string name="online_mode">Jugar online</string>
+    <string name="online_mode_desc">Una persona crea una sala y otra se une. Juegan con dos móviles distintos. Recomendable estar en videollamada.</string>
+    <string name="online_offline">Jugar con un móvil</string>
+    <string name="online_offline_desc">Sin conxiones a internet. Dos personas jugando con el mismo móvil pasándoselo mano a mano.</string>
+    <string name="online_btn_start">Empezar</string>
+    <string name="online_btn_join">Unirse</string>
+    <string name="online_btn_create">Crear</string>
+    <string name="online_room_code">Código de la sala</string>
+    <string name="online_room_code_only">Código</string>
+    <string name="online_wainting_other_player">Esperando al otro jugador</string>
+    <string name="online_btn_save_answer">Guardar respuesta</string>
+    <string name="online_btn_compare">Comparar respuesta</string>
+    <string name="online_room_code_waiting">Esperando a que se una el otro jugador</string>
+
+    <!-- INSTRUCTIONS -->
+    <string name="instr_mode_questions">Modo preguntas</string>
+    <string name="instr_questions_1">Dos personas juegan para ver si tienen la misma opinión sobre ellas mismas (o sobre otras personas)</string>
+    <string name="instr_questions_2">Lo primero de todo es dar nombre a las dos personas principales, puedes introducir los nombres al principio o cambiarlos durante cualquier momento de la partida pulsando sobre ellos.</string>
+    <string name="instr_questions_3">Fase 1</string>
+    <string name="instr_questions_4">Una persona lee en silencio la pregunta que aparece.</string>
+    <string name="instr_questions_5">Primero opina un jugador sin que el resto de jugadores le vea.</string>
+    <string name="instr_questions_6"><i>En este ejemplo, María es un 80% más ordenada que Juan</i>.</string>
+    <string name="instr_questions_7">Este icono significa que es la primera opinión</string>
+    <string name="instr_questions_8">Cuando tiene su respuesta completada, pulsa el botón <b><i>Listo</i></b>.</string>
+    <string name="instr_questions_9">Fase 2</string>
+    <string name="instr_questions_10">Con la primera opinión oculta, le toca al otro jugador opinar sobre la misma pregunta.</string>
+    <string name="instr_questions_10_1">Este icono significa que es la segunda opinión</string>
+    <string name="instr_questions_11">Cuando tenga su respuesta completa, pulsa el botón <b><i>Comprobar</i></b> para ver ambas opiniones y compararlas.</string>
+    <string name="instr_questions_12">Cuanto más se parezcan los porcentajes, más puntos obtendréis.</string>
+    <string name="instr_questions_13">Fase 3</string>
+    <string name="instr_questions_14">Darle al botón <b><i>Siguiente ronda</i></b>, turnarse y volver a empezar.</string>
+    <string name="instr_questions_15">El objetivo es obtener la máxima puntuación en las <b>4 rondas que dura la partida</b>.</string>
+    <string name="instr_questions_maria">María</string>
+    <string name="instr_questions_juan">Juan</string>
+    <string name="instr_questions_percent_eighty">80</string>
+    <string name="instr_questions_percent_twenty">20</string>
+    <string name="instr_questions_percent_sixty_two">62</string>
+    <string name="instr_questions_percent_thirty_eight">38</string>
+    <string name="instr_questions_question">¿Quién es más ordenado?</string>
+
+    <string name="instr_online_questions_1">Dos personas juegan para ver si tienen la misma opinión sobre ellas mismas (o sobre otras personas)</string>
+    <string name="instr_online_questions_2">Lo primero de todo es dar nombre a las dos personas principales. El jugador que crea la sala deberá introducir los nombres al inicio del juego.</string>
+    <string name="instr_online_questions_3">Ahora, a ambos jugadores les aparecerá la misma pregunta en la pantalla.</string>
+    <string name="instr_online_questions_4">El <b>jugador 1</b> (el que ha creado la sala) maneja los porcentajes del icono 1 y mueve la flecha de color <b><i>blanco</i></b></string>
+    <string name="instr_online_questions_5">Y el <b>jugador 2</b> (el que se ha unido) maneja los porcentajes del icono 2 y mueve la flecha de color <b><i>rojo</i></b></string>
+    <string name="instr_online_questions_6">Los dos jugadores opinan individualmente, cada uno con su móvil, sin saber de la opinión del otro jugador.</string>
+    <string name="instr_online_questions_7">Cuando cada uno tiene su respuesta completada, pulsa el botón <b><i>Comparar respuesta</i></b> para ver cómo ha opinado el otro jugador y se comparan cuánto se parecen los resultados.</string>
+    <string name="instr_online_questions_8">Cuanto más se parezcan, más puntos obtendréis.</string>
+    <string name="instr_online_questions_9">El objetivo es obtener la máxima puntuación en las <b>4 rondas que dura la partida</b>.</string>
+
+    <string name="instr_mode_ranges">Modo rangos</string>
+    <string name="instr_ranges_1">Fase 1</string>
+    <string name="instr_ranges_2">Un jugador ve en secreto dónde está la zona para ganar puntos dentro de un segmento con dos conceptos opuestos en los extremos.\n<i>(Ejemplo: frío – caliente, sucio – limpio)</i>.</string>
+    <string name="instr_ranges_3">Ese jugador escribe una pista (una palabra o idea) para <b>ayudar a que el resto de jugadores coloque el marcador</b> en el punto donde se encuentra la zona para ganar puntos.</string>
+    <string name="instr_ranges_4">Después pulsa el botón <b><i>Listo</i></b>.</string>
+    <string name="instr_ranges_5">Fase 2</string>
+    <string name="instr_ranges_6">El resto de jugadores, con la pista dada por el anterior jugador tienen que desplazar la flecha para intentar colocar el marcador en el lugar donde el primer jugador vio la zona donde se ganan puntos.</string>
+    <string name="instr_ranges_7">Una vez está colocado el marcador, pulsan el botón <b><i>Comprobar</i></b> para ver si colocaron bien el marcador y obtuvieron algún punto.</string>
+    <string name="instr_ranges_8">Fase 3</string>
+    <string name="instr_ranges_9">Darle al botón <b><i>Siguiente ronda</i></b>, turnarse y volver a empezar.</string>
+    <string name="instr_ranges_10">El <b>objetivo es obtener la máxima puntuación</b> en las <b>4 rondas que dura la partida</b>.</string>
+    <string name="instr_ranges_example_left">Villano</string>
+    <string name="instr_ranges_example_right">Héroe</string>
+    <string name="instr_ranges_example_clue">Gollum</string>
+
+    <string name="instr_online_first">Primero es necesario que un jugador cree una sala y que otro jugador se una a la sala creada.</string>
+    <string name="instr_online_second">Para unirse a una sala, basta con introducir el código que aparece tras crearla.</string>
+    <string name="instr_offline_first">Aquí no es necesario ninguna conexión a internet, sólo dos personas jugando con el mismo móvil pasándoselo mano a mano entre fases.</string>
+
+    <string name="instr_online_ranges_1">Este modo cuenta con dos fases: la fase de <b>dar pistas</b> y la fase de <b>adivinar</b>.</string>
+    <string name="instr_online_ranges_2">Fase de pistas</string>
+    <string name="instr_online_ranges_3">A cada jugador le aparecerá una zona para ganar puntos, situada aleatoriamente dentro de un rectángulo con dos conceptos opuestos en los extremos.\n<i>(Ejemplo: frío – caliente, sucio – limpio)</i></string>
+    <string name="instr_online_ranges_4">Tendréis que escribir una pista para ayudar al otro jugador a orientarse y adivinar dónde se encuentra la zona de puntos que habéis visto.</string>
+    <string name="instr_online_ranges_5">Cuando tengas la pista escrita, pulsa el botón <b><i>Guardar respuesta</i></b>.</string>
+    <string name="instr_online_ranges_6">Esta fase se repite <b>3 veces</b>. Por lo que aparecerán 3 rangos distintos y tendréis que dar una pista diferente para cada uno de ellos.</string>
+    <string name="instr_online_ranges_7">Fase de adivinar</string>
+    <string name="instr_online_ranges_8">Una vez ambos jugadores hayan escrito y enviado todas sus pistas, estas se intercambian.</string>
+    <string name="instr_online_ranges_9">El jugador 1 recibe los conceptos opuestos que vio el jugador 2 y debe <b>mover la flecha y colocarla</b>, con ayuda de la pista que el jugador 2 le dio, <b>donde crea que está la zona de puntos oculta</b>.</string>
+    <string name="instr_online_ranges_10">El jugador 2 hará exactamente lo mismo con la pista enviada por el jugador 1.</string>
+    <string name="instr_online_ranges_11">Cuando creáis que la flecha está correctamente colocada, pulsad el botón <b><i>Comprobar</i></b> para ver cuántos puntos ha obtenido cada uno.</string>
+    <string name="instr_online_ranges_12">Cuanta mayor sea la puntuación obtenida, <b>mejor</b>.</string>
 
 </resources>

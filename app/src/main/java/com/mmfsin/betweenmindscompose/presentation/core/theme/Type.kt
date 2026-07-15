@@ -8,22 +8,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenmindscompose.R
 
+val barlowRegular = FontFamily(
+    Font(R.font.alphazet, weight = FontWeight.Normal),
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodySmall = TextStyle(
-        fontFamily = FontFamily.SansSerif,
+        fontFamily = barlowRegular,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
     ),
 
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.SansSerif,
+        fontFamily = barlowRegular,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
     ),
 
     titleLarge = TextStyle(
-        fontFamily = FontFamily.SansSerif,
+        fontFamily = barlowRegular,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
     ),

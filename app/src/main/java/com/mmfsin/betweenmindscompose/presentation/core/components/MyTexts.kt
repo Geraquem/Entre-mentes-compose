@@ -32,7 +32,7 @@ fun SmallText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontSize: TextUnit = MaterialTheme.typography.bodySmall.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
     allCaps: Boolean = false
 ) {
@@ -55,7 +55,7 @@ fun SmallText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontSize: TextUnit = MaterialTheme.typography.bodySmall.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
     allCaps: Boolean = false
 ) {
@@ -79,7 +79,7 @@ fun MediumText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
     allCaps: Boolean = false
 ) {
@@ -102,7 +102,7 @@ fun MediumText(
     color: Color = Black,
     fontWeight: FontWeight = FontWeight.Normal,
     gravity: TextAlign = TextAlign.Start,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
+    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
     allCaps: Boolean = false
 ) {
