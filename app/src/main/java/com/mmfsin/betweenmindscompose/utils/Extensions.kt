@@ -1,5 +1,7 @@
 package com.mmfsin.betweenmindscompose.utils
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -10,6 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
+import com.mmfsin.betweenmindscompose.presentation.bedrock.BedRockActivity
+
+fun Context.openBedRockActivity(navGraph: String, strArgs: String? = null) {
+    val intent = Intent(this, BedRockActivity::class.java)
+    intent.putExtra(BEDROCK_NAV_GRAPH, navGraph)
+    strArgs?.let { intent.putExtra(BEDROCK_STR_ARGS, strArgs) }
+    startActivity(intent)
+}
 
 @Composable
 fun AnimateY(

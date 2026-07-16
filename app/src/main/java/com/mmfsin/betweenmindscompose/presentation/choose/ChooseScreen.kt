@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,10 +31,13 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
+import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
+import com.mmfsin.betweenmindscompose.utils.NAV_QUESTIONS_OFFLINE
+import com.mmfsin.betweenmindscompose.utils.openBedRockActivity
 
 @Preview
 @Composable
@@ -42,7 +46,7 @@ fun ChoosePV() {
         uiState = ChooseStates(
             gameType = GameType.RANGES
         ),
-        {},
+        {}, {}, {}, {},
     )
 }
 
@@ -51,15 +55,29 @@ fun ChooseScreen(viewModel: ChooseViewModel = hiltViewModel()) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     ChooseContent(
         uiState = uiStates,
-        onRoomCodeChange = { value -> viewModel.onRoomCodeChanged(value) }
+        onRoomCodeChange = { value -> viewModel.onRoomCodeChanged(value) },
+        joinRoom = {},
+        createRoom = {},
+        playOffline = { viewModel.playOffline() }
     )
+
+    val context = LocalContext.current
+    if (uiStates.startQuestionsOffline) {
+        context.openBedRockActivity(NAV_QUESTIONS_OFFLINE)
+        viewModel.startQuestionsOffline(false)
+    }
+
 }
 
 @Composable
 fun ChooseContent(
     uiState: ChooseStates,
-    onRoomCodeChange: (String) -> Unit
+    onRoomCodeChange: (String) -> Unit,
+    joinRoom: () -> Unit,
+    createRoom: () -> Unit,
+    playOffline: () -> Unit,
 ) {
+
     Scaffold(
         topBar = {
             ChooseToolbar(
@@ -100,13 +118,13 @@ fun ChooseContent(
 
             SpacerSmall()
             MediumText(text = stringResource(R.string.online_mode_desc), color = White)
-            SpacerMedium()
+            SpacerSmall()
 
             OnlineRoomTabs(
                 roomCode = uiState.roomCode,
                 onRoomCodeChange = { onRoomCodeChange(it) },
-                joinRoom = {},
-                createRoom = {}
+                joinRoom = { joinRoom() },
+                createRoom = { createRoom() }
             )
 
             SpacerLarge()
@@ -138,7 +156,7 @@ fun ChooseContent(
             MediumText(text = stringResource(R.string.online_offline_desc), color = White)
             SpacerLarge()
             ButtonCustom(
-                onClick = {},
+                onClick = { playOffline() },
                 text = R.string.online_btn_start,
                 modifier = Modifier.fillMaxWidth()
             )

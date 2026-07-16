@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.mmfsin.betweenmindscompose.presentation.core.navigation.NavigationWrapper
+import com.mmfsin.betweenmindscompose.presentation.core.navigation.NavigationMain
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BMCTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,6 +13,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent { BMCTheme { NavigationWrapper() } }
+        setContent { BMCTheme { NavigationMain() } }
     }
 }

@@ -11,7 +11,7 @@ import com.mmfsin.betweenmindscompose.presentation.menu.MenuScreen
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavigationWrapper() {
+fun NavigationMain() {
     val navController = rememberNavController()
 
     NavHost(
@@ -42,12 +42,3 @@ object Menu
 
 @Serializable
 data class Choose(val gameType: String)
-
-@Serializable
-object Questions
-
-@Serializable
-object Ranges
-
-@Serializable
-object Packs
