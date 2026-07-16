@@ -26,5 +26,7 @@ class ChooseViewModel @Inject constructor(
         }
     }
 
+    fun onRoomCodeChanged(value: String) = _uiState.update { it.copy(roomCode = value) }
+
     private fun sww() {}
 }

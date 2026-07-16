@@ -17,56 +17,70 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mmfsin.betweenmindscompose.presentation.core.components.SmallText
 import com.mmfsin.betweenmindscompose.R
-import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
+import com.mmfsin.betweenmindscompose.presentation.core.theme.Black
+import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 fun MyOutlinedTextFieldPV() {
     Column() {
-        MyWhiteTextField("Texto de prueba", {}, R.string.app_name)
+        CustomTextField("Texto de prueba", {}, R.string.app_name, lengthVisibility = true)
         SpacerMedium()
-        MyOutlinedTextField("Texto de prueba", {}, R.string.app_name)
+        CustomOutlinedTextField("Texto de prueba", {}, R.string.app_name, lengthVisibility = true)
     }
 }
 
 @Composable
-fun MyWhiteTextField(
+fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: Int,
+    label: Int? = null,
     singleLine: Boolean = true,
     minLines: Int = 1,
     maxLines: Int = 1,
     maxLength: Int = 50,
-    imeAction: ImeAction = ImeAction.Next
+    lengthVisibility: Boolean = false,
+    imeAction: ImeAction = ImeAction.Next,
+    hint: String = "",
+    containerColor: Color = White,
+    textColor: Color = Black
 ) {
-    Column() {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            SmallText(label)
+    Column(modifier = Modifier.fillMaxWidth()) {
+        label?.let {
+            SmallText(label, color = textColor)
             SpacerMini()
-            BasicTextField(
-                modifier = Modifier.fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(White)
-                    .padding(horizontal = 8.dp, vertical = 12.dp),
-                value = value, onValueChange = { onValueChange(it.take(maxLength)) },
-                singleLine = singleLine,
-                textStyle = MaterialTheme.typography.bodyLarge,
-                minLines = minLines,
-                maxLines = maxLines,
-
-                keyboardOptions = KeyboardOptions(
-                    imeAction = imeAction,
-                    capitalization = KeyboardCapitalization.Sentences
-                )
-            )
+        }
+        BasicTextField(
+            modifier = Modifier.fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(containerColor)
+                .padding(horizontal = 8.dp, vertical = 12.dp),
+            value = value, onValueChange = { onValueChange(it.take(maxLength)) },
+            singleLine = singleLine,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = textColor),
+            minLines = minLines,
+            maxLines = maxLines,
+            keyboardOptions = KeyboardOptions(
+                imeAction = imeAction,
+                capitalization = KeyboardCapitalization.Sentences
+            ),
+            decorationBox = { innerTextField ->
+                Box {
+                    if (value.isEmpty()) {
+                        MediumText(text = hint, color = textColor)
+                    }
+                    innerTextField()
+                }
+            }
+        )
+        if (lengthVisibility) {
             SpacerMini()
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -91,54 +105,70 @@ fun MyWhiteTextField(
 }
 
 @Composable
-fun MyOutlinedTextField(
+fun CustomOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: Int,
+    label: Int? = null,
     singleLine: Boolean = true,
     minLines: Int = 1,
     maxLines: Int = 1,
     maxLength: Int = 50,
-    imeAction: ImeAction = ImeAction.Next
+    lengthVisibility: Boolean = false,
+    imeAction: ImeAction = ImeAction.Next,
+    hint: String = "",
+    borderColor: Color = GrayMedium,
+    textColor: Color = Black
 ) {
     Box(
         modifier = Modifier
-            .border(1.dp, GrayHard, RoundedCornerShape(8.dp))
+            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
             .padding(12.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            SmallText(label)
-            SpacerMini()
+            label?.let {
+                SmallText(label, color = textColor)
+                SpacerMini()
+            }
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = value, onValueChange = { onValueChange(it.take(maxLength)) },
                 singleLine = singleLine,
-                textStyle = MaterialTheme.typography.bodyLarge,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = textColor),
                 minLines = minLines,
                 maxLines = maxLines,
                 keyboardOptions = KeyboardOptions(
                     imeAction = imeAction,
                     capitalization = KeyboardCapitalization.Sentences
-                )
+                ),
+                decorationBox = { innerTextField ->
+                    Box {
+                        if (value.isEmpty()) {
+                            MediumText(text = hint, color = textColor)
+                        }
+                        innerTextField()
+                    }
+                }
             )
-            SpacerMini()
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "${value.length}",
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    "/",
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    "$maxLength",
-                    style = MaterialTheme.typography.bodySmall
-                )
+            if (lengthVisibility) {
+                SpacerMini()
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "${value.length}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        "/",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Text(
+                        "$maxLength",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
         }
     }

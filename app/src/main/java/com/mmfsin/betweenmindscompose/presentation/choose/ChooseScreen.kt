@@ -24,6 +24,7 @@ import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.GameType
 import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseTitle
 import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseToolbar
+import com.mmfsin.betweenmindscompose.presentation.choose.components.OnlineRoomTabs
 import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
@@ -41,8 +42,8 @@ fun ChoosePV() {
         uiState = ChooseStates(
             gameType = GameType.RANGES
         ),
-
-        )
+        {},
+    )
 }
 
 @Composable
@@ -50,13 +51,14 @@ fun ChooseScreen(viewModel: ChooseViewModel = hiltViewModel()) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     ChooseContent(
         uiState = uiStates,
-
-        )
+        onRoomCodeChange = { value -> viewModel.onRoomCodeChanged(value) }
+    )
 }
 
 @Composable
 fun ChooseContent(
     uiState: ChooseStates,
+    onRoomCodeChange: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -100,6 +102,14 @@ fun ChooseContent(
             MediumText(text = stringResource(R.string.online_mode_desc), color = White)
             SpacerMedium()
 
+            OnlineRoomTabs(
+                roomCode = uiState.roomCode,
+                onRoomCodeChange = { onRoomCodeChange(it) },
+                joinRoom = {},
+                createRoom = {}
+            )
+
+            SpacerLarge()
 
             Box(Modifier.fillMaxWidth().padding(horizontal = 24.dp).height(1.dp).background(White))
 

@@ -19,10 +19,10 @@ class MenuViewModel @Inject constructor(
 
     private fun checkVersion() {
         viewModelScope.launch {
-            delay(2000)
+            delay(0)
             _uiState.update { it.copy(isLoading = false) }
 
-            delay(1000)
+            delay(0)
             _uiState.update { it.copy(positonButtons = 0f) }
         }
     }
