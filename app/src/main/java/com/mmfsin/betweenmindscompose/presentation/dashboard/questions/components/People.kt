@@ -37,7 +37,7 @@ fun PeoplePV() {
     People(
         "Joaquin", {}, 55, 90,
         "Sandra", {}, 45, 10,
-        true,true,
+        true, true, true, true
     )
 }
 
@@ -53,19 +53,24 @@ fun People(
     secondOrangeOpinion: Int,
     showFirstOpinion: Boolean,
     showSecondOpinion: Boolean,
+    blueHandsUp: Boolean,
+    orangeHandsUp: Boolean,
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
+            val blueIcon = if (blueHandsUp) R.drawable.ic_human_up else R.drawable.ic_human_down
+            val orangeIcon = if (orangeHandsUp) R.drawable.ic_human_up else R.drawable.ic_human_down
+
             Icon(
-                painterResource(R.drawable.ic_human_down), null,
+                painterResource(blueIcon), null,
                 modifier = Modifier.size(50.dp),
                 tint = BlueMedium
             )
             Icon(
-                painterResource(R.drawable.ic_human_down), null,
+                painterResource(orangeIcon), null,
                 modifier = Modifier.size(50.dp),
                 tint = OrangeMedium
             )

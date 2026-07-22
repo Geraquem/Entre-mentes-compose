@@ -67,7 +67,8 @@ fun QuestionsOfflinePV() {
             isLoading = false,
             showRoundView = false,
         ),
-        {}, {}, {}, {}
+        {}, {}, {}, {},
+        {},
     )
 }
 
@@ -79,7 +80,8 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         updateOffsetX = { viewModel.updateOffsetX(it) },
         onBlueNameChange = { viewModel.onBlueNameChanged(it) },
         onOrangeNameChange = { viewModel.onOrangeNameChanged(it) },
-        updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) }
+        updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) },
+        updateSecondOpinionPercents = {},
     )
 }
 
@@ -89,7 +91,8 @@ fun QuestionsOfflineContent(
     updateOffsetX: (Float) -> Unit,
     onBlueNameChange: (String) -> Unit,
     onOrangeNameChange: (String) -> Unit,
-    updateFirstOpinionPercents: (Int) -> Unit
+    updateFirstOpinionPercents: (Int) -> Unit,
+    updateSecondOpinionPercents: (Int) -> Unit,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -157,7 +160,9 @@ fun QuestionsOfflineContent(
                     firstOrangeOpinion = uiState.firstOpinionOrange,
                     secondOrangeOpinion = uiState.secondOpinionOrange,
                     showFirstOpinion = uiState.firstOpinionVisible,
-                    showSecondOpinion = uiState.secondOpinionVisible
+                    showSecondOpinion = uiState.secondOpinionVisible,
+                    blueHandsUp = uiState.blueHandsUp,
+                    orangeHandsUp = uiState.orangeHandsUp
                 )
 
                 SpacerMedium()

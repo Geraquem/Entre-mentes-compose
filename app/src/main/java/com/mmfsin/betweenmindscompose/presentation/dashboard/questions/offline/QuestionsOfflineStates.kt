@@ -19,6 +19,9 @@ data class QuestionsOfflineStates(
     val firstOpinionOrange: Int = 50,
     val secondOpinionOrange: Int = 50,
 
+    val blueHandsUp: Boolean = false,
+    val orangeHandsUp: Boolean = false,
+
     val firstOpinionVisible: Boolean = true,
     val secondOpinionVisible: Boolean = false,
 
