@@ -8,6 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.collections.copy
 
 @HiltViewModel
 class QuestionsOfflineViewModel @Inject constructor(
@@ -36,7 +37,10 @@ class QuestionsOfflineViewModel @Inject constructor(
         )
     }
 
-    fun updateOffsetX(value: Float) = _uiState.update { it.copy(offsetX = value) }
+    fun updateOffsetX(value: Float) {
+        println("---------------------------- $value")
+        _uiState.update { it.copy(offsetX = value) }
+    }
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }

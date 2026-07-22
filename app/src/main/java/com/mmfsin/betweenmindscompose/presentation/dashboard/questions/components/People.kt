@@ -61,12 +61,12 @@ fun People(
         ) {
             Icon(
                 painterResource(R.drawable.ic_human_down), null,
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(50.dp),
                 tint = BlueMedium
             )
             Icon(
                 painterResource(R.drawable.ic_human_down), null,
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(50.dp),
                 tint = OrangeMedium
             )
         }

@@ -93,14 +93,16 @@ fun QuestionsOfflineContent(
 ) {
 
     val focusManager = LocalFocusManager.current
-    var offsetX by remember { mutableFloatStateOf(0f) }
+    var dragOffsetX by remember { mutableFloatStateOf(uiState.offsetX) }
     var parentWidth by remember { mutableIntStateOf(0) }
     val indicatorWidthPx = with(LocalDensity.current) { 10.dp.toPx() }
     val arrowPointerWidthPx = with(LocalDensity.current) { 24.dp.toPx() }
 
     LaunchedEffect(parentWidth, indicatorWidthPx) {
         if (parentWidth > 0 && indicatorWidthPx > 0) {
-            offsetX = (parentWidth - indicatorWidthPx) / 2f
+            val initialOffset = (parentWidth - indicatorWidthPx) / 2f
+            dragOffsetX = initialOffset
+            updateOffsetX(initialOffset)
         }
     }
 
@@ -162,7 +164,7 @@ fun QuestionsOfflineContent(
 
                 Box(
                     modifier = Modifier
-                        .offset { IntOffset((offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
+                        .offset { IntOffset((uiState.offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
                         .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
                     contentAlignment = Alignment.Center
                 ) {
@@ -185,7 +187,7 @@ fun QuestionsOfflineContent(
                     ) {
                         Box(
                             modifier = Modifier
-                                .offset { IntOffset(x = offsetX.roundToInt(), y = 0) }
+                                .offset { IntOffset(x = uiState.offsetX.roundToInt(), y = 0) }
                                 .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
                                 .fillMaxHeight()
                                 .background(White)
@@ -206,7 +208,12 @@ fun QuestionsOfflineContent(
                 SwipeBox()
                 SpacerLarge()
                 ButtonCustom(
-                    onClick = {},
+                    onClick = {
+                        println("holaaa")
+                        val initialOffset = (parentWidth - indicatorWidthPx) / 2f
+                        dragOffsetX = initialOffset
+                        updateOffsetX(initialOffset)
+                    },
                     text = R.string.btn_hide,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -218,16 +225,19 @@ fun QuestionsOfflineContent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(bottom = 64.dp)
                     .pointerInput(Unit) {
                         detectDragGestures(
                             onDragStart = { focusManager.clearFocus() },
                             onDrag = { change, dragAmount ->
                                 change.consume()
+
                                 val maxOffset = (parentWidth - indicatorWidthPx)
-                                offsetX = (offsetX + dragAmount.x).coerceIn(0f, maxOffset)
+                                dragOffsetX = (dragOffsetX + dragAmount.x).coerceIn(0f, maxOffset)
+                                updateOffsetX(dragOffsetX)
 
                                 val percent = if (maxOffset > 0f) {
-                                    ((offsetX / maxOffset) * 100).toInt()
+                                    ((dragOffsetX / maxOffset) * 100).toInt()
                                 } else 0
 
                                 updateFirstOpinionPercents(percent)
