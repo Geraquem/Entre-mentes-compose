@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -66,7 +67,7 @@ fun QuestionsOfflinePV() {
             isLoading = false,
             showRoundView = false,
         ),
-        {}, {}, {}
+        {}, {}, {}, {}
     )
 }
 
@@ -75,6 +76,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     QuestionsOfflineContent(
         uiState = uiState,
+        updateOffsetX = { viewModel.updateOffsetX(it) },
         onBlueNameChange = { viewModel.onBlueNameChanged(it) },
         onOrangeNameChange = { viewModel.onOrangeNameChanged(it) },
         updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) }
@@ -84,6 +86,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
 @Composable
 fun QuestionsOfflineContent(
     uiState: QuestionsOfflineStates,
+    updateOffsetX: (Float) -> Unit,
     onBlueNameChange: (String) -> Unit,
     onOrangeNameChange: (String) -> Unit,
     updateFirstOpinionPercents: (Int) -> Unit
@@ -92,12 +95,12 @@ fun QuestionsOfflineContent(
     val focusManager = LocalFocusManager.current
     var offsetX by remember { mutableFloatStateOf(0f) }
     var parentWidth by remember { mutableIntStateOf(0) }
-    var indicatorWidth by remember { mutableIntStateOf(0) }
-    var arrowPointerWidth by remember { mutableIntStateOf(0) }
+    val indicatorWidthPx = with(LocalDensity.current) { 10.dp.toPx() }
+    val arrowPointerWidthPx = with(LocalDensity.current) { 24.dp.toPx() }
 
-    LaunchedEffect(parentWidth, indicatorWidth) {
-        if (parentWidth > 0 && indicatorWidth > 0) {
-            offsetX = (parentWidth - indicatorWidth) / 2f
+    LaunchedEffect(parentWidth, indicatorWidthPx) {
+        if (parentWidth > 0 && indicatorWidthPx > 0) {
+            offsetX = (parentWidth - indicatorWidthPx) / 2f
         }
     }
 
@@ -115,11 +118,12 @@ fun QuestionsOfflineContent(
                 .padding(innerPadding)
                 .padding(12.dp)
         ) {
-            Column() {
+            Column {
                 MediumText(
                     text = stringResource(R.string.scoreboard_rounds),
                     fontFamily = alphazet,
-                    color = White
+                    color = White,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 SpacerMini()
                 Box(Modifier.fillMaxWidth().height(40.dp).background(RedHard))
@@ -156,15 +160,21 @@ fun QuestionsOfflineContent(
 
                 SpacerMedium()
 
-                ShowAlpha(uiState.arrowPointerVisible) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_triangle_pointing),
-                        contentDescription = null,
-                        tint = White,
-                        modifier = Modifier
-                            .offset { IntOffset(x = (offsetX + (indicatorWidth - arrowPointerWidth) / 2).roundToInt(), y = 0) }
-                            .onSizeChanged { arrowPointerWidth = it.width }
-                    )
+                Box(
+                    modifier = Modifier
+                        .offset { IntOffset((offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
+                        .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (parentWidth > 0) {
+                        ShowAlpha(uiState.arrowPointerVisible) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_triangle_pointing),
+                                contentDescription = null,
+                                tint = White
+                            )
+                        }
+                    }
                 }
                 Box {
                     Box(
@@ -176,9 +186,8 @@ fun QuestionsOfflineContent(
                         Box(
                             modifier = Modifier
                                 .offset { IntOffset(x = offsetX.roundToInt(), y = 0) }
-                                .width(10.dp)
+                                .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
                                 .fillMaxHeight()
-                                .onSizeChanged { indicatorWidth = it.width }
                                 .background(White)
                         )
                     }
@@ -214,7 +223,7 @@ fun QuestionsOfflineContent(
                             onDragStart = { focusManager.clearFocus() },
                             onDrag = { change, dragAmount ->
                                 change.consume()
-                                val maxOffset = (parentWidth - indicatorWidth).toFloat()
+                                val maxOffset = (parentWidth - indicatorWidthPx)
                                 offsetX = (offsetX + dragAmount.x).coerceIn(0f, maxOffset)
 
                                 val percent = if (maxOffset > 0f) {

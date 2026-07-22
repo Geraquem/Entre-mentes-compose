@@ -36,6 +36,8 @@ class QuestionsOfflineViewModel @Inject constructor(
         )
     }
 
+    fun updateOffsetX(value: Float) = _uiState.update { it.copy(offsetX = value) }
+
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
 

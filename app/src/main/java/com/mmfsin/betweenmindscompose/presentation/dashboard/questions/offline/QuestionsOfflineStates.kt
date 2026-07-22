@@ -8,6 +8,8 @@ data class QuestionsOfflineStates(
     val showRoundView: Boolean = true,
     val roundCount: Int = 1,
 
+    val offsetX: Float = 0f,
+
     val questions: List<Question> = emptyList(),
 
     val blueName: String = "",
