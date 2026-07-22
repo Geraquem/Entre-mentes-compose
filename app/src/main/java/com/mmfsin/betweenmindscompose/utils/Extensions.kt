@@ -22,9 +22,25 @@ fun Context.openBedRockActivity(navGraph: String, strArgs: String? = null) {
 }
 
 @Composable
+fun AnimateX(
+    targetX: Float,
+    duration: Int = 1500,
+    onEnd: () -> Unit = {},
+    content: @Composable () -> Unit
+) {
+    val animatedX by animateDpAsState(
+        targetValue = targetX.dp,
+        animationSpec = tween(duration),
+        finishedListener = { onEnd() }
+    )
+
+    Box(modifier = Modifier.offset(x = animatedX)) { content() }
+}
+
+@Composable
 fun AnimateY(
     targetY: Float,
-    duration: Int = 600,
+    duration: Int = 1500,
     onEnd: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
@@ -34,15 +50,13 @@ fun AnimateY(
         finishedListener = { onEnd() }
     )
 
-    Box(modifier = Modifier.offset(y = animatedY)) {
-        content()
-    }
+    Box(modifier = Modifier.offset(y = animatedY)) { content() }
 }
 
 @Composable
 fun ShowAlpha(
     visibleTrigger: Boolean,
-    duration: Int = 1000,
+    duration: Int = 1500,
     onEnd: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
@@ -52,7 +66,5 @@ fun ShowAlpha(
         finishedListener = { if (visibleTrigger) onEnd() }
     )
 
-    Box(modifier = Modifier.alpha(alpha)) {
-        content()
-    }
+    Box(modifier = Modifier.alpha(alpha)) { content() }
 }

@@ -1,21 +1,38 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -29,6 +46,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
+import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
@@ -36,7 +54,9 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.courier
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
+import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
+import kotlin.math.roundToInt
 
 @Preview
 @Composable
@@ -46,7 +66,7 @@ fun QuestionsOfflinePV() {
             isLoading = false,
             showRoundView = false,
         ),
-        {}, {}
+        {}, {}, {}
     )
 }
 
@@ -56,7 +76,8 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
     QuestionsOfflineContent(
         uiState = uiState,
         onBlueNameChange = { viewModel.onBlueNameChanged(it) },
-        onOrangeNameChange = { viewModel.onOrangeNameChanged(it) }
+        onOrangeNameChange = { viewModel.onOrangeNameChanged(it) },
+        updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) }
     )
 }
 
@@ -65,7 +86,21 @@ fun QuestionsOfflineContent(
     uiState: QuestionsOfflineStates,
     onBlueNameChange: (String) -> Unit,
     onOrangeNameChange: (String) -> Unit,
+    updateFirstOpinionPercents: (Int) -> Unit
 ) {
+
+    val focusManager = LocalFocusManager.current
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var parentWidth by remember { mutableIntStateOf(0) }
+    var indicatorWidth by remember { mutableIntStateOf(0) }
+    var arrowPointerWidth by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(parentWidth, indicatorWidth) {
+        if (parentWidth > 0 && indicatorWidth > 0) {
+            offsetX = (parentWidth - indicatorWidth) / 2f
+        }
+    }
+
     Scaffold(
         topBar = {
             ChooseToolbar(
@@ -80,7 +115,7 @@ fun QuestionsOfflineContent(
                 .padding(innerPadding)
                 .padding(12.dp)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column() {
                 MediumText(
                     text = stringResource(R.string.scoreboard_rounds),
                     fontFamily = alphazet,
@@ -109,15 +144,53 @@ fun QuestionsOfflineContent(
                 People(
                     blueName = uiState.blueName,
                     onBlueNameChange = { onBlueNameChange(it) },
-                    firstBlueOpinion = 0,
-                    secondBlueOpinion = 0,
+                    firstBlueOpinion = uiState.firstOpinionBlue,
+                    secondBlueOpinion = uiState.secondOpinionBlue,
                     orangeName = uiState.orangeName,
                     onOrangeNameChange = { onOrangeNameChange(it) },
-                    firstOrangeOpinion = 0,
-                    secondOrangeOpinion = 0,
+                    firstOrangeOpinion = uiState.firstOpinionOrange,
+                    secondOrangeOpinion = uiState.secondOpinionOrange,
                     showFirstOpinion = uiState.firstOpinionVisible,
                     showSecondOpinion = uiState.secondOpinionVisible
                 )
+
+                SpacerMedium()
+
+                ShowAlpha(uiState.arrowPointerVisible) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_triangle_pointing),
+                        contentDescription = null,
+                        tint = White,
+                        modifier = Modifier
+                            .offset { IntOffset(x = (offsetX + (indicatorWidth - arrowPointerWidth) / 2).roundToInt(), y = 0) }
+                            .onSizeChanged { arrowPointerWidth = it.width }
+                    )
+                }
+                Box {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(50.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(GrayHard)
+                            .onSizeChanged { parentWidth = it.width }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .offset { IntOffset(x = offsetX.roundToInt(), y = 0) }
+                                .width(10.dp)
+                                .fillMaxHeight()
+                                .onSizeChanged { indicatorWidth = it.width }
+                                .background(White)
+                        )
+                    }
+                    AnimateX(uiState.curtainLeftPosition) {
+                        Box(
+                            Modifier.width(300.dp).height(50.dp)
+                                .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp))
+                                .background(RedHard)
+                        )
+
+                    }
+                }
 
                 Spacer(Modifier.weight(1f))
 
@@ -132,6 +205,27 @@ fun QuestionsOfflineContent(
             }
 
             ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectDragGestures(
+                            onDragStart = { focusManager.clearFocus() },
+                            onDrag = { change, dragAmount ->
+                                change.consume()
+                                val maxOffset = (parentWidth - indicatorWidth).toFloat()
+                                offsetX = (offsetX + dragAmount.x).coerceIn(0f, maxOffset)
+
+                                val percent = if (maxOffset > 0f) {
+                                    ((offsetX / maxOffset) * 100).toInt()
+                                } else 0
+
+                                updateFirstOpinionPercents(percent)
+                            }
+                        )
+                    }
+            )
         }
     }
 }

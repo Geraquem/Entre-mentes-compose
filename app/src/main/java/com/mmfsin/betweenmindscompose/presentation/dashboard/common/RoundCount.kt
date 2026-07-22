@@ -17,6 +17,7 @@ import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Black
+import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueTransparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.manaspace
 
@@ -31,7 +32,7 @@ fun RoundCount(round: Int) {
     Column(
         modifier = Modifier.fillMaxSize()
             .clip(RoundedCornerShape(16.dp))
-            .background(Black),
+            .background(BlueTransparent),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

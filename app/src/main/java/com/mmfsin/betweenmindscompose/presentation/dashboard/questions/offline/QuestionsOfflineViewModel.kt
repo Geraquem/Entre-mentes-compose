@@ -28,6 +28,8 @@ class QuestionsOfflineViewModel @Inject constructor(
                 viewModelScope.launch {
                     delay(1000)
                     _uiState.update { it.copy(showRoundView = false) }
+                    delay(1000)
+                    openCurtains()
                 }
             },
             {}
@@ -36,6 +38,36 @@ class QuestionsOfflineViewModel @Inject constructor(
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
+
+    fun openCurtains() {
+        _uiState.update {
+            it.copy(
+                arrowPointerVisible = true,
+                curtainLeftPosition = -500f,
+                curtainRightPosition = 500f
+            )
+        }
+    }
+
+    fun closeCurtains() {
+        _uiState.update {
+            it.copy(
+                arrowPointerVisible = false,
+                curtainLeftPosition = 0f,
+                curtainRightPosition = 0f
+            )
+        }
+    }
+
+    fun updateFirstOpinionPercents(value: Int) {
+        val firstOpBlue = 100 - value
+        _uiState.update {
+            it.copy(
+                firstOpinionBlue = firstOpBlue,
+                firstOpinionOrange = value
+            )
+        }
+    }
 
     private fun sww() {}
 }
