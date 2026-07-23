@@ -11,7 +11,8 @@ data class QuestionsOfflineStates(
     val roundCount: Int = 1,
     val roundType: QuestionRoundType = FIRST_OPINION,
 
-    val offsetX: Float = 0f,
+    val offsetXWhite: Float = 0f,
+    val offsetXRed: Float = 0f,
 
     val questions: List<Question> = emptyList(),
 

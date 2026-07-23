@@ -73,7 +73,8 @@ fun QuestionsOfflinePV() {
             showRoundView = false,
         ),
         {}, {}, {}, {},
-        {}, {},
+        {}, {}, {},
+        {},
     )
 }
 
@@ -82,7 +83,9 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     QuestionsOfflineContent(
         uiState = uiState,
-        updateOffsetX = { viewModel.updateOffsetX(it) },
+        setInitialOffsets = { viewModel.setInitialOffsetsX(it) },
+        updateOffsetXWhite = { viewModel.updateOffsetXWhite(it) },
+        updateOffsetXRed = { viewModel.updateOffsetXRed(it) },
         onBlueNameChange = { viewModel.onBlueNameChanged(it) },
         onOrangeNameChange = { viewModel.onOrangeNameChanged(it) },
         updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) },
@@ -94,7 +97,9 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
 @Composable
 fun QuestionsOfflineContent(
     uiState: QuestionsOfflineStates,
-    updateOffsetX: (Float) -> Unit,
+    setInitialOffsets: (Float) -> Unit,
+    updateOffsetXWhite: (Float) -> Unit,
+    updateOffsetXRed: (Float) -> Unit,
     onBlueNameChange: (String) -> Unit,
     onOrangeNameChange: (String) -> Unit,
     updateFirstOpinionPercents: (Int) -> Unit,
@@ -104,7 +109,8 @@ fun QuestionsOfflineContent(
 ) {
 
     val focusManager = LocalFocusManager.current
-    var dragOffsetX by remember { mutableFloatStateOf(uiState.offsetX) }
+    var dragOffsetXWhite by remember { mutableFloatStateOf(uiState.offsetXWhite) }
+    var dragOffsetXRed by remember { mutableFloatStateOf(uiState.offsetXRed) }
     var parentWidth by remember { mutableIntStateOf(0) }
     val indicatorWidthPx = with(LocalDensity.current) { 10.dp.toPx() }
     val arrowPointerWidthPx = with(LocalDensity.current) { 24.dp.toPx() }
@@ -114,8 +120,9 @@ fun QuestionsOfflineContent(
     LaunchedEffect(parentWidth, indicatorWidthPx) {
         if (parentWidth > 0 && indicatorWidthPx > 0) {
             val initialOffset = (parentWidth - indicatorWidthPx) / 2f
-            dragOffsetX = initialOffset
-            updateOffsetX(initialOffset)
+            dragOffsetXWhite = initialOffset
+            dragOffsetXRed = initialOffset
+            setInitialOffsets(initialOffset)
         }
     }
 
@@ -177,11 +184,11 @@ fun QuestionsOfflineContent(
 
                 SpacerMedium()
 
-                Box() {
+                Box {
                     /** WHITE ARROW INDICATOR */
                     Box(
                         modifier = Modifier
-                            .offset { IntOffset((uiState.offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
+                            .offset { IntOffset((uiState.offsetXWhite + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
                             .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
                         contentAlignment = Alignment.Center
                     ) {
@@ -199,7 +206,7 @@ fun QuestionsOfflineContent(
                     /** RED ARROW INDICATOR */
                     Box(
                         modifier = Modifier
-                            .offset { IntOffset((uiState.offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
+                            .offset { IntOffset((uiState.offsetXRed + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
                             .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
                         contentAlignment = Alignment.Center
                     ) {
@@ -229,7 +236,7 @@ fun QuestionsOfflineContent(
                     /** White Indicator */
                     Box(
                         modifier = Modifier
-                            .offset { IntOffset(uiState.offsetX.roundToInt(), 0) }
+                            .offset { IntOffset(uiState.offsetXWhite.roundToInt(), 0) }
                             .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
                             .fillMaxHeight()
                             .background(White)
@@ -238,7 +245,7 @@ fun QuestionsOfflineContent(
                     /** Red Indicator */
                     Box(
                         modifier = Modifier
-                            .offset { IntOffset(uiState.offsetX.roundToInt(), 0) }
+                            .offset { IntOffset(uiState.offsetXRed.roundToInt(), 0) }
                             .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
                             .fillMaxHeight()
                             .background(RedMedium)
@@ -302,17 +309,29 @@ fun QuestionsOfflineContent(
                             onDrag = { change, dragAmount ->
                                 change.consume()
 
-                                val maxOffset = (parentWidth - indicatorWidthPx)
-                                dragOffsetX = (dragOffsetX + dragAmount.x).coerceIn(0f, maxOffset)
-                                updateOffsetX(dragOffsetX)
-
-                                val percent = if (maxOffset > 0f) {
-                                    ((dragOffsetX / maxOffset) * 100).toInt()
-                                } else 0
-
                                 when (currentRoundType) {
-                                    FIRST_OPINION -> updateFirstOpinionPercents(percent)
-                                    SECOND_OPINION -> updateSecondOpinionPercents(percent)
+                                    FIRST_OPINION -> {
+                                        val maxOffset = (parentWidth - indicatorWidthPx)
+                                        dragOffsetXWhite = (dragOffsetXWhite + dragAmount.x).coerceIn(0f, maxOffset)
+
+                                        val percent = if (maxOffset > 0f) ((dragOffsetXWhite / maxOffset) * 100).toInt()
+                                        else 0
+
+                                        updateFirstOpinionPercents(percent)
+                                        updateOffsetXWhite(dragOffsetXWhite)
+                                    }
+
+                                    SECOND_OPINION -> {
+                                        val maxOffset = (parentWidth - indicatorWidthPx)
+                                        dragOffsetXRed = (dragOffsetXRed + dragAmount.x).coerceIn(0f, maxOffset)
+
+                                        val percent = if (maxOffset > 0f) ((dragOffsetXRed / maxOffset) * 100).toInt()
+                                        else 0
+
+                                        updateSecondOpinionPercents(percent)
+                                        updateOffsetXRed(dragOffsetXRed)
+                                    }
+
                                     RESULTS -> Unit
                                 }
 
