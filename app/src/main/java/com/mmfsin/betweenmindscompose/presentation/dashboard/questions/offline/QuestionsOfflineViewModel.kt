@@ -1,6 +1,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.domain.usecases.GetQuestionsUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -73,6 +74,18 @@ class QuestionsOfflineViewModel @Inject constructor(
         }
     }
 
+    fun updateSecondOpinionPercents(value: Int) {
+        val secondOpBlue = 100 - value
+        handleHandsUp(percent = secondOpBlue)
+
+        _uiState.update {
+            it.copy(
+                secondOpinionBlue = secondOpBlue,
+                secondOpinionOrange = value
+            )
+        }
+    }
+
     private fun handleHandsUp(percent: Int) {
         if (percent > 50) {
             _uiState.update { it.copy(blueHandsUp = true, orangeHandsUp = false) }
@@ -80,6 +93,27 @@ class QuestionsOfflineViewModel @Inject constructor(
             _uiState.update { it.copy(blueHandsUp = false, orangeHandsUp = false) }
         } else {
             _uiState.update { it.copy(blueHandsUp = false, orangeHandsUp = true) }
+        }
+    }
+
+    fun readyOpinionOne() {
+        _uiState.update {
+            it.copy(
+                firstOpinionVisible = false,
+                secondOpinionVisible = true,
+            )
+        }
+        handleHandsUp(50)
+        closeCurtains()
+
+        viewModelScope.launch {
+            delay(2500)
+            _uiState.update {
+                it.copy(
+                    roundType = SECOND_OPINION
+                )
+            }
+            openCurtains()
         }
     }
 

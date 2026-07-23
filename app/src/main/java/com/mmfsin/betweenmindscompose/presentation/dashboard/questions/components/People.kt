@@ -30,6 +30,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.kineks
+import com.mmfsin.betweenmindscompose.utils.ShowAlpha
 
 @Preview
 @Composable
@@ -129,7 +130,7 @@ fun People(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                if (showFirstOpinion) {
+                ShowAlpha(showFirstOpinion) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -147,7 +148,8 @@ fun People(
                             fontFamily = kineks
                         )
                     }
-                } else {
+                }
+                ShowAlpha(!showFirstOpinion) {
                     Icon(
                         painter = painterResource(R.drawable.ic_question),
                         contentDescription = null,
@@ -166,7 +168,7 @@ fun People(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                if (showFirstOpinion) {
+                ShowAlpha(showFirstOpinion) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -184,7 +186,9 @@ fun People(
                             fontFamily = kineks
                         )
                     }
-                } else {
+                }
+
+                ShowAlpha(!showFirstOpinion) {
                     Icon(
                         painter = painterResource(R.drawable.ic_question),
                         contentDescription = null,
@@ -206,7 +210,7 @@ fun People(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                if (showSecondOpinion) {
+                ShowAlpha(showSecondOpinion) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -224,7 +228,8 @@ fun People(
                             fontFamily = kineks
                         )
                     }
-                } else {
+                }
+                ShowAlpha(!showSecondOpinion) {
                     Icon(
                         painter = painterResource(R.drawable.ic_question),
                         contentDescription = null,
@@ -243,7 +248,7 @@ fun People(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                if (showSecondOpinion) {
+                ShowAlpha(showSecondOpinion) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -261,7 +266,8 @@ fun People(
                             fontFamily = kineks
                         )
                     }
-                } else {
+                }
+                ShowAlpha(!showSecondOpinion) {
                     Icon(
                         painter = painterResource(R.drawable.ic_question),
                         contentDescription = null,

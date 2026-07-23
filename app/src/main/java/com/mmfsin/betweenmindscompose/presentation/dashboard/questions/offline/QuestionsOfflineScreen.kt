@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +40,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.FIRST_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.RESULTS
+import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseToolbar
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
@@ -49,6 +53,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
+import com.mmfsin.betweenmindscompose.presentation.core.theme.RedMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.core.theme.courier
@@ -68,7 +73,7 @@ fun QuestionsOfflinePV() {
             showRoundView = false,
         ),
         {}, {}, {}, {},
-        {},
+        {}, {},
     )
 }
 
@@ -81,7 +86,8 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         onBlueNameChange = { viewModel.onBlueNameChanged(it) },
         onOrangeNameChange = { viewModel.onOrangeNameChanged(it) },
         updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) },
-        updateSecondOpinionPercents = {},
+        updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
+        readyOpinionOne = { viewModel.readyOpinionOne() },
     )
 }
 
@@ -93,6 +99,8 @@ fun QuestionsOfflineContent(
     onOrangeNameChange: (String) -> Unit,
     updateFirstOpinionPercents: (Int) -> Unit,
     updateSecondOpinionPercents: (Int) -> Unit,
+
+    readyOpinionOne: () -> Unit,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -100,6 +108,8 @@ fun QuestionsOfflineContent(
     var parentWidth by remember { mutableIntStateOf(0) }
     val indicatorWidthPx = with(LocalDensity.current) { 10.dp.toPx() }
     val arrowPointerWidthPx = with(LocalDensity.current) { 24.dp.toPx() }
+
+    val currentRoundType by rememberUpdatedState(uiState.roundType)
 
     LaunchedEffect(parentWidth, indicatorWidthPx) {
         if (parentWidth > 0 && indicatorWidthPx > 0) {
@@ -167,44 +177,92 @@ fun QuestionsOfflineContent(
 
                 SpacerMedium()
 
-                Box(
-                    modifier = Modifier
-                        .offset { IntOffset((uiState.offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
-                        .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (parentWidth > 0) {
-                        ShowAlpha(uiState.arrowPointerVisible) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_triangle_pointing),
-                                contentDescription = null,
-                                tint = White
-                            )
+                Box() {
+                    /** WHITE ARROW INDICATOR */
+                    Box(
+                        modifier = Modifier
+                            .offset { IntOffset((uiState.offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
+                            .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (parentWidth > 0) {
+                            ShowAlpha(uiState.arrowPointerVisible) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_triangle_pointing),
+                                    contentDescription = null,
+                                    tint = White
+                                )
+                            }
+                        }
+                    }
+
+                    /** RED ARROW INDICATOR */
+                    Box(
+                        modifier = Modifier
+                            .offset { IntOffset((uiState.offsetX + (indicatorWidthPx - arrowPointerWidthPx) / 2).roundToInt(), 0) }
+                            .width(with(LocalDensity.current) { arrowPointerWidthPx.toDp() }),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (parentWidth > 0) {
+                            ShowAlpha(uiState.arrowPointerVisible) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_book),
+                                    contentDescription = null,
+                                    tint = RedMedium
+                                )
+                            }
                         }
                     }
                 }
-                Box {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .onSizeChanged { parentWidth = it.width }
+                ) {
+
+                    /** Fondo */
+                    Box(Modifier.matchParentSize().background(GrayHard))
+
+                    /** White Indicator */
                     Box(
-                        modifier = Modifier.fillMaxWidth().height(50.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(GrayHard)
-                            .onSizeChanged { parentWidth = it.width }
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .offset { IntOffset(x = uiState.offsetX.roundToInt(), y = 0) }
-                                .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
-                                .fillMaxHeight()
-                                .background(White)
-                        )
-                    }
+                        modifier = Modifier
+                            .offset { IntOffset(uiState.offsetX.roundToInt(), 0) }
+                            .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
+                            .fillMaxHeight()
+                            .background(White)
+                    )
+
+                    /** Red Indicator */
+                    Box(
+                        modifier = Modifier
+                            .offset { IntOffset(uiState.offsetX.roundToInt(), 0) }
+                            .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
+                            .fillMaxHeight()
+                            .background(RedMedium)
+                    )
+
+                    val halfWidth = with(LocalDensity.current) { (parentWidth / 2).toDp() }
+
+                    /** Left curtain */
                     AnimateX(uiState.curtainLeftPosition) {
                         Box(
-                            Modifier.width(300.dp).height(50.dp)
-                                .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp))
+                            Modifier.width(halfWidth)
+                                .fillMaxHeight()
                                 .background(RedHard)
                         )
+                    }
 
+                    /** Right curtain */
+                    AnimateX(uiState.curtainRightPosition) {
+                        Box(
+                            Modifier.offset(x = halfWidth)
+                                .width(halfWidth)
+                                .fillMaxHeight()
+                                .background(RedHard)
+                        )
                     }
                 }
 
@@ -214,10 +272,17 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
                 ButtonCustom(
                     onClick = {
-                        println("holaaa")
-                        val initialOffset = (parentWidth - indicatorWidthPx) / 2f
-                        dragOffsetX = initialOffset
-                        updateOffsetX(initialOffset)
+                        when (uiState.roundType) {
+                            FIRST_OPINION -> {
+                                //                                val initialOffset = (parentWidth - indicatorWidthPx) / 2f
+                                //                                dragOffsetX = initialOffset
+                                //                                updateOffsetX(initialOffset)
+                                readyOpinionOne()
+                            }
+
+                            SECOND_OPINION -> {}
+                            RESULTS -> {}
+                        }
                     },
                     text = R.string.btn_hide,
                     modifier = Modifier.fillMaxWidth()
@@ -245,7 +310,13 @@ fun QuestionsOfflineContent(
                                     ((dragOffsetX / maxOffset) * 100).toInt()
                                 } else 0
 
-                                updateFirstOpinionPercents(percent)
+                                when (currentRoundType) {
+                                    FIRST_OPINION -> updateFirstOpinionPercents(percent)
+                                    SECOND_OPINION -> updateSecondOpinionPercents(percent)
+                                    RESULTS -> Unit
+                                }
+
+                                println("--------------- ${uiState.roundType.name}")
                             }
                         )
                     }

@@ -1,12 +1,15 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import com.mmfsin.betweenmindscompose.domain.models.Question
+import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType
+import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.FIRST_OPINION
 
 data class QuestionsOfflineStates(
     val isLoading: Boolean = true,
 
     val showRoundView: Boolean = true,
     val roundCount: Int = 1,
+    val roundType: QuestionRoundType = FIRST_OPINION,
 
     val offsetX: Float = 0f,
 
