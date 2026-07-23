@@ -9,7 +9,7 @@ data class Question(
     val pack: Int
 ) : Parcelable
 
-enum class QuestionRoundType(){
+enum class QuestionPhaseType {
     FIRST_OPINION,
     SECOND_OPINION,
     RESULTS

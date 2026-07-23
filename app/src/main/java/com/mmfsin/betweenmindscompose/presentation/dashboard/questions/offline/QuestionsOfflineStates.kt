@@ -1,15 +1,15 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import com.mmfsin.betweenmindscompose.domain.models.Question
-import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType
-import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.FIRST_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.FIRST_OPINION
 
 data class QuestionsOfflineStates(
     val isLoading: Boolean = true,
 
     val showRoundView: Boolean = true,
     val roundCount: Int = 1,
-    val roundType: QuestionRoundType = FIRST_OPINION,
+    val phase: QuestionPhaseType = FIRST_OPINION,
 
     val offsetXWhite: Float = 0f,
     val offsetXRed: Float = 0f,
@@ -29,8 +29,9 @@ data class QuestionsOfflineStates(
     val firstOpinionVisible: Boolean = true,
     val secondOpinionVisible: Boolean = false,
 
+    val showWhiteIndicator: Boolean = false,
+    val showRedIndicator: Boolean = false,
+
     val curtainLeftPosition: Float = 0f,
     val curtainRightPosition: Float = 0f,
-
-    val arrowPointerVisible: Boolean = false,
 )

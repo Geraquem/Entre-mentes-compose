@@ -1,7 +1,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import androidx.lifecycle.viewModelScope
-import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.SECOND_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.domain.usecases.GetQuestionsUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +31,7 @@ class QuestionsOfflineViewModel @Inject constructor(
                     _uiState.update { it.copy(showRoundView = false) }
                     delay(1000)
                     openCurtains()
+                    showIndicatorOpinionOne(true)
                 }
             },
             {}
@@ -47,7 +48,6 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun openCurtains() {
         _uiState.update {
             it.copy(
-                arrowPointerVisible = true,
                 curtainLeftPosition = -500f,
                 curtainRightPosition = 500f
             )
@@ -57,12 +57,14 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun closeCurtains() {
         _uiState.update {
             it.copy(
-                arrowPointerVisible = false,
                 curtainLeftPosition = 0f,
                 curtainRightPosition = 0f
             )
         }
     }
+
+    fun showIndicatorOpinionOne(value: Boolean) = _uiState.update { it.copy(showWhiteIndicator = value) }
+    fun showIndicatorOpinionTwo(value: Boolean) = _uiState.update { it.copy(showRedIndicator = value) }
 
     fun updateFirstOpinionPercents(value: Int) {
         val firstOpBlue = 100 - value
@@ -107,15 +109,17 @@ class QuestionsOfflineViewModel @Inject constructor(
         }
         handleHandsUp(50)
         closeCurtains()
+        showIndicatorOpinionOne(false)
 
         viewModelScope.launch {
             delay(2500)
             _uiState.update {
                 it.copy(
-                    roundType = SECOND_OPINION
+                    phase = SECOND_OPINION
                 )
             }
             openCurtains()
+            showIndicatorOpinionTwo(true)
         }
     }
 

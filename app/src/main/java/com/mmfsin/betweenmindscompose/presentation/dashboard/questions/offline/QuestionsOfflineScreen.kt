@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenmindscompose.R
-import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.FIRST_OPINION
-import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.RESULTS
-import com.mmfsin.betweenmindscompose.domain.models.QuestionRoundType.SECOND_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.FIRST_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.RESULTS
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseToolbar
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
@@ -71,6 +71,10 @@ fun QuestionsOfflinePV() {
         uiState = QuestionsOfflineStates(
             isLoading = false,
             showRoundView = false,
+
+            curtainLeftPosition = -500f,
+            curtainRightPosition = 500f,
+            showWhiteIndicator = true
         ),
         {}, {}, {}, {},
         {}, {}, {},
@@ -115,7 +119,7 @@ fun QuestionsOfflineContent(
     val indicatorWidthPx = with(LocalDensity.current) { 10.dp.toPx() }
     val arrowPointerWidthPx = with(LocalDensity.current) { 24.dp.toPx() }
 
-    val currentRoundType by rememberUpdatedState(uiState.roundType)
+    val currentRoundType by rememberUpdatedState(uiState.phase)
 
     LaunchedEffect(parentWidth, indicatorWidthPx) {
         if (parentWidth > 0 && indicatorWidthPx > 0) {
@@ -193,7 +197,7 @@ fun QuestionsOfflineContent(
                         contentAlignment = Alignment.Center
                     ) {
                         if (parentWidth > 0) {
-                            ShowAlpha(uiState.arrowPointerVisible) {
+                            ShowAlpha(uiState.showWhiteIndicator) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_triangle_pointing),
                                     contentDescription = null,
@@ -211,9 +215,9 @@ fun QuestionsOfflineContent(
                         contentAlignment = Alignment.Center
                     ) {
                         if (parentWidth > 0) {
-                            ShowAlpha(uiState.arrowPointerVisible) {
+                            ShowAlpha(uiState.showRedIndicator) {
                                 Icon(
-                                    painter = painterResource(R.drawable.ic_book),
+                                    painter = painterResource(R.drawable.ic_triangle_pointing),
                                     contentDescription = null,
                                     tint = RedMedium
                                 )
@@ -238,18 +242,30 @@ fun QuestionsOfflineContent(
                         modifier = Modifier
                             .offset { IntOffset(uiState.offsetXWhite.roundToInt(), 0) }
                             .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
-                            .fillMaxHeight()
-                            .background(White)
-                    )
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (parentWidth > 0) {
+                            ShowAlpha(uiState.showWhiteIndicator) {
+                                Box(modifier = Modifier.fillMaxSize().background(White))
+                            }
+                        }
+                    }
 
                     /** Red Indicator */
                     Box(
                         modifier = Modifier
                             .offset { IntOffset(uiState.offsetXRed.roundToInt(), 0) }
                             .width(with(LocalDensity.current) { indicatorWidthPx.toDp() })
-                            .fillMaxHeight()
-                            .background(RedMedium)
-                    )
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (parentWidth > 0) {
+                            ShowAlpha(uiState.showRedIndicator) {
+                                Box(modifier = Modifier.fillMaxSize().background(RedMedium))
+                            }
+                        }
+                    }
 
                     val halfWidth = with(LocalDensity.current) { (parentWidth / 2).toDp() }
 
@@ -279,7 +295,7 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
                 ButtonCustom(
                     onClick = {
-                        when (uiState.roundType) {
+                        when (uiState.phase) {
                             FIRST_OPINION -> {
                                 //                                val initialOffset = (parentWidth - indicatorWidthPx) / 2f
                                 //                                dragOffsetX = initialOffset
@@ -334,8 +350,6 @@ fun QuestionsOfflineContent(
 
                                     RESULTS -> Unit
                                 }
-
-                                println("--------------- ${uiState.roundType.name}")
                             }
                         )
                     }
