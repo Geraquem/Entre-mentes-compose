@@ -34,4 +34,7 @@ data class QuestionsOfflineStates(
 
     val curtainLeftPosition: Float = 0f,
     val curtainRightPosition: Float = 0f,
+
+    val controllerEnabled: Boolean = false,
+    val buttonEnabled: Boolean = false
 )

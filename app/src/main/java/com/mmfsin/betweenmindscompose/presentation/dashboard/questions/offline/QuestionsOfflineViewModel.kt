@@ -29,13 +29,20 @@ class QuestionsOfflineViewModel @Inject constructor(
                 viewModelScope.launch {
                     delay(1000)
                     _uiState.update { it.copy(showRoundView = false) }
+
                     delay(1000)
-                    openCurtains()
-                    showIndicatorOpinionOne(true)
+                    readyPhaseOne()
                 }
             },
             {}
         )
+    }
+
+    fun readyPhaseOne() {
+        openCurtains()
+        showIndicatorOpinionOne(true)
+        enableController(true)
+        enableButton(true)
     }
 
     fun setInitialOffsetsX(value: Float) = _uiState.update { it.copy(offsetXWhite = value, offsetXRed = value) }
@@ -44,6 +51,9 @@ class QuestionsOfflineViewModel @Inject constructor(
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
+
+    fun enableController(value: Boolean) = _uiState.update { it.copy(controllerEnabled = value) }
+    fun enableButton(value: Boolean) = _uiState.update { it.copy(buttonEnabled = value) }
 
     fun openCurtains() {
         _uiState.update {
@@ -105,6 +115,8 @@ class QuestionsOfflineViewModel @Inject constructor(
             it.copy(
                 firstOpinionVisible = false,
                 secondOpinionVisible = true,
+                buttonEnabled = false,
+                controllerEnabled = false
             )
         }
         handleHandsUp(50)
@@ -115,7 +127,9 @@ class QuestionsOfflineViewModel @Inject constructor(
             delay(2500)
             _uiState.update {
                 it.copy(
-                    phase = SECOND_OPINION
+                    phase = SECOND_OPINION,
+                    buttonEnabled = true,
+                    controllerEnabled = true
                 )
             }
             openCurtains()

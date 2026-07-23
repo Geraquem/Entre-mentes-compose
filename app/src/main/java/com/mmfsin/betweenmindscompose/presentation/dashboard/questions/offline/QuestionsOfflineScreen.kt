@@ -295,16 +295,18 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
                 ButtonCustom(
                     onClick = {
-                        when (uiState.phase) {
-                            FIRST_OPINION -> {
-                                //                                val initialOffset = (parentWidth - indicatorWidthPx) / 2f
-                                //                                dragOffsetX = initialOffset
-                                //                                updateOffsetX(initialOffset)
-                                readyOpinionOne()
-                            }
+                        if (uiState.buttonEnabled) {
+                            when (uiState.phase) {
+                                FIRST_OPINION -> {
+                                    //                                val initialOffset = (parentWidth - indicatorWidthPx) / 2f
+                                    //                                dragOffsetX = initialOffset
+                                    //                                updateOffsetX(initialOffset)
+                                    readyOpinionOne()
+                                }
 
-                            SECOND_OPINION -> {}
-                            RESULTS -> {}
+                                SECOND_OPINION -> {}
+                                RESULTS -> {}
+                            }
                         }
                     },
                     text = R.string.btn_hide,
@@ -314,46 +316,46 @@ fun QuestionsOfflineContent(
             }
 
             ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }
+            if (uiState.controllerEnabled) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 64.dp)
+                        .pointerInput(Unit) {
+                            detectDragGestures(
+                                onDragStart = { focusManager.clearFocus() },
+                                onDrag = { change, dragAmount ->
+                                    change.consume()
+                                    when (currentRoundType) {
+                                        FIRST_OPINION -> {
+                                            val maxOffset = (parentWidth - indicatorWidthPx)
+                                            dragOffsetXWhite = (dragOffsetXWhite + dragAmount.x).coerceIn(0f, maxOffset)
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 64.dp)
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDragStart = { focusManager.clearFocus() },
-                            onDrag = { change, dragAmount ->
-                                change.consume()
+                                            val percent = if (maxOffset > 0f) ((dragOffsetXWhite / maxOffset) * 100).toInt()
+                                            else 0
 
-                                when (currentRoundType) {
-                                    FIRST_OPINION -> {
-                                        val maxOffset = (parentWidth - indicatorWidthPx)
-                                        dragOffsetXWhite = (dragOffsetXWhite + dragAmount.x).coerceIn(0f, maxOffset)
+                                            updateFirstOpinionPercents(percent)
+                                            updateOffsetXWhite(dragOffsetXWhite)
+                                        }
 
-                                        val percent = if (maxOffset > 0f) ((dragOffsetXWhite / maxOffset) * 100).toInt()
-                                        else 0
+                                        SECOND_OPINION -> {
+                                            val maxOffset = (parentWidth - indicatorWidthPx)
+                                            dragOffsetXRed = (dragOffsetXRed + dragAmount.x).coerceIn(0f, maxOffset)
 
-                                        updateFirstOpinionPercents(percent)
-                                        updateOffsetXWhite(dragOffsetXWhite)
+                                            val percent = if (maxOffset > 0f) ((dragOffsetXRed / maxOffset) * 100).toInt()
+                                            else 0
+
+                                            updateSecondOpinionPercents(percent)
+                                            updateOffsetXRed(dragOffsetXRed)
+                                        }
+
+                                        RESULTS -> Unit
                                     }
-
-                                    SECOND_OPINION -> {
-                                        val maxOffset = (parentWidth - indicatorWidthPx)
-                                        dragOffsetXRed = (dragOffsetXRed + dragAmount.x).coerceIn(0f, maxOffset)
-
-                                        val percent = if (maxOffset > 0f) ((dragOffsetXRed / maxOffset) * 100).toInt()
-                                        else 0
-
-                                        updateSecondOpinionPercents(percent)
-                                        updateOffsetXRed(dragOffsetXRed)
-                                    }
-
-                                    RESULTS -> Unit
                                 }
-                            }
-                        )
-                    }
-            )
+                            )
+                        }
+                )
+            }
         }
     }
 }
