@@ -12,5 +12,6 @@ data class Question(
 enum class QuestionPhaseType {
     FIRST_OPINION,
     SECOND_OPINION,
+    NEXT_ROUND,
     RESULTS
 }

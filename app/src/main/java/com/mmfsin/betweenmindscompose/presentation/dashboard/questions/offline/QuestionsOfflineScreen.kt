@@ -40,6 +40,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.FIRST_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.NEXT_ROUND
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseToolbar
@@ -79,7 +80,7 @@ fun QuestionsOfflinePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {}, {}, {},
+        {}, {}, {}, {},
     )
 }
 
@@ -98,6 +99,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
         readyOpinionOne = { viewModel.readyOpinionOne() },
         readyOpinionTwo = { viewModel.readyOpinionTwo() },
+        handleNextRound = { viewModel.handleNextRound() },
     )
 }
 
@@ -114,6 +116,7 @@ fun QuestionsOfflineContent(
     updateSecondOpinionPercents: (Int) -> Unit,
     readyOpinionOne: () -> Unit,
     readyOpinionTwo: () -> Unit,
+    handleNextRound: () -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -295,17 +298,9 @@ fun QuestionsOfflineContent(
                     onClick = {
                         if (uiState.buttonEnabled) {
                             when (uiState.phase) {
-                                FIRST_OPINION -> {
-                                    //                                val initialOffset = (parentWidth - indicatorWidthPx) / 2f
-                                    //                                dragOffsetX = initialOffset
-                                    //                                updateOffsetX(initialOffset)
-                                    readyOpinionOne()
-                                }
-
-                                SECOND_OPINION -> {
-                                    readyOpinionTwo()
-                                }
-
+                                FIRST_OPINION -> readyOpinionOne()
+                                SECOND_OPINION -> readyOpinionTwo()
+                                NEXT_ROUND -> handleNextRound()
                                 RESULTS -> {}
                             }
                         }
@@ -351,7 +346,7 @@ fun QuestionsOfflineContent(
                                             updateOffsetXRed(dragOffsetXRed)
                                         }
 
-                                        RESULTS -> Unit
+                                        NEXT_ROUND, RESULTS -> Unit
                                     }
                                 }
                             )

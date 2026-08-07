@@ -2,6 +2,8 @@ package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.FIRST_OPINION
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.NEXT_ROUND
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.domain.usecases.GetQuestionsUseCase
@@ -40,13 +42,21 @@ class QuestionsOfflineViewModel @Inject constructor(
             _uiState.update { it.copy(showRoundView = false) }
 
             delay(1000)
-            readyPhaseOne()
+            startOpinions()
         }
     }
 
-    fun readyPhaseOne() {
+    fun startOpinions() {
+        _uiState.update {
+            it.copy(
+                phase = FIRST_OPINION,
+                showWhiteIndicator = true,
+                showFirstOpinionPercents = true,
+                buttonText = R.string.btn_ready
+            )
+        }
+        resetOffsets()
         openCurtains()
-        showIndicatorOpinionOne(true)
         enableController(true)
         enableButton(true)
     }
@@ -59,9 +69,18 @@ class QuestionsOfflineViewModel @Inject constructor(
         else _uiState.update { it.copy(actualQuestion = questions[states.questionPos].question) }
     }
 
-    fun setInitialOffsetsX(value: Float) = _uiState.update { it.copy(offsetXWhite = value, offsetXRed = value) }
+    fun setInitialOffsetsX(value: Float) = _uiState.update { it.copy(initialOffsetX = value, offsetXWhite = value, offsetXRed = value) }
     fun updateOffsetXWhite(value: Float) = _uiState.update { it.copy(offsetXWhite = value) }
     fun updateOffsetXRed(value: Float) = _uiState.update { it.copy(offsetXRed = value) }
+    fun resetOffsets() {
+        val state = uiState.value
+        _uiState.update {
+            it.copy(
+                offsetXWhite = state.initialOffsetX,
+                offsetXRed = state.initialOffsetX
+            )
+        }
+    }
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
@@ -161,7 +180,7 @@ class QuestionsOfflineViewModel @Inject constructor(
             it.copy(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 controllerEnabled = false,
-                phase = RESULTS, ////////////////////////////////////////// check
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
                 buttonEnabled = false,
                 showFirstOpinionPercents = true,
                 showWhiteIndicator = true,
@@ -171,7 +190,7 @@ class QuestionsOfflineViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            delay(2000)
+            delay(1500)
             _uiState.update {
                 it.copy(
                     buttonEnabled = true,
@@ -179,6 +198,31 @@ class QuestionsOfflineViewModel @Inject constructor(
                     else R.string.btn_see_result
                 )
             }
+        }
+    }
+
+    fun handleNextRound() {
+        closeCurtains()
+        handleHandsUp(50)
+
+        _uiState.update {
+            it.copy(
+                controllerEnabled = false,
+                buttonEnabled = false,
+                showFirstOpinionPercents = false,
+                showSecondOpinionPercents = false,
+                showWhiteIndicator = false,
+                showRedIndicator = false,
+                firstOpinionBlue = 50,
+                secondOpinionBlue = 50,
+                firstOpinionOrange = 50,
+                secondOpinionOrange = 50
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            startOpinions()
         }
     }
 
