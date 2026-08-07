@@ -2,9 +2,11 @@ package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.domain.usecases.GetQuestionsUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.calculatePoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -153,9 +155,13 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun readyOpinionTwo() {
         val states = uiState.value
 
+        val roundPoints = calculatePoints(states.firstOpinionBlue, states.secondOpinionBlue)
+
         _uiState.update {
             it.copy(
+                points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 controllerEnabled = false,
+                phase = RESULTS, ////////////////////////////////////////// check
                 buttonEnabled = false,
                 showFirstOpinionPercents = true,
                 showWhiteIndicator = true,
@@ -169,7 +175,7 @@ class QuestionsOfflineViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     buttonEnabled = true,
-                    buttonText = if (states.roundCount != 4) R.string.btn_next_round
+                    buttonText = if (states.roundCount != 3) R.string.btn_next_round
                     else R.string.btn_see_result
                 )
             }

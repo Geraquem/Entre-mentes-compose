@@ -11,7 +11,7 @@ data class QuestionsOfflineStates(
     val showInitialDialog: Boolean = true,
 
     val showRoundView: Boolean = true,
-    var roundCount: Int = 1,
+    var roundCount: Int = 0,
     val phase: QuestionPhaseType = FIRST_OPINION,
 
     val offsetXWhite: Float = 0f,
@@ -20,6 +20,8 @@ data class QuestionsOfflineStates(
     val questions: List<Question> = emptyList(),
     var questionPos: Int = 0,
     val actualQuestion: String = "",
+
+    val points: List<Int?> = listOf(null, null, null, null),
 
     val blueName: String = "",
     val firstOpinionBlue: Int = 50,

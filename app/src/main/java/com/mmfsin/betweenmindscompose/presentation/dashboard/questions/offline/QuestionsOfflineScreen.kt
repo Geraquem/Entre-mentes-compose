@@ -31,7 +31,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -48,19 +47,18 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
-import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
-import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.core.theme.courier
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
 import kotlin.math.roundToInt
@@ -71,7 +69,7 @@ fun QuestionsOfflinePV() {
     QuestionsOfflineContent(
         uiState = QuestionsOfflineStates(
             isLoading = false,
-            showInitialDialog = true,
+            showInitialDialog = false,
 
             showRoundView = false,
 
@@ -151,14 +149,8 @@ fun QuestionsOfflineContent(
                 .padding(12.dp)
         ) {
             Column {
-                MediumText(
-                    text = stringResource(R.string.scoreboard_rounds),
-                    fontFamily = alphazet,
-                    color = White,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-                SpacerMini()
-                Box(Modifier.fillMaxWidth().height(40.dp).background(RedHard))
+
+                Rounds(uiState.points)
 
                 SpacerLarge()
 
