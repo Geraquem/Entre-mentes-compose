@@ -1,5 +1,6 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
+import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.Question
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.FIRST_OPINION
@@ -7,14 +8,18 @@ import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.FIRST_OPIN
 data class QuestionsOfflineStates(
     val isLoading: Boolean = true,
 
+    val showInitialDialog: Boolean = true,
+
     val showRoundView: Boolean = true,
-    val roundCount: Int = 1,
+    var roundCount: Int = 1,
     val phase: QuestionPhaseType = FIRST_OPINION,
 
     val offsetXWhite: Float = 0f,
     val offsetXRed: Float = 0f,
 
     val questions: List<Question> = emptyList(),
+    var questionPos: Int = 0,
+    val actualQuestion: String = "",
 
     val blueName: String = "",
     val firstOpinionBlue: Int = 50,
@@ -26,8 +31,8 @@ data class QuestionsOfflineStates(
     val blueHandsUp: Boolean = false,
     val orangeHandsUp: Boolean = false,
 
-    val firstOpinionVisible: Boolean = true,
-    val secondOpinionVisible: Boolean = false,
+    val showFirstOpinionPercents: Boolean = true,
+    val showSecondOpinionPercents: Boolean = false,
 
     val showWhiteIndicator: Boolean = false,
     val showRedIndicator: Boolean = false,
@@ -36,5 +41,7 @@ data class QuestionsOfflineStates(
     val curtainRightPosition: Float = 0f,
 
     val controllerEnabled: Boolean = false,
-    val buttonEnabled: Boolean = false
+    val buttonEnabled: Boolean = false,
+
+    val buttonText: Int = R.string.btn_ready
 )

@@ -44,9 +44,10 @@
     <string name="three_dots">…</string>
     <string name="curtain_text">Top secret</string>
     <string name="code_hint">----</string>
-    <string name="btn_hide">Listo</string>
+    <string name="btn_ready">Listo</string>
     <string name="btn_check">Comprobar</string>
     <string name="btn_next_round">Siguiente ronda</string>
+    <string name="btn_see_result">Ver resultado</string>
     <string name="name_blue">Nombre azul</string>
     <string name="name_orange">Nombre naranja</string>
     <string name="controller_limited">Desliza desde aquí para mover la flecha y opinar</string>

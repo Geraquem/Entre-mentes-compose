@@ -1,6 +1,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.domain.usecases.GetQuestionsUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
@@ -15,7 +16,6 @@ class QuestionsOfflineViewModel @Inject constructor(
     private val getQuestionsUseCase: GetQuestionsUseCase,
 ) : BaseViewModel<QuestionsOfflineStates>(QuestionsOfflineStates()) {
 
-
     init {
         getQuestions()
     }
@@ -25,17 +25,21 @@ class QuestionsOfflineViewModel @Inject constructor(
             { getQuestionsUseCase() },
             { questions ->
                 _uiState.update { it.copy(questions = questions) }
-
-                viewModelScope.launch {
-                    delay(1000)
-                    _uiState.update { it.copy(showRoundView = false) }
-
-                    delay(1000)
-                    readyPhaseOne()
-                }
+                setQuestion()
             },
             {}
         )
+    }
+
+    fun hideInitialDialog() {
+        _uiState.update { it.copy(showInitialDialog = false) }
+        viewModelScope.launch {
+            delay(1000)
+            _uiState.update { it.copy(showRoundView = false) }
+
+            delay(1000)
+            readyPhaseOne()
+        }
     }
 
     fun readyPhaseOne() {
@@ -43,6 +47,14 @@ class QuestionsOfflineViewModel @Inject constructor(
         showIndicatorOpinionOne(true)
         enableController(true)
         enableButton(true)
+    }
+
+    fun setQuestion() {
+        val states = uiState.value
+        val questions = states.questions
+
+        if (questions.isEmpty()) sww()
+        else _uiState.update { it.copy(actualQuestion = questions[states.questionPos].question) }
     }
 
     fun setInitialOffsetsX(value: Float) = _uiState.update { it.copy(offsetXWhite = value, offsetXRed = value) }
@@ -113,8 +125,8 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun readyOpinionOne() {
         _uiState.update {
             it.copy(
-                firstOpinionVisible = false,
-                secondOpinionVisible = true,
+                showFirstOpinionPercents = false,
+                showSecondOpinionPercents = true,
                 buttonEnabled = false,
                 controllerEnabled = false
             )
@@ -129,11 +141,38 @@ class QuestionsOfflineViewModel @Inject constructor(
                 it.copy(
                     phase = SECOND_OPINION,
                     buttonEnabled = true,
-                    controllerEnabled = true
+                    controllerEnabled = true,
+                    buttonText = R.string.btn_check
                 )
             }
             openCurtains()
             showIndicatorOpinionTwo(true)
+        }
+    }
+
+    fun readyOpinionTwo() {
+        val states = uiState.value
+
+        _uiState.update {
+            it.copy(
+                controllerEnabled = false,
+                buttonEnabled = false,
+                showFirstOpinionPercents = true,
+                showWhiteIndicator = true,
+                questionPos = states.questionPos + 1,
+                roundCount = states.roundCount + 1
+            )
+        }
+
+        viewModelScope.launch {
+            delay(2000)
+            _uiState.update {
+                it.copy(
+                    buttonEnabled = true,
+                    buttonText = if (states.roundCount != 4) R.string.btn_next_round
+                    else R.string.btn_see_result
+                )
+            }
         }
     }
 

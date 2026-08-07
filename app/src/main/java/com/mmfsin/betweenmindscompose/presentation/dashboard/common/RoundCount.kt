@@ -32,7 +32,7 @@ fun RoundCount(round: Int) {
     Column(
         modifier = Modifier.fillMaxSize()
             .clip(RoundedCornerShape(16.dp))
-            .background(BlueTransparent),
+            .background(Black),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

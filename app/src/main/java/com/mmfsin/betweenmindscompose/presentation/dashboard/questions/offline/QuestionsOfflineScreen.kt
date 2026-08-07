@@ -59,6 +59,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.core.theme.courier
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
@@ -70,6 +71,8 @@ fun QuestionsOfflinePV() {
     QuestionsOfflineContent(
         uiState = QuestionsOfflineStates(
             isLoading = false,
+            showInitialDialog = true,
+
             showRoundView = false,
 
             curtainLeftPosition = -500f,
@@ -78,7 +81,7 @@ fun QuestionsOfflinePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {},
+        {}, {}, {},
     )
 }
 
@@ -87,6 +90,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     QuestionsOfflineContent(
         uiState = uiState,
+        hideInitialDialog = { viewModel.hideInitialDialog() },
         setInitialOffsets = { viewModel.setInitialOffsetsX(it) },
         updateOffsetXWhite = { viewModel.updateOffsetXWhite(it) },
         updateOffsetXRed = { viewModel.updateOffsetXRed(it) },
@@ -95,12 +99,14 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         updateFirstOpinionPercents = { viewModel.updateFirstOpinionPercents(it) },
         updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
         readyOpinionOne = { viewModel.readyOpinionOne() },
+        readyOpinionTwo = { viewModel.readyOpinionTwo() },
     )
 }
 
 @Composable
 fun QuestionsOfflineContent(
     uiState: QuestionsOfflineStates,
+    hideInitialDialog: () -> Unit,
     setInitialOffsets: (Float) -> Unit,
     updateOffsetXWhite: (Float) -> Unit,
     updateOffsetXRed: (Float) -> Unit,
@@ -108,8 +114,8 @@ fun QuestionsOfflineContent(
     onOrangeNameChange: (String) -> Unit,
     updateFirstOpinionPercents: (Int) -> Unit,
     updateSecondOpinionPercents: (Int) -> Unit,
-
     readyOpinionOne: () -> Unit,
+    readyOpinionTwo: () -> Unit,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -157,11 +163,11 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
 
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(100.dp),
+                    modifier = Modifier.fillMaxWidth().height(80.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     MediumText(
-                        text = "¿Quién es más amable cuando se trata de ser fiel a su equipo de fútbol a las 15 de la tarde un domingo?",
+                        text = uiState.actualQuestion,
                         color = White,
                         fontFamily = courier,
                         gravity = TextAlign.Center,
@@ -180,8 +186,8 @@ fun QuestionsOfflineContent(
                     onOrangeNameChange = { onOrangeNameChange(it) },
                     firstOrangeOpinion = uiState.firstOpinionOrange,
                     secondOrangeOpinion = uiState.secondOpinionOrange,
-                    showFirstOpinion = uiState.firstOpinionVisible,
-                    showSecondOpinion = uiState.secondOpinionVisible,
+                    showFirstOpinion = uiState.showFirstOpinionPercents,
+                    showSecondOpinion = uiState.showSecondOpinionPercents,
                     blueHandsUp = uiState.blueHandsUp,
                     orangeHandsUp = uiState.orangeHandsUp
                 )
@@ -304,18 +310,22 @@ fun QuestionsOfflineContent(
                                     readyOpinionOne()
                                 }
 
-                                SECOND_OPINION -> {}
+                                SECOND_OPINION -> {
+                                    readyOpinionTwo()
+                                }
+
                                 RESULTS -> {}
                             }
                         }
                     },
-                    text = R.string.btn_hide,
+                    text = uiState.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
                 SpacerSmall()
             }
 
             ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }
+
             if (uiState.controllerEnabled) {
                 Box(
                     modifier = Modifier
@@ -354,6 +364,17 @@ fun QuestionsOfflineContent(
                                 }
                             )
                         }
+                )
+            }
+
+            if (uiState.showInitialDialog) {
+                InitialOfflineDialog(
+                    blueName = uiState.blueName,
+                    onBlueNameChanged = { onBlueNameChange(it) },
+                    orangeName = uiState.orangeName,
+                    onOrangeNameChanged = { onOrangeNameChange(it) },
+                    startGame = { hideInitialDialog() },
+                    howToPlay = {}
                 )
             }
         }

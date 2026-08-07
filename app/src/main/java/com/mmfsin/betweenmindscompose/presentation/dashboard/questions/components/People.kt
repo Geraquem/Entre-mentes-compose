@@ -16,7 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -28,6 +30,7 @@ import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueMedium
+import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.kineks
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
@@ -36,7 +39,7 @@ import com.mmfsin.betweenmindscompose.utils.ShowAlpha
 @Composable
 fun PeoplePV() {
     People(
-        "Joaquin", {}, 55, 90,
+        "", {}, 55, 90,
         "Sandra", {}, 45, 10,
         true, true, true, true
     )
@@ -93,12 +96,25 @@ fun People(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 ),
-
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Done
                 ),
+                decorationBox = { innerTextField ->
+                    Box(contentAlignment = Alignment.CenterStart) {
+                        if (blueName.isEmpty()) {
+                            Text(
+                                textAlign = TextAlign.Center,
+                                text = stringResource(R.string.name_blue),
+                                modifier = Modifier.alpha(0.5f).fillMaxWidth(),
+                                color = BlueMedium,
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                        }
+                    }
+                    innerTextField()
+                }
             )
             BasicTextField(
                 value = orangeName,
@@ -117,6 +133,20 @@ fun People(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Done
                 ),
+                decorationBox = { innerTextField ->
+                    Box(contentAlignment = Alignment.CenterStart) {
+                        if (orangeName.isEmpty()) {
+                            Text(
+                                textAlign = TextAlign.Center,
+                                text = stringResource(R.string.name_orange),
+                                modifier = Modifier.alpha(0.5f).fillMaxWidth(),
+                                color = OrangeHard,
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                        }
+                    }
+                    innerTextField()
+                }
             )
         }
 
