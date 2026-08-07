@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
@@ -59,8 +60,14 @@ fun InitialOfflineDialog(
     startGame: () -> Unit,
     howToPlay: () -> Unit
 ) {
-    Dialog(onDismissRequest = {}) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Dialog(
+        onDismissRequest = {},
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             BigText(
                 text = R.string.selector_questions,
                 allCaps = true,
@@ -77,30 +84,35 @@ fun InitialOfflineDialog(
                     .background(White)
                     .padding(12.dp)
             ) {
-                MediumText(
-                    text = R.string.questions_welcome,
-                    fontFamily = barlow
+                Text(
+                    text = stringResource(R.string.questions_welcome),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineHeight = 18.sp
+                    ),
                 )
 
                 SpacerSmall()
 
-                MediumText(
-                    text = R.string.questions_welcome_two,
-                    fontFamily = barlow
+                Text(
+                    text = stringResource(R.string.questions_welcome_two),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineHeight = 18.sp
+                    ),
                 )
 
                 SpacerSmall()
 
-                MediumText(
-                    text = R.string.questions_welcome_three_extra,
-                    fontFamily = barlow
+                Text(
+                    text = stringResource(R.string.questions_welcome_three_extra),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineHeight = 18.sp
+                    ),
                 )
 
                 SpacerMedium()
 
                 MediumText(
                     text = R.string.questions_welcome_four,
-                    fontFamily = barlow
                 )
 
                 SpacerSmall()

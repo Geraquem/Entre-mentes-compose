@@ -137,6 +137,9 @@ fun QuestionsOfflineContent(
         }
     }
 
+    LaunchedEffect(uiState.offsetXWhite) { dragOffsetXWhite = uiState.offsetXWhite }
+    LaunchedEffect(uiState.offsetXRed) { dragOffsetXRed = uiState.offsetXRed }
+
     Scaffold(
         topBar = {
             ChooseToolbar(

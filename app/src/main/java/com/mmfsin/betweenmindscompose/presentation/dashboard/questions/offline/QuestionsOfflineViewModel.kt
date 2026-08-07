@@ -157,7 +157,7 @@ class QuestionsOfflineViewModel @Inject constructor(
         showIndicatorOpinionOne(false)
 
         viewModelScope.launch {
-            delay(2500)
+            delay(1500)
             _uiState.update {
                 it.copy(
                     phase = SECOND_OPINION,
