@@ -59,6 +59,7 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
@@ -80,7 +81,8 @@ fun QuestionsOfflinePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {}, {}, {}, {},
+        {}, {}, {},
+        {}, {},
     )
 }
 
@@ -100,6 +102,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         readyOpinionOne = { viewModel.readyOpinionOne() },
         readyOpinionTwo = { viewModel.readyOpinionTwo() },
         handleNextRound = { viewModel.handleNextRound() },
+        showResultDialog = { viewModel.showResultDialog(it) },
     )
 }
 
@@ -116,7 +119,8 @@ fun QuestionsOfflineContent(
     updateSecondOpinionPercents: (Int) -> Unit,
     readyOpinionOne: () -> Unit,
     readyOpinionTwo: () -> Unit,
-    handleNextRound: () -> Unit
+    handleNextRound: () -> Unit,
+    showResultDialog: (Boolean) -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -304,7 +308,7 @@ fun QuestionsOfflineContent(
                                 FIRST_OPINION -> readyOpinionOne()
                                 SECOND_OPINION -> readyOpinionTwo()
                                 NEXT_ROUND -> handleNextRound()
-                                RESULTS -> {}
+                                RESULTS -> showResultDialog(true)
                             }
                         }
                     },
@@ -365,6 +369,17 @@ fun QuestionsOfflineContent(
                     onOrangeNameChanged = { onOrangeNameChange(it) },
                     startGame = { hideInitialDialog() },
                     howToPlay = {}
+                )
+            }
+
+            if (uiState.showResultDialog) {
+                ResultDialog(
+                    points = uiState.points,
+                    blueName = uiState.blueName,
+                    orangeName = uiState.orangeName,
+                    exit = {},
+                    replay = {},
+                    changeNames = {},
                 )
             }
         }

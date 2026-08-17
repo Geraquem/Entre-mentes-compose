@@ -9,6 +9,7 @@ data class QuestionsOfflineStates(
     val isLoading: Boolean = true,
 
     val showInitialDialog: Boolean = true,
+    val showResultDialog: Boolean = false,
 
     val showRoundView: Boolean = true,
     var roundCount: Int = 0,

@@ -48,8 +48,8 @@
     <string name="btn_check">Comprobar</string>
     <string name="btn_next_round">Siguiente ronda</string>
     <string name="btn_see_result">Ver resultado</string>
-    <string name="name_blue">Nombre azul</string>
-    <string name="name_orange">Nombre naranja</string>
+    <string name="name_blue">Jugador azul</string>
+    <string name="name_orange">Jugador naranja</string>
     <string name="controller_limited">Desliza desde aquí para mover la flecha y opinar</string>
     <string name="controller_text">Desliza desde cualquier parte de la pantalla para mover la flecha</string>
     <string name="round">Ronda</string>
@@ -115,6 +115,13 @@
     <string name="scoreboard_pts">pts</string>
 
     <!-- ENDGAME -->
+    <string name="endgame_result">Resultado</string>
+    <string name="endgame_max_points">De un máximo de 60 puntos</string>
+    <string name="endgame_get_one_point">Habéis conseguido 1 punto</string>
+    <string name="endgame_get_points">Habéis conseguido %s puntos</string>
+    <string name="endgame_you_have">Tenéis un</string>
+    <string name="endgame_affinity">de afinidad</string>
+
     <string name="endgame_top_text">Habéis conseguido</string>
     <string name="endgame_one_point">1 punto</string>
     <string name="endgame_pts">%s puntos</string>

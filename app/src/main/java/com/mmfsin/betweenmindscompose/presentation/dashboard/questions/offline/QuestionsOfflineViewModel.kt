@@ -213,18 +213,24 @@ class QuestionsOfflineViewModel @Inject constructor(
                 showSecondOpinionPercents = false,
                 showWhiteIndicator = false,
                 showRedIndicator = false,
-                firstOpinionBlue = 50,
-                secondOpinionBlue = 50,
-                firstOpinionOrange = 50,
-                secondOpinionOrange = 50
             )
         }
 
         viewModelScope.launch {
             delay(1500)
+            _uiState.update {
+                it.copy(
+                    firstOpinionBlue = 50,
+                    secondOpinionBlue = 50,
+                    firstOpinionOrange = 50,
+                    secondOpinionOrange = 50
+                )
+            }
             startOpinions()
         }
     }
+
+    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
 
     private fun sww() {}
 }
