@@ -41,7 +41,6 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
-import com.mmfsin.betweenmindscompose.presentation.core.theme.barlow
 
 @Preview
 @Composable
@@ -153,8 +152,8 @@ fun InitialOfflineDialog(
                                         style = MaterialTheme.typography.bodyLarge,
                                     )
                                 }
+                                innerTextField()
                             }
-                            innerTextField()
                         }
                     )
                 }
@@ -197,8 +196,8 @@ fun InitialOfflineDialog(
                                         style = MaterialTheme.typography.bodyLarge,
                                     )
                                 }
+                                innerTextField()
                             }
-                            innerTextField()
                         }
                     )
                 }

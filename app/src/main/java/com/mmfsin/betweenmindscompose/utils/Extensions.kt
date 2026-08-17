@@ -24,7 +24,7 @@ fun Context.openBedRockActivity(navGraph: String, strArgs: String? = null) {
 @Composable
 fun AnimateX(
     targetX: Float,
-    duration: Int = 1500,
+    duration: Int = 1000,
     onEnd: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
@@ -40,7 +40,7 @@ fun AnimateX(
 @Composable
 fun AnimateY(
     targetY: Float,
-    duration: Int = 1500,
+    duration: Int = 1000,
     onEnd: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
@@ -56,7 +56,7 @@ fun AnimateY(
 @Composable
 fun ShowAlpha(
     visibleTrigger: Boolean,
-    duration: Int = 1500,
+    duration: Int = 1000,
     onEnd: () -> Unit = {},
     content: @Composable () -> Unit
 ) {

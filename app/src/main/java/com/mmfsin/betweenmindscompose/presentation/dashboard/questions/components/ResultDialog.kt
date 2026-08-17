@@ -147,7 +147,7 @@ fun ResultDialog(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { exit() }) {
                         Icon(
                             painterResource(R.drawable.ic_exit), null,
                             tint = RedHard,
@@ -158,7 +158,7 @@ fun ResultDialog(
                     SpacerMedium(horizontal = true)
 
                     ButtonCustom(
-                        onClick = {},
+                        onClick = { replay() },
                         text = R.string.endgame_replay,
                         color = Black,
                         textColor = White,
@@ -169,7 +169,7 @@ fun ResultDialog(
                 SpacerSmall()
 
                 ButtonCustom(
-                    onClick = {},
+                    onClick = { changeNames() },
                     text = R.string.endgame_replay_new_names,
                     color = Black,
                     textColor = White,

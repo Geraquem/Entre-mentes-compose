@@ -207,6 +207,7 @@ class QuestionsOfflineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
+                showRoundView = true,
                 controllerEnabled = false,
                 buttonEnabled = false,
                 showFirstOpinionPercents = false,
@@ -220,17 +221,35 @@ class QuestionsOfflineViewModel @Inject constructor(
             delay(1500)
             _uiState.update {
                 it.copy(
+                    showRoundView = false,
                     firstOpinionBlue = 50,
                     secondOpinionBlue = 50,
                     firstOpinionOrange = 50,
                     secondOpinionOrange = 50
                 )
             }
+            delay(250)
             startOpinions()
         }
     }
 
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
+
+    fun replay() {
+        _uiState.update {
+            it.copy(
+                roundCount = 0,
+                showRoundView = true,
+                points = listOf(null, null, null, null),
+                showRedIndicator = false,
+                showSecondOpinionPercents = false
+            )
+        }
+
+
+        startOpinions()
+        showResultDialog(false)
+    }
 
     private fun sww() {}
 }

@@ -82,7 +82,7 @@ fun QuestionsOfflinePV() {
         {}, {}, {}, {},
         {}, {}, {},
         {}, {}, {},
-        {}, {},
+        {}, {},{},
     )
 }
 
@@ -103,6 +103,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         readyOpinionTwo = { viewModel.readyOpinionTwo() },
         handleNextRound = { viewModel.handleNextRound() },
         showResultDialog = { viewModel.showResultDialog(it) },
+        replay = { viewModel.replay() }
     )
 }
 
@@ -120,7 +121,8 @@ fun QuestionsOfflineContent(
     readyOpinionOne: () -> Unit,
     readyOpinionTwo: () -> Unit,
     handleNextRound: () -> Unit,
-    showResultDialog: (Boolean) -> Unit
+    showResultDialog: (Boolean) -> Unit,
+    replay: () -> Unit,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -378,7 +380,7 @@ fun QuestionsOfflineContent(
                     blueName = uiState.blueName,
                     orangeName = uiState.orangeName,
                     exit = {},
-                    replay = {},
+                    replay = { replay() },
                     changeNames = {},
                 )
             }
