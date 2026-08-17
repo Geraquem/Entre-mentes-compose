@@ -18,8 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -61,8 +63,10 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.component
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getKonfettiParty
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
+import nl.dionsegijn.konfetti.compose.KonfettiView
 import kotlin.math.roundToInt
 
 @Preview
@@ -82,7 +86,7 @@ fun QuestionsOfflinePV() {
         {}, {}, {}, {},
         {}, {}, {},
         {}, {}, {},
-        {}, {},{},
+        {}, {}, {},
     )
 }
 
@@ -160,8 +164,17 @@ fun QuestionsOfflineContent(
                 .padding(innerPadding)
                 .padding(12.dp)
         ) {
-            Column {
 
+            if (uiState.confettiTrigger > 0) {
+                key(uiState.confettiTrigger) {
+                    KonfettiView(
+                        modifier = Modifier.fillMaxSize(),
+                        parties = listOf(getKonfettiParty())
+                    )
+                }
+            }
+
+            Column {
                 Rounds(uiState.points)
 
                 SpacerLarge()

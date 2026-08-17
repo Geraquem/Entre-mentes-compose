@@ -24,6 +24,26 @@ class DataRepository @Inject constructor() : IDataRepository {
                 question = "Pregunta 4",
                 pack = 0
             ),
+            Question(
+                question = "Pregunta 5",
+                pack = 0
+            ),
+            Question(
+                question = "Pregunta 6",
+                pack = 0
+            ),
+            Question(
+                question = "Pregunta 7",
+                pack = 0
+            ),
+            Question(
+                question = "Pregunta 8",
+                pack = 0
+            ),
+            Question(
+                question = "Pregunta 9",
+                pack = 0
+            ),
         )
     }
 

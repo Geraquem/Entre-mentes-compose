@@ -24,6 +24,7 @@ data class QuestionsOfflineStates(
     val actualQuestion: String = "",
 
     val points: List<Int?> = listOf(null, null, null, null),
+    val confettiTrigger: Int = 0,
 
     val blueName: String = "",
     val firstOpinionBlue: Int = 50,

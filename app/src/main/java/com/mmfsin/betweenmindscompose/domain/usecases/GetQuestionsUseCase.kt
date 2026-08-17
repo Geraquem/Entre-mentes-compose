@@ -13,6 +13,6 @@ class GetQuestionsUseCase @Inject constructor(
         //        val selectedPack = packRepository.getSelectedQPackId()
         val selectedPack = 0
         val questions = dataRepository.getQuestions()
-        return questions.filter { it.pack == selectedPack }.shuffled(Random(System.nanoTime()))
+        return questions.filter { it.pack == selectedPack }//.shuffled(Random(System.nanoTime()))
     }
 }

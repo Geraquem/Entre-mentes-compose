@@ -40,7 +40,6 @@ class QuestionsOfflineViewModel @Inject constructor(
         viewModelScope.launch {
             delay(1000)
             _uiState.update { it.copy(showRoundView = false) }
-
             delay(1000)
             startOpinions()
         }
@@ -52,13 +51,13 @@ class QuestionsOfflineViewModel @Inject constructor(
                 phase = FIRST_OPINION,
                 showWhiteIndicator = true,
                 showFirstOpinionPercents = true,
-                buttonText = R.string.btn_ready
+                buttonText = R.string.btn_ready,
+                controllerEnabled = true,
+                buttonEnabled = true,
             )
         }
         resetOffsets()
         openCurtains()
-        enableController(true)
-        enableButton(true)
     }
 
     fun setQuestion() {
@@ -84,9 +83,6 @@ class QuestionsOfflineViewModel @Inject constructor(
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
-
-    fun enableController(value: Boolean) = _uiState.update { it.copy(controllerEnabled = value) }
-    fun enableButton(value: Boolean) = _uiState.update { it.copy(buttonEnabled = value) }
 
     fun openCurtains() {
         _uiState.update {
@@ -179,8 +175,9 @@ class QuestionsOfflineViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
+                confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else states.confettiTrigger,
                 controllerEnabled = false,
-                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
                 buttonEnabled = false,
                 showFirstOpinionPercents = true,
                 showWhiteIndicator = true,
@@ -228,6 +225,8 @@ class QuestionsOfflineViewModel @Inject constructor(
                     secondOpinionOrange = 50
                 )
             }
+            setQuestion()
+
             delay(250)
             startOpinions()
         }
@@ -236,19 +235,39 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
 
     fun replay() {
+        showResultDialog(false)
+
+        val states = uiState.value
         _uiState.update {
             it.copy(
                 roundCount = 0,
                 showRoundView = true,
                 points = listOf(null, null, null, null),
+                controllerEnabled = false,
+                buttonEnabled = false,
+                showWhiteIndicator = false,
                 showRedIndicator = false,
-                showSecondOpinionPercents = false
+                showFirstOpinionPercents = false,
+                showSecondOpinionPercents = false,
             )
         }
+        closeCurtains()
 
-
-        startOpinions()
-        showResultDialog(false)
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showRoundView = false,
+                    firstOpinionBlue = 50,
+                    secondOpinionBlue = 50,
+                    firstOpinionOrange = 50,
+                    secondOpinionOrange = 50
+                )
+            }
+            setQuestion()
+            delay(1000)
+            startOpinions()
+        }
     }
 
     private fun sww() {}
