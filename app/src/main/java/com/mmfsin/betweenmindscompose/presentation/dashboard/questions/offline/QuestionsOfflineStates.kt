@@ -27,9 +27,12 @@ data class QuestionsOfflineStates(
     val confettiTrigger: Int = 0,
 
     val blueName: String = "",
+    val firstSlider: Float = 50f,
     val firstOpinionBlue: Int = 50,
     val secondOpinionBlue: Int = 50,
+
     val orangeName: String = "",
+    val secondSlider: Float = 50f,
     val firstOpinionOrange: Int = 50,
     val secondOpinionOrange: Int = 50,
 
@@ -42,8 +45,7 @@ data class QuestionsOfflineStates(
     val showWhiteIndicator: Boolean = false,
     val showRedIndicator: Boolean = false,
 
-    val curtainLeftPosition: Float = 0f,
-    val curtainRightPosition: Float = 0f,
+    val curtainsOpen: Boolean = false,
 
     val controllerEnabled: Boolean = false,
     val buttonEnabled: Boolean = false,

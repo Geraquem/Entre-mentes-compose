@@ -84,47 +84,34 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
 
-    fun openCurtains() {
-        _uiState.update {
-            it.copy(
-                curtainLeftPosition = -500f,
-                curtainRightPosition = 500f
-            )
-        }
-    }
-
-    fun closeCurtains() {
-        _uiState.update {
-            it.copy(
-                curtainLeftPosition = 0f,
-                curtainRightPosition = 0f
-            )
-        }
-    }
+    fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
+    fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
     fun showIndicatorOpinionOne(value: Boolean) = _uiState.update { it.copy(showWhiteIndicator = value) }
     fun showIndicatorOpinionTwo(value: Boolean) = _uiState.update { it.copy(showRedIndicator = value) }
 
-    fun updateFirstOpinionPercents(value: Int) {
-        val firstOpBlue = 100 - value
+    fun updateFirstOpinionPercents(value: Float) {
+        val firstOpBlue = (100 - value).toInt()
         handleHandsUp(percent = firstOpBlue)
 
         _uiState.update {
             it.copy(
+                firstSlider = value,
                 firstOpinionBlue = firstOpBlue,
-                firstOpinionOrange = value
+                firstOpinionOrange = value.toInt()
             )
         }
     }
 
-    fun updateSecondOpinionPercents(value: Int) {
-        val secondOpBlue = 100 - value
+    fun updateSecondOpinionPercents(value: Float) {
+        val secondOpBlue = (100 - value).toInt()
         handleHandsUp(percent = secondOpBlue)
 
         _uiState.update {
             it.copy(
+                secondSlider = value,
                 secondOpinionBlue = secondOpBlue,
-                secondOpinionOrange = value
+                secondOpinionOrange = value.toInt()
             )
         }
     }
@@ -209,18 +196,20 @@ class QuestionsOfflineViewModel @Inject constructor(
                 buttonEnabled = false,
                 showFirstOpinionPercents = false,
                 showSecondOpinionPercents = false,
-                showWhiteIndicator = false,
-                showRedIndicator = false,
-            )
+                )
         }
 
         viewModelScope.launch {
             delay(1500)
             _uiState.update {
                 it.copy(
+                    showWhiteIndicator = false,
+                    showRedIndicator = false,
                     showRoundView = false,
+                    firstSlider = 50f,
                     firstOpinionBlue = 50,
                     secondOpinionBlue = 50,
+                    secondSlider = 50f,
                     firstOpinionOrange = 50,
                     secondOpinionOrange = 50
                 )

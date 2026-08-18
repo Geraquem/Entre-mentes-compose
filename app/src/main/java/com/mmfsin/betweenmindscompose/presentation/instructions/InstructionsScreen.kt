@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -26,9 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
-import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
-import com.mmfsin.betweenmindscompose.presentation.core.theme.GreenMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedLight
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
@@ -43,12 +43,14 @@ fun InstructionsScreenPV() {
 @Composable
 fun InstructionsScreen() {
     var value by remember { mutableFloatStateOf(50f) }
+    var range by remember { mutableStateOf(1f..100f) }
 
     Box(
         modifier = Modifier.fillMaxSize().background(BackgroundBlack).padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
         Column() {
+
             Slider(
                 modifier = Modifier.fillMaxWidth()
                     .height(50.dp)
