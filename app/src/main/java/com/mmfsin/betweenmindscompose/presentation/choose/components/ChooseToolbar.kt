@@ -55,7 +55,7 @@ fun ChooseToolbar(goBack: () -> Unit, goToInstructions: () -> Unit) {
                     text = R.string.how_to_play,
                     color = White,
                     fontFamily = kineks,
-                    modifier = Modifier.clickable(onClick = { goToInstructions() }).padding(end = 16.dp)
+                    modifier = Modifier.padding(end = 16.dp).clickable(onClick = { goToInstructions() })
                 )
             }
         },

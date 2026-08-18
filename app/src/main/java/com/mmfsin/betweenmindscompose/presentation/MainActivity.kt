@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.mmfsin.betweenmindscompose.presentation.core.navigation.NavigationMain
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BMCTheme
+import com.mmfsin.betweenmindscompose.presentation.instructions.InstructionsScreen
 import com.mmfsin.betweenmindscompose.utils.NAV_QUESTIONS_OFFLINE
 import com.mmfsin.betweenmindscompose.utils.openBedRockActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,8 +16,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent { BMCTheme { NavigationMain() } }
-
+//        setContent { BMCTheme { NavigationMain() } }
+//        setContent { BMCTheme { InstructionsScreen() } }
         this.openBedRockActivity(NAV_QUESTIONS_OFFLINE)
     }
 }
