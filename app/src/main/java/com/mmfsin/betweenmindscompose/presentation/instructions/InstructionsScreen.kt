@@ -2,95 +2,121 @@
 
 package com.mmfsin.betweenmindscompose.presentation.instructions
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.RangeSlider
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.GameType
+import com.mmfsin.betweenmindscompose.domain.models.GameType.QUESTIONS
+import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
+import com.mmfsin.betweenmindscompose.presentation.core.components.CustomToolbar
+import com.mmfsin.betweenmindscompose.presentation.core.components.SmallText
+import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
-import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
-import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
-import com.mmfsin.betweenmindscompose.presentation.core.theme.RedLight
-import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
+import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
+import com.mmfsin.betweenmindscompose.presentation.instructions.questions.InstrOfflineQuestions
+import com.mmfsin.betweenmindscompose.presentation.instructions.questions.InstrOnlineQuestions
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
 fun InstructionsScreenPV() {
-    InstructionsScreen()
+    InstructionsScreen(QUESTIONS, false)
 }
 
 @Composable
-fun InstructionsScreen() {
-    var value by remember { mutableFloatStateOf(50f) }
-    var range by remember { mutableStateOf(1f..100f) }
+fun InstructionsScreen(gameType: GameType, onlineMode: Boolean) {
 
-    Box(
-        modifier = Modifier.fillMaxSize().background(BackgroundBlack).padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column() {
+    val activity = LocalActivity.current
 
-            Slider(
+    val pagerState = rememberPagerState(
+        pageCount = { 2 },
+        initialPage = if (onlineMode) 0 else 1
+    )
+
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        topBar = {
+            CustomToolbar(
+                goBack = { activity?.finish() },
+                showInstructions = false
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .background(BackgroundBlack)
+                .padding(innerPadding)
+        ) {
+
+            BigText(
+                text = if (gameType == QUESTIONS) R.string.instr_mode_questions else R.string.instr_mode_ranges,
+                allCaps = true,
+                color = White,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
+            SpacerSmall()
+
+            PrimaryTabRow(
+                selectedTabIndex = pagerState.currentPage,
+                containerColor = BackgroundBlack,
+                indicator = {
+                    TabRowDefaults.PrimaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(
+                            pagerState.currentPage,
+                            matchContentSize = true
+                        ),
+                        width = 100.dp,
+                        height = 6.dp,
+                        shape = RoundedCornerShape(0),
+                        color = BlueMedium
+                    )
+                },
+                divider = {}
+            ) {
+                listOf(
+                    stringResource(R.string.online_mode),
+                    stringResource(R.string.offline_mode)
+                ).forEachIndexed { i, tab ->
+                    Tab(
+                        selected = pagerState.currentPage == i,
+                        onClick = { scope.launch { pagerState.animateScrollToPage(i) } },
+                        text = { SmallText(tab.uppercase(), color = White) }
+                    )
+                }
+            }
+
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = true,
                 modifier = Modifier.fillMaxWidth()
-                    .height(50.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(GrayHard),
-                value = value,
-                onValueChange = { value = it },
-                valueRange = 0f..100f,
-                thumb = {
-                    Box(
-                        modifier = Modifier
-                            .width(10.dp)
-                            .fillMaxHeight()
-                            .background(White)
-                    )
-                },
-                colors = SliderDefaults.colors(
-                    thumbColor = White,
-                    activeTrackColor = Transparent,
-                    inactiveTrackColor = Transparent
-                ),
-            )
-
-            Slider(
-                modifier = Modifier.height(300.dp),
-                value = value,
-                onValueChange = { value = it },
-                valueRange = 0f..100f,
-                track = { sliderState ->
-                    SliderDefaults.Track(
-                        sliderState = sliderState,
-                        modifier = Modifier.fillMaxHeight(),
-                        colors = SliderDefaults.colors(
-                            activeTrackColor = RedHard,
-                            inactiveTrackColor = RedLight
-                        )
-                    )
-                },
-                colors = SliderDefaults.colors(thumbColor = White),
-            )
+            ) { page ->
+                when (page) {
+                    0 -> InstrOnlineQuestions()
+                    1 -> InstrOfflineQuestions()
+                }
+            }
         }
     }
 }

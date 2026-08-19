@@ -20,8 +20,8 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 
 @Preview
 @Composable
-fun SwipeBox() {
-    Column() {
+fun SwipeBox(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         MediumText(
             text = R.string.controller_text,
             gravity = TextAlign.Center,

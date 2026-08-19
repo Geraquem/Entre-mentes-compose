@@ -24,14 +24,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.GameType
 import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseTitle
-import com.mmfsin.betweenmindscompose.presentation.choose.components.ChooseToolbar
+import com.mmfsin.betweenmindscompose.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenmindscompose.presentation.choose.components.OnlineRoomTabs
 import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
-import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
@@ -80,7 +79,7 @@ fun ChooseContent(
 
     Scaffold(
         topBar = {
-            ChooseToolbar(
+            CustomToolbar(
                 goBack = {},
                 goToInstructions = {}
             )
@@ -145,7 +144,7 @@ fun ChooseContent(
                 )
                 SpacerSmall(horizontal = true)
                 BigText(
-                    text = stringResource(R.string.online_offline),
+                    text = stringResource(R.string.offline_mode),
                     allCaps = true,
                     color = White
                 )

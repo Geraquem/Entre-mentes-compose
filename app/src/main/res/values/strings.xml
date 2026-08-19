@@ -51,7 +51,7 @@
     <string name="name_blue">Jugador azul</string>
     <string name="name_orange">Jugador naranja</string>
     <string name="controller_limited">Desliza desde aquí para mover la flecha y opinar</string>
-    <string name="controller_text">Desliza desde cualquier parte de la pantalla para mover la flecha</string>
+    <string name="controller_text">También puedes deslizar desde aqui para mover la flecha</string>
     <string name="round">Ronda</string>
     <string name="back">Volver</string>
     <string name="how_to_play">Cómo jugar</string>
@@ -144,8 +144,8 @@
     <string name="online_join_room">Unirse a sala</string>
     <string name="online_create_room">Crear sala</string>
     <string name="online_mode">Jugar online</string>
+    <string name="offline_mode">Jugar con un móvil</string>
     <string name="online_mode_desc">Una persona crea una sala y otra se une. Juegan con dos móviles distintos. Recomendable estar en videollamada.</string>
-    <string name="online_offline">Jugar con un móvil</string>
     <string name="online_offline_desc">Sin conxiones a internet. Dos personas jugando con el mismo móvil pasándoselo mano a mano.</string>
     <string name="online_btn_start">Empezar</string>
     <string name="online_btn_join">Unirse</string>

@@ -56,7 +56,6 @@ class QuestionsOfflineViewModel @Inject constructor(
                 buttonEnabled = true,
             )
         }
-        resetOffsets()
         openCurtains()
     }
 
@@ -68,9 +67,6 @@ class QuestionsOfflineViewModel @Inject constructor(
         else _uiState.update { it.copy(actualQuestion = questions[states.questionPos].question) }
     }
 
-    fun setInitialOffsetsX(value: Float) = _uiState.update { it.copy(initialOffsetX = value, offsetXWhite = value, offsetXRed = value) }
-    fun updateOffsetXWhite(value: Float) = _uiState.update { it.copy(offsetXWhite = value) }
-    fun updateOffsetXRed(value: Float) = _uiState.update { it.copy(offsetXRed = value) }
     fun resetOffsets() {
         val state = uiState.value
         _uiState.update {
@@ -90,28 +86,28 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun showIndicatorOpinionOne(value: Boolean) = _uiState.update { it.copy(showWhiteIndicator = value) }
     fun showIndicatorOpinionTwo(value: Boolean) = _uiState.update { it.copy(showRedIndicator = value) }
 
-    fun updateFirstOpinionPercents(value: Float) {
-        val firstOpBlue = (100 - value).toInt()
+    fun updateFirstOpinionPercents(value: Int) {
+        val firstOpBlue = 100 - value
         handleHandsUp(percent = firstOpBlue)
 
         _uiState.update {
             it.copy(
-                firstSlider = value,
+                firstSlider = value.toFloat(),
                 firstOpinionBlue = firstOpBlue,
-                firstOpinionOrange = value.toInt()
+                firstOpinionOrange = value
             )
         }
     }
 
-    fun updateSecondOpinionPercents(value: Float) {
-        val secondOpBlue = (100 - value).toInt()
+    fun updateSecondOpinionPercents(value: Int) {
+        val secondOpBlue = 100 - value
         handleHandsUp(percent = secondOpBlue)
 
         _uiState.update {
             it.copy(
-                secondSlider = value,
+                secondSlider = value.toFloat(),
                 secondOpinionBlue = secondOpBlue,
-                secondOpinionOrange = value.toInt()
+                secondOpinionOrange = value
             )
         }
     }
@@ -196,7 +192,7 @@ class QuestionsOfflineViewModel @Inject constructor(
                 buttonEnabled = false,
                 showFirstOpinionPercents = false,
                 showSecondOpinionPercents = false,
-                )
+            )
         }
 
         viewModelScope.launch {
@@ -226,7 +222,6 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun replay() {
         showResultDialog(false)
 
-        val states = uiState.value
         _uiState.update {
             it.copy(
                 roundCount = 0,
@@ -247,6 +242,8 @@ class QuestionsOfflineViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     showRoundView = false,
+                    firstSlider = 50f,
+                    secondSlider = 50f,
                     firstOpinionBlue = 50,
                     secondOpinionBlue = 50,
                     firstOpinionOrange = 50,

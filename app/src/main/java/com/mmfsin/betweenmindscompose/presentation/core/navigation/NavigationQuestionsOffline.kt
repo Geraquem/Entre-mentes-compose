@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline.QuestionsOfflineScreen2
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline.QuestionsOfflineScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -21,7 +21,7 @@ fun NavigationQuestionsOffline() {
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable<QuestionsOffline> { QuestionsOfflineScreen2() }
+        composable<QuestionsOffline> { QuestionsOfflineScreen() }
     }
 }
 
