@@ -15,10 +15,6 @@ data class QuestionsOfflineStates(
     var roundCount: Int = 0,
     val phase: QuestionPhaseType = FIRST_OPINION,
 
-    val initialOffsetX: Float = 0f,
-    val offsetXWhite: Float = 0f,
-    val offsetXRed: Float = 0f,
-
     val questions: List<Question> = emptyList(),
     var questionPos: Int = 0,
     val actualQuestion: String = "",

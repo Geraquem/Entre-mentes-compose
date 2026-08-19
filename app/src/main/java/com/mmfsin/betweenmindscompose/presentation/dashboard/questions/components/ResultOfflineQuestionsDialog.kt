@@ -42,15 +42,15 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.ge
 
 @Preview
 @Composable
-fun ResultDialogPV() {
-    ResultDialog(
+fun ResultOfflineQuestionsDialogPV() {
+    ResultOfflineQuestionsDialog(
         listOf(20, 0, 0, 0), "", "Martín",
         {}, {}, {},
     )
 }
 
 @Composable
-fun ResultDialog(
+fun ResultOfflineQuestionsDialog(
     points: List<Int?>,
     blueName: String,
     orangeName: String,

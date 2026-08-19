@@ -44,14 +44,14 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 
 @Preview
 @Composable
-fun InitialOfflineDialogPV() {
-    InitialOfflineDialog(
+fun InitialOfflineQuestionsDialogPV() {
+    InitialOfflineQuestionsDialog(
         "", {}, "María", {},
         {}, {})
 }
 
 @Composable
-fun InitialOfflineDialog(
+fun InitialOfflineQuestionsDialog(
     blueName: String,
     onBlueNameChanged: (String) -> Unit,
     orangeName: String,

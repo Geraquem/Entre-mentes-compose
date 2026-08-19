@@ -49,15 +49,16 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
+import com.mmfsin.betweenmindscompose.presentation.core.theme.RedLight
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.courier
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineDialog
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultDialog
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultOfflineQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getKonfettiParty
 import com.mmfsin.betweenmindscompose.utils.AnimateX
@@ -153,7 +154,7 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
 
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(80.dp),
+                    modifier = Modifier.fillMaxWidth().height(80.dp).background(RedLight),
                     contentAlignment = Alignment.Center
                 ) {
                     MediumText(
@@ -266,6 +267,7 @@ fun QuestionsOfflineContent(
                     modifier = Modifier.weight(1f)
                 ) {
                     SwipeBox(modifier = Modifier.align(Alignment.BottomCenter))
+
                     Slider(
                         value = if (uiState.phase == FIRST_OPINION) uiState.firstSlider else uiState.secondSlider,
                         onValueChange = {
@@ -289,7 +291,6 @@ fun QuestionsOfflineContent(
                     )
                 }
 
-                //                SwipeBox()
                 SpacerLarge()
                 ButtonCustom(
                     onClick = {
@@ -311,7 +312,7 @@ fun QuestionsOfflineContent(
             ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }
 
             if (uiState.showInitialDialog) {
-                InitialOfflineDialog(
+                InitialOfflineQuestionsDialog(
                     blueName = uiState.blueName,
                     onBlueNameChanged = { onBlueNameChange(it) },
                     orangeName = uiState.orangeName,
@@ -322,7 +323,7 @@ fun QuestionsOfflineContent(
             }
 
             if (uiState.showResultDialog) {
-                ResultDialog(
+                ResultOfflineQuestionsDialog(
                     points = uiState.points,
                     blueName = uiState.blueName,
                     orangeName = uiState.orangeName,

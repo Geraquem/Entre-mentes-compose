@@ -59,22 +59,12 @@ class QuestionsOfflineViewModel @Inject constructor(
         openCurtains()
     }
 
-    fun setQuestion() {
+    private fun setQuestion() {
         val states = uiState.value
         val questions = states.questions
 
         if (questions.isEmpty()) sww()
         else _uiState.update { it.copy(actualQuestion = questions[states.questionPos].question) }
-    }
-
-    fun resetOffsets() {
-        val state = uiState.value
-        _uiState.update {
-            it.copy(
-                offsetXWhite = state.initialOffsetX,
-                offsetXRed = state.initialOffsetX
-            )
-        }
     }
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
