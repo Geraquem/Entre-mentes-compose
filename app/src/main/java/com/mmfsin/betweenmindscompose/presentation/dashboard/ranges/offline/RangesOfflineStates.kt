@@ -20,6 +20,8 @@ data class RangesOfflineStates(
     val actualRangeLeft: String = "",
     val actualRangeRight: String = "",
 
+    val hint: String = "",
+
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
 

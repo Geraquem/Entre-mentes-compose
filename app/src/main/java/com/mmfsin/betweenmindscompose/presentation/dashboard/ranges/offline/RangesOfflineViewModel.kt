@@ -1,6 +1,8 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenmindscompose.domain.usecases.GetRangesUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,17 +42,39 @@ class RangesOfflineViewModel @Inject constructor(
                 actualRangeRight = ranges[states.ragesPos].rightRange
             )
         }
+
+        /** delete */
+        hideInitialDialog()
+        /****/
     }
 
     fun hideInitialDialog() {
         _uiState.update { it.copy(showInitialDialog = false) }
         viewModelScope.launch {
-            delay(1000)
+            //            delay(1000)
+            delay(10)
             _uiState.update { it.copy(showRoundView = false) }
             delay(1000)
-//            startOpinions()
+            showBullseye()
         }
     }
+
+    fun showBullseye() {
+        _uiState.update {
+            it.copy(
+                phase = SHOW_BULLSEYE,
+                buttonText = R.string.btn_ready,
+                controllerEnabled = false,
+                buttonEnabled = true,
+            )
+        }
+        openCurtains()
+    }
+
+    fun updateHint(value: String) = _uiState.update { it.copy(hint = value) }
+
+    fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
+    fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
     private fun sww() {}
 }

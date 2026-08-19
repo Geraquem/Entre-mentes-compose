@@ -263,9 +263,7 @@ fun QuestionsOfflineContent(
                     }
                 }
 
-                Box(
-                    modifier = Modifier.weight(1f)
-                ) {
+                Box(modifier = Modifier.weight(1f)) {
                     SwipeBox(modifier = Modifier.align(Alignment.BottomCenter))
 
                     Slider(

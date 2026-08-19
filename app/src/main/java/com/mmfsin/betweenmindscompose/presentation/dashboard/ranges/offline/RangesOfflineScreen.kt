@@ -2,6 +2,7 @@ package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,23 +26,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.MOVE_ARROW
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.NEXT_ROUND
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.CustomToolbar
+import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
+import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
+import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
-import com.mmfsin.betweenmindscompose.presentation.core.theme.RedLight
+import com.mmfsin.betweenmindscompose.presentation.core.theme.White
+import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
@@ -57,12 +69,14 @@ fun RangesOfflineScreenPV() {
     RangesOfflineContent(
         uiState = RangesOfflineStates(
             showRoundView = false,
+            showInitialDialog = false,
             actualRangeLeft = "Rango izquierdo",
             actualRangeRight = "Rango derecho",
 
-            controllerEnabled = true
+            curtainsOpen = true,
+            controllerEnabled = false
         ),
-        {}, {},
+        {}, {}, {},
     )
 }
 
@@ -74,6 +88,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         uiState = uiStates,
         goToInstructions = {},
         hideInitialDialog = { viewModel.hideInitialDialog() },
+        updateHint = { viewModel.updateHint(it) },
     )
 }
 
@@ -82,6 +97,7 @@ fun RangesOfflineContent(
     uiState: RangesOfflineStates,
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
+    updateHint: (String) -> Unit,
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
 
@@ -106,7 +122,7 @@ fun RangesOfflineContent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(12.dp)
+                .padding(vertical = 12.dp, horizontal = 18.dp)
         ) {
             Column {
                 Rounds(uiState.points)
@@ -114,10 +130,40 @@ fun RangesOfflineContent(
                 SpacerLarge()
 
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(150.dp).background(RedLight),
+                    modifier = Modifier.fillMaxWidth().height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
+                    Column(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        MediumText(
+                            text = R.string.ranges_write_a_clue,
+                            color = White,
+                            fontFamily = alphazet
+                        )
 
+                        SpacerSmall()
+
+                        BasicTextField(
+                            modifier = Modifier.fillMaxWidth()
+                                .border(
+                                    width = 2.dp,
+                                    color = GrayHard,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .padding(horizontal = 12.dp, vertical = 18.dp),
+                            value = uiState.hint,
+                            onValueChange = { updateHint(it) },
+                            singleLine = true,
+                            textStyle = MaterialTheme.typography.bodyLarge.copy(color = White),
+                            keyboardOptions = KeyboardOptions(
+                                imeAction = ImeAction.Done,
+                                capitalization = KeyboardCapitalization.Sentences
+                            ),
+                            cursorBrush = SolidColor(GrayHard),
+                        )
+                    }
                 }
 
                 SpacerLarge()
@@ -125,7 +171,6 @@ fun RangesOfflineContent(
                 Box(
                     modifier = Modifier.fillMaxWidth()
                         .height(50.dp)
-                        .padding(horizontal = 8.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(GrayHard)
                         .onSizeChanged { parentWidth = it.width },
@@ -154,11 +199,11 @@ fun RangesOfflineContent(
                     }
                 }
 
-                Box(
-                    modifier = Modifier.weight(1f).background(RedLight)
-                ) {
-                    ShowAlpha(uiState.controllerEnabled) {
-                        SwipeBox(modifier = Modifier.align(Alignment.BottomCenter))
+                SpacerMini()
+
+                Box(modifier = Modifier.weight(1f)) {
+                    Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+                        ShowAlpha(uiState.controllerEnabled) { SwipeBox() }
                     }
 
                     RangeLimits(
