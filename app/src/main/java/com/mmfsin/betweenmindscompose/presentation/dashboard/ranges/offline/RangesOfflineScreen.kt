@@ -60,14 +60,14 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getKonfettiParty
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.Bullseye
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.RangeLimits
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.RangeRounds
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
+import com.mmfsin.betweenmindscompose.utils.getKonfettiParty
 import com.mmfsin.betweenmindscompose.utils.openBedRockActivity
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import kotlin.math.roundToInt
@@ -84,10 +84,10 @@ fun RangesOfflineScreenPV() {
             hint = "El caballo blanco de Santiago",
             phase = MOVE_ARROW,
             curtainsOpen = true,
-            showSlider = false
+            showSlider = true
         ),
         {}, {}, {}, {},
-        {},
+        {}, {},
     )
 }
 
@@ -102,6 +102,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         updateHint = { viewModel.updateHint(it) },
         updateSliderValue = { viewModel.updateSliderValue(it) },
         readyBullseyePhase = { viewModel.readyBullseyePhase() },
+        readySliderPhase = { viewModel.readySliderPhase() },
     )
 }
 
@@ -113,6 +114,7 @@ fun RangesOfflineContent(
     updateHint: (String) -> Unit,
     updateSliderValue: (Int) -> Unit,
     readyBullseyePhase: () -> Unit,
+    readySliderPhase: () -> Unit,
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
 
@@ -140,7 +142,7 @@ fun RangesOfflineContent(
                 .padding(vertical = 12.dp, horizontal = 18.dp)
         ) {
             Column {
-                Rounds(uiState.points)
+                RangeRounds(uiState.points)
 
                 SpacerLarge()
 
@@ -210,7 +212,7 @@ fun RangesOfflineContent(
                     if (uiState.showSlider) {
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.showSlider,
+                            enabled = uiState.sliderEnabled,
                             value = uiState.sliderValue,
                             onValueChange = { updateSliderValue(it.roundToInt()) },
                             valueRange = 0f..100f,
@@ -225,7 +227,9 @@ fun RangesOfflineContent(
                             colors = SliderDefaults.colors(
                                 thumbColor = White,
                                 activeTrackColor = Transparent,
-                                inactiveTrackColor = Transparent
+                                disabledActiveTrackColor = Transparent,
+                                inactiveTrackColor = Transparent,
+                                disabledInactiveTrackColor = Transparent,
                             ),
                         )
                     }
@@ -269,22 +273,17 @@ fun RangesOfflineContent(
                     if (uiState.showSlider) {
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.showSlider,
+                            enabled = uiState.sliderEnabled,
                             value = uiState.sliderValue,
                             onValueChange = { updateSliderValue(it.roundToInt()) },
                             valueRange = 0f..100f,
-                            thumb = {
-                                Box(
-                                    modifier = Modifier
-                                        .width(6.dp)
-                                        .fillMaxHeight()
-                                        .background(White)
-                                )
-                            },
+                            thumb = { Box(modifier = Modifier.fillMaxHeight()) },
                             colors = SliderDefaults.colors(
-                                thumbColor = White,
+                                thumbColor = Transparent,
                                 activeTrackColor = Transparent,
-                                inactiveTrackColor = Transparent
+                                disabledActiveTrackColor = Transparent,
+                                inactiveTrackColor = Transparent,
+                                disabledInactiveTrackColor = Transparent,
                             ),
                         )
                     }
@@ -295,7 +294,10 @@ fun RangesOfflineContent(
                         if (uiState.buttonEnabled) {
                             when (uiState.phase) {
                                 SHOW_BULLSEYE -> readyBullseyePhase()
-                                MOVE_ARROW -> {}
+                                MOVE_ARROW -> {
+                                    readySliderPhase()
+                                }
+
                                 NEXT_ROUND -> {}
                                 RESULTS -> {}
                             }

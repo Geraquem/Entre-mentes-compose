@@ -148,7 +148,7 @@ class QuestionsOfflineViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
-                confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else states.confettiTrigger,
+                confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else 0,
                 controllerEnabled = false,
                 phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
                 buttonEnabled = false,

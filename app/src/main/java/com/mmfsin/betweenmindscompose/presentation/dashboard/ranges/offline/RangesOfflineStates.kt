@@ -31,6 +31,7 @@ data class RangesOfflineStates(
     val curtainsOpen: Boolean = false,
 
     val showSlider: Boolean = false,
+    val sliderEnabled: Boolean = false,
     val showBullseye: Boolean = true,
 
     val buttonEnabled: Boolean = false,

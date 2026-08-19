@@ -3,9 +3,11 @@ package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.MOVE_ARROW
+import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.NEXT_ROUND
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenmindscompose.domain.usecases.GetRangesUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.helper.calculateRangePoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -99,6 +101,25 @@ class RangesOfflineViewModel @Inject constructor(
                 )
             }
             openCurtains()
+        }
+    }
+
+    fun readySliderPhase() {
+        val states = uiState.value
+
+        val roundPoints = calculateRangePoints(
+            sliderPosisition = states.sliderValue,
+            bullseyeStart = states.bullsEyeStart
+        )
+
+        _uiState.update {
+            it.copy(
+                phase = NEXT_ROUND,
+                points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
+                confettiTrigger = if (roundPoints == 5) states.confettiTrigger + 1 else 0,
+                showBullseye = true,
+                sliderEnabled = false
+            )
         }
     }
 

@@ -28,12 +28,12 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.ge
 
 @Preview
 @Composable
-fun RoundsPV() {
-    Rounds(listOf(12, 5, null, null))
+fun QuestionRoundsPV() {
+    QuestionRounds(listOf(12, 5, null, null))
 }
 
 @Composable
-fun Rounds(points: List<Int?>) {
+fun QuestionRounds(points: List<Int?>) {
     Column {
         MediumText(
             text = stringResource(R.string.scoreboard_rounds),
@@ -67,7 +67,7 @@ fun Rounds(points: List<Int?>) {
                             )
                         } else {
                             BigText(
-                                text = "$p pts",
+                                text = if (p == 1) "$p pt" else "$p pts",
                                 color = getPointsColor(point)
                             )
                         }

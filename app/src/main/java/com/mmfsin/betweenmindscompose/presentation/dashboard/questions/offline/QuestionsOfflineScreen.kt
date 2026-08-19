@@ -59,11 +59,11 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultOfflineQuestionsDialog
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getKonfettiParty
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.NAV_INSTR_QUESTIONS_OFFLINE
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
+import com.mmfsin.betweenmindscompose.utils.getKonfettiParty
 import com.mmfsin.betweenmindscompose.utils.openBedRockActivity
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import kotlin.math.roundToInt
@@ -149,7 +149,7 @@ fun QuestionsOfflineContent(
             }
 
             Column {
-                Rounds(uiState.points)
+                QuestionRounds(uiState.points)
 
                 SpacerLarge()
 
