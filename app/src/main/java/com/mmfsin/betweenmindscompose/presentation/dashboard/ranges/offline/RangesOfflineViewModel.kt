@@ -62,6 +62,7 @@ class RangesOfflineViewModel @Inject constructor(
     fun showBullseye() {
         _uiState.update {
             it.copy(
+                bullsEyeStart = (0..94).random().toFloat(),
                 phase = SHOW_BULLSEYE,
                 buttonText = R.string.btn_ready,
                 controllerEnabled = false,
@@ -72,6 +73,7 @@ class RangesOfflineViewModel @Inject constructor(
     }
 
     fun updateHint(value: String) = _uiState.update { it.copy(hint = value) }
+    fun updateSliderValue(value: Int) = _uiState.update { it.copy(sliderValue = value.toFloat()) }
 
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }

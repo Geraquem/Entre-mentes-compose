@@ -22,6 +22,9 @@ data class RangesOfflineStates(
 
     val hint: String = "",
 
+    val sliderValue: Float = 50f,
+    val bullsEyeStart: Float = 47f,
+
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
 

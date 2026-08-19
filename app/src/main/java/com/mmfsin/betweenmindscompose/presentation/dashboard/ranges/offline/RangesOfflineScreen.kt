@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 
 import android.content.Context
@@ -15,8 +17,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -49,12 +54,14 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
+import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.Rounds
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getKonfettiParty
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.Bullseye
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.RangeLimits
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
 import com.mmfsin.betweenmindscompose.utils.AnimateX
@@ -62,6 +69,7 @@ import com.mmfsin.betweenmindscompose.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
 import com.mmfsin.betweenmindscompose.utils.openBedRockActivity
 import nl.dionsegijn.konfetti.compose.KonfettiView
+import kotlin.math.roundToInt
 
 @Preview
 @Composable
@@ -76,7 +84,7 @@ fun RangesOfflineScreenPV() {
             curtainsOpen = true,
             controllerEnabled = false
         ),
-        {}, {}, {},
+        {}, {}, {}, {},
     )
 }
 
@@ -89,6 +97,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         goToInstructions = {},
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateHint = { viewModel.updateHint(it) },
+        updateSliderValue = { viewModel.updateSliderValue(it) },
     )
 }
 
@@ -98,6 +107,7 @@ fun RangesOfflineContent(
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
     updateHint: (String) -> Unit,
+    updateSliderValue: (Int) -> Unit
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
 
@@ -175,6 +185,31 @@ fun RangesOfflineContent(
                         .background(GrayHard)
                         .onSizeChanged { parentWidth = it.width },
                 ) {
+
+                    /** bullseye */
+
+                    Bullseye(uiState.bullsEyeStart)
+
+                    Slider(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = uiState.sliderValue,
+                        onValueChange = { updateSliderValue(it.roundToInt()) },
+                        valueRange = 0f..100f,
+                        thumb = {
+                            Box(
+                                modifier = Modifier
+                                    .width(6.dp)
+                                    .fillMaxHeight()
+                                    .background(White)
+                            )
+                        },
+                        colors = SliderDefaults.colors(
+                            thumbColor = White,
+                            activeTrackColor = Transparent,
+                            inactiveTrackColor = Transparent
+                        ),
+                    )
+
                     val halfWidth = with(LocalDensity.current) { (parentWidth / 2).toDp() }
 
                     /** Left curtain */
@@ -207,8 +242,28 @@ fun RangesOfflineContent(
                     }
 
                     RangeLimits(
-                        leftRange = uiState.actualRangeLeft,
+                        leftRange = uiState.sliderValue.toString(),
                         rightRange = uiState.actualRangeRight
+                    )
+
+                    Slider(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = uiState.sliderValue,
+                        onValueChange = { updateSliderValue(it.roundToInt()) },
+                        valueRange = 0f..100f,
+                        thumb = {
+                            Box(
+                                modifier = Modifier
+                                    .width(6.dp)
+                                    .fillMaxHeight()
+                                    .background(White)
+                            )
+                        },
+                        colors = SliderDefaults.colors(
+                            thumbColor = White,
+                            activeTrackColor = Transparent,
+                            inactiveTrackColor = Transparent
+                        ),
                     )
                 }
 
