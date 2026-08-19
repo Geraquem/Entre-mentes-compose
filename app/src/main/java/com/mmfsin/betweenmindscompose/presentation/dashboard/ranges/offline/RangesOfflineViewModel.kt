@@ -2,6 +2,7 @@ package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenmindscompose.R
+import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.MOVE_ARROW
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenmindscompose.domain.usecases.GetRangesUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
@@ -65,7 +66,7 @@ class RangesOfflineViewModel @Inject constructor(
                 bullsEyeStart = (0..94).random().toFloat(),
                 phase = SHOW_BULLSEYE,
                 buttonText = R.string.btn_ready,
-                controllerEnabled = false,
+                showSlider = false,
                 buttonEnabled = true,
             )
         }
@@ -77,6 +78,29 @@ class RangesOfflineViewModel @Inject constructor(
 
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
+
+    fun readyBullseyePhase() {
+        closeCurtains()
+        _uiState.update {
+            it.copy(
+                phase = MOVE_ARROW,
+                buttonEnabled = false
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showBullseye = false,
+                    showSlider = true,
+                    buttonEnabled = true,
+                    buttonText = R.string.btn_check
+                )
+            }
+            openCurtains()
+        }
+    }
 
     private fun sww() {}
 }

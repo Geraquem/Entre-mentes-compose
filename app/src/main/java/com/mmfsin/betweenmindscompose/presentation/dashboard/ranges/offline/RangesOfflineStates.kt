@@ -30,8 +30,9 @@ data class RangesOfflineStates(
 
     val curtainsOpen: Boolean = false,
 
-    val controllerEnabled: Boolean = false,
-    val buttonEnabled: Boolean = false,
+    val showSlider: Boolean = false,
+    val showBullseye: Boolean = true,
 
+    val buttonEnabled: Boolean = false,
     val buttonText: Int = R.string.btn_ready
 )

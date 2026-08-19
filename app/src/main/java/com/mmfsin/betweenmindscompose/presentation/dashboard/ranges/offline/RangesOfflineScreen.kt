@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,11 +81,13 @@ fun RangesOfflineScreenPV() {
             showInitialDialog = false,
             actualRangeLeft = "Rango izquierdo",
             actualRangeRight = "Rango derecho",
-
+            hint = "El caballo blanco de Santiago",
+            phase = MOVE_ARROW,
             curtainsOpen = true,
-            controllerEnabled = false
+            showSlider = false
         ),
         {}, {}, {}, {},
+        {},
     )
 }
 
@@ -98,6 +101,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateHint = { viewModel.updateHint(it) },
         updateSliderValue = { viewModel.updateSliderValue(it) },
+        readyBullseyePhase = { viewModel.readyBullseyePhase() },
     )
 }
 
@@ -107,7 +111,8 @@ fun RangesOfflineContent(
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
     updateHint: (String) -> Unit,
-    updateSliderValue: (Int) -> Unit
+    updateSliderValue: (Int) -> Unit,
+    readyBullseyePhase: () -> Unit,
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
 
@@ -143,35 +148,45 @@ fun RangesOfflineContent(
                     modifier = Modifier.fillMaxWidth().height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    ShowAlpha(uiState.phase == SHOW_BULLSEYE) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            MediumText(
+                                text = R.string.ranges_write_a_clue,
+                                color = White,
+                                fontFamily = alphazet
+                            )
+
+                            SpacerSmall()
+
+                            BasicTextField(
+                                enabled = uiState.phase == SHOW_BULLSEYE,
+                                modifier = Modifier.fillMaxWidth()
+                                    .border(
+                                        width = 2.dp,
+                                        color = GrayHard,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .padding(horizontal = 12.dp, vertical = 18.dp),
+                                value = uiState.hint,
+                                onValueChange = { updateHint(it.take(150)) },
+                                singleLine = true,
+                                textStyle = MaterialTheme.typography.bodyLarge.copy(color = White),
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Done,
+                                    capitalization = KeyboardCapitalization.Sentences
+                                ),
+                                cursorBrush = SolidColor(GrayHard),
+                            )
+                        }
+                    }
+
+                    ShowAlpha(uiState.phase == MOVE_ARROW) {
                         MediumText(
-                            text = R.string.ranges_write_a_clue,
-                            color = White,
-                            fontFamily = alphazet
-                        )
-
-                        SpacerSmall()
-
-                        BasicTextField(
-                            modifier = Modifier.fillMaxWidth()
-                                .border(
-                                    width = 2.dp,
-                                    color = GrayHard,
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .padding(horizontal = 12.dp, vertical = 18.dp),
-                            value = uiState.hint,
-                            onValueChange = { updateHint(it) },
-                            singleLine = true,
-                            textStyle = MaterialTheme.typography.bodyLarge.copy(color = White),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Done,
-                                capitalization = KeyboardCapitalization.Sentences
-                            ),
-                            cursorBrush = SolidColor(GrayHard),
+                            text = uiState.hint.ifEmpty { stringResource(R.string.ranges_no_clue) },
+                            color = White
                         )
                     }
                 }
@@ -188,27 +203,32 @@ fun RangesOfflineContent(
 
                     /** bullseye */
 
-                    Bullseye(uiState.bullsEyeStart)
+                    if (uiState.showBullseye) {
+                        Bullseye(uiState.bullsEyeStart)
+                    }
 
-                    Slider(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = uiState.sliderValue,
-                        onValueChange = { updateSliderValue(it.roundToInt()) },
-                        valueRange = 0f..100f,
-                        thumb = {
-                            Box(
-                                modifier = Modifier
-                                    .width(6.dp)
-                                    .fillMaxHeight()
-                                    .background(White)
-                            )
-                        },
-                        colors = SliderDefaults.colors(
-                            thumbColor = White,
-                            activeTrackColor = Transparent,
-                            inactiveTrackColor = Transparent
-                        ),
-                    )
+                    if (uiState.showSlider) {
+                        Slider(
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = uiState.showSlider,
+                            value = uiState.sliderValue,
+                            onValueChange = { updateSliderValue(it.roundToInt()) },
+                            valueRange = 0f..100f,
+                            thumb = {
+                                Box(
+                                    modifier = Modifier
+                                        .width(6.dp)
+                                        .fillMaxHeight()
+                                        .background(White)
+                                )
+                            },
+                            colors = SliderDefaults.colors(
+                                thumbColor = White,
+                                activeTrackColor = Transparent,
+                                inactiveTrackColor = Transparent
+                            ),
+                        )
+                    }
 
                     val halfWidth = with(LocalDensity.current) { (parentWidth / 2).toDp() }
 
@@ -238,7 +258,7 @@ fun RangesOfflineContent(
 
                 Box(modifier = Modifier.weight(1f)) {
                     Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                        ShowAlpha(uiState.controllerEnabled) { SwipeBox() }
+                        ShowAlpha(uiState.showSlider) { SwipeBox() }
                     }
 
                     RangeLimits(
@@ -246,32 +266,35 @@ fun RangesOfflineContent(
                         rightRange = uiState.actualRangeRight
                     )
 
-                    Slider(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = uiState.sliderValue,
-                        onValueChange = { updateSliderValue(it.roundToInt()) },
-                        valueRange = 0f..100f,
-                        thumb = {
-                            Box(
-                                modifier = Modifier
-                                    .width(6.dp)
-                                    .fillMaxHeight()
-                                    .background(White)
-                            )
-                        },
-                        colors = SliderDefaults.colors(
-                            thumbColor = White,
-                            activeTrackColor = Transparent,
-                            inactiveTrackColor = Transparent
-                        ),
-                    )
+                    if (uiState.showSlider) {
+                        Slider(
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = uiState.showSlider,
+                            value = uiState.sliderValue,
+                            onValueChange = { updateSliderValue(it.roundToInt()) },
+                            valueRange = 0f..100f,
+                            thumb = {
+                                Box(
+                                    modifier = Modifier
+                                        .width(6.dp)
+                                        .fillMaxHeight()
+                                        .background(White)
+                                )
+                            },
+                            colors = SliderDefaults.colors(
+                                thumbColor = White,
+                                activeTrackColor = Transparent,
+                                inactiveTrackColor = Transparent
+                            ),
+                        )
+                    }
                 }
 
                 ButtonCustom(
                     onClick = {
                         if (uiState.buttonEnabled) {
                             when (uiState.phase) {
-                                SHOW_BULLSEYE -> {}
+                                SHOW_BULLSEYE -> readyBullseyePhase()
                                 MOVE_ARROW -> {}
                                 NEXT_ROUND -> {}
                                 RESULTS -> {}
