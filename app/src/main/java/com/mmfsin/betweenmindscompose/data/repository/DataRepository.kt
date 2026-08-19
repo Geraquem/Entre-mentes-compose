@@ -7,47 +7,23 @@ import javax.inject.Inject
 
 class DataRepository @Inject constructor() : IDataRepository {
     override suspend fun getQuestions(): List<Question> {
-        return listOf(
+        val questions = List(4) { i ->
             Question(
-                question = "Pregunta 1",
+                question = "Pregunta $i",
                 pack = 0
-            ),
-            Question(
-                question = "Pregunta 2",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 3",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 4",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 5",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 6",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 7",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 8",
-                pack = 0
-            ),
-            Question(
-                question = "Pregunta 9",
-                pack = 0
-            ),
-        )
+            )
+        }
+        return questions
     }
 
     override suspend fun getRanges(): List<Range> {
-        return emptyList()
+        val ranges = List(4) { i ->
+            Range(
+                leftRange = "LeftRange ${i + 1}",
+                rightRange = "RightRange ${i + 1}",
+                pack = 0
+            )
+        }
+        return ranges
     }
 }
