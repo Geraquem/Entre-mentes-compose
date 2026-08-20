@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         //        setContent { BMCTheme { NavigationMain() } }
 
-        this.openBedRockActivity(NAV_RANGES_OFFLINE)
-//        this.openBedRockActivity(NAV_QUESTIONS_OFFLINE)
+//        this.openBedRockActivity(NAV_RANGES_OFFLINE)
+        this.openBedRockActivity(NAV_QUESTIONS_OFFLINE)
     }
 }

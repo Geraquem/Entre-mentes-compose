@@ -31,7 +31,7 @@ class QuestionsOfflineViewModel @Inject constructor(
                 _uiState.update { it.copy(questions = questions) }
                 setQuestion()
             },
-            {}
+            { sww() }
         )
     }
 
@@ -64,7 +64,14 @@ class QuestionsOfflineViewModel @Inject constructor(
         val questions = states.questions
 
         if (questions.isEmpty()) sww()
-        else _uiState.update { it.copy(actualQuestion = questions[states.questionPos].question) }
+        else {
+            val newQuestion = if (states.questionPos >= states.questions.size) {
+                _uiState.update { it.copy(questionPos = 0) }
+                questions[0].question
+            } else questions[states.questionPos].question
+
+            _uiState.update { it.copy(actualQuestion = newQuestion) }
+        }
     }
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
@@ -147,7 +154,7 @@ class QuestionsOfflineViewModel @Inject constructor(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else 0,
                 controllerEnabled = false,
-                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
                 buttonEnabled = false,
                 showFirstOpinionPercents = true,
                 showWhiteIndicator = true,
@@ -244,5 +251,5 @@ class QuestionsOfflineViewModel @Inject constructor(
 
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 
-    private fun sww() {}
+    private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class DataRepository @Inject constructor() : IDataRepository {
     override suspend fun getQuestions(): List<Question> {
-        val questions = List(4) { i ->
+        val questions = List(2) { i ->
             Question(
                 question = "Pregunta $i",
                 pack = 0

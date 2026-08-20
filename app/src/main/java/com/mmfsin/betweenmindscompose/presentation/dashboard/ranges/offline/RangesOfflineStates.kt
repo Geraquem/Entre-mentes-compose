@@ -11,6 +11,7 @@ data class RangesOfflineStates(
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
     val showExitDialog: Boolean = false,
+    val showSwwDialog: Boolean = false,
 
     val showEditTextHint: Boolean = true,
 

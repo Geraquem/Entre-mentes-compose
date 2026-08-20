@@ -11,6 +11,7 @@ data class QuestionsOfflineStates(
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
     val showExitDialog: Boolean = false,
+    val showSwwDialog: Boolean = false,
 
     val showRoundView: Boolean = true,
     var roundCount: Int = 0,

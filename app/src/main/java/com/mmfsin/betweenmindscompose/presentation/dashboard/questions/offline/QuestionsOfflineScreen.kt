@@ -44,6 +44,7 @@ import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.QuestionPhaseType.SECOND_OPINION
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.CustomToolbar
+import com.mmfsin.betweenmindscompose.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
@@ -345,6 +346,8 @@ fun QuestionsOfflineContent(
                     cancel = { showExitDialog(false) },
                 )
             }
+
+            if (uiState.showSwwDialog) ErrorDialog(accept = { goBack() })
 
             BackHandler { showExitDialog(true) }
         }

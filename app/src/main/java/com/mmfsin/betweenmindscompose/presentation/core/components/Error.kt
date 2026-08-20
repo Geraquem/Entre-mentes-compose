@@ -20,8 +20,6 @@ import androidx.compose.ui.window.Dialog
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
-import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
-import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 
 @Preview
 @Composable
@@ -47,13 +45,16 @@ fun ErrorDialog(accept: () -> Unit) {
                 )
             }
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 MediumText(text = R.string.error_title)
 
+                SpacerSmall()
+
                 MediumText(text = R.string.error_description)
 
-                SpacerLarge()
+                SpacerMedium()
 
                 Button(
                     modifier = Modifier.fillMaxWidth(),

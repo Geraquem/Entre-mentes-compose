@@ -53,6 +53,7 @@ import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.CustomToolbar
+import com.mmfsin.betweenmindscompose.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
@@ -351,6 +352,8 @@ fun RangesOfflineContent(
                     cancel = { showExitDialog(false) }
                 )
             }
+
+            if (uiState.showSwwDialog) ErrorDialog(accept = { goBack() })
 
             BackHandler { showExitDialog(true) }
         }

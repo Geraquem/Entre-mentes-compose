@@ -31,7 +31,7 @@ class RangesOfflineViewModel @Inject constructor(
                 _uiState.update { it.copy(ranges = ranges) }
                 setRange()
             },
-            {}
+            { sww() }
         )
     }
 
@@ -40,19 +40,25 @@ class RangesOfflineViewModel @Inject constructor(
         val ranges = states.ranges
 
         if (ranges.isEmpty()) sww()
-        else _uiState.update {
-            it.copy(
-                actualRangeLeft = ranges[states.ragesPos].leftRange,
-                actualRangeRight = ranges[states.ragesPos].rightRange
-            )
+        else {
+            val newRange = if (states.ragesPos >= states.ranges.size) {
+                _uiState.update { it.copy(ragesPos = 0) }
+                ranges[0]
+            } else ranges[states.ragesPos]
+
+            _uiState.update {
+                it.copy(
+                    actualRangeLeft = newRange.leftRange,
+                    actualRangeRight = newRange.rightRange
+                )
+            }
         }
     }
 
     fun hideInitialDialog() {
         _uiState.update { it.copy(showInitialDialog = false) }
         viewModelScope.launch {
-            //            delay(1000)
-            delay(10)
+            delay(1000)
             _uiState.update { it.copy(showRoundView = false) }
             delay(1000)
             showBullseye()
@@ -205,5 +211,5 @@ class RangesOfflineViewModel @Inject constructor(
 
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 
-    private fun sww() {}
+    private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }
 }
