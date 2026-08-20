@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
+import com.mmfsin.betweenminds.presentation.core.theme.RedMedium
 import com.mmfsin.betweenminds.presentation.core.theme.Transparent
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.kineks
@@ -40,6 +41,7 @@ fun PhaseSeparatorPV() {
         PhaseSeparator(R.string.instr_questions_3)
         InstructionsText(R.string.instr_questions_4)
         InstrSlider(20f, White)
+        InstrSlider2(30f, 25f)
     }
 }
 
@@ -108,6 +110,60 @@ fun InstrSlider(value: Float, color: Color) {
             },
             colors = SliderDefaults.colors(
                 thumbColor = color,
+                disabledActiveTrackColor = Transparent,
+                disabledInactiveTrackColor = Transparent,
+            ),
+        )
+    }
+}
+
+@Composable
+fun InstrSlider2(value1: Float, value2: Float) {
+    Box(
+        modifier = Modifier.fillMaxWidth()
+            .height(50.dp)
+            .padding(horizontal = 8.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(GrayHard)
+    ) {
+
+        Slider(
+            modifier = Modifier.fillMaxWidth(),
+            value = value1,
+            onValueChange = { },
+            valueRange = 0f..100f,
+            enabled = false,
+            thumb = {
+                Box(
+                    modifier = Modifier
+                        .width(10.dp)
+                        .fillMaxHeight()
+                        .background(White)
+                )
+            },
+            colors = SliderDefaults.colors(
+                thumbColor = White,
+                disabledActiveTrackColor = Transparent,
+                disabledInactiveTrackColor = Transparent,
+            ),
+        )
+
+        Slider(
+            modifier = Modifier.fillMaxWidth(),
+            value = value2,
+            onValueChange = { },
+            valueRange = 0f..100f,
+            enabled = false,
+            thumb = {
+                Box(
+                    modifier = Modifier
+                        .width(10.dp)
+                        .fillMaxHeight()
+                        .background(RedMedium)
+                )
+            },
+            colors = SliderDefaults.colors(
+                thumbColor = RedMedium,
                 disabledActiveTrackColor = Transparent,
                 disabledInactiveTrackColor = Transparent,
             ),

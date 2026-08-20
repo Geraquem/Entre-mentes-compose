@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,7 +38,6 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
-import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
 import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
@@ -118,91 +118,21 @@ fun InitialOfflineQuestionsDialog(
 
                 SpacerSmall()
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painterResource(R.drawable.ic_human_down), null,
-                        tint = BlueMedium,
-                        modifier = Modifier.size(42.dp)
-                    )
-
-                    SpacerSmall(horizontal = true)
-
-                    BasicTextField(
-                        modifier = Modifier.fillMaxWidth()
-                            .border(width = 1.dp, color = GrayHard, shape = RoundedCornerShape(8.dp))
-                            .padding(8.dp),
-                        value = blueName,
-                        onValueChange = { onBlueNameChanged(it.take(20)) },
-                        singleLine = true,
-                        textStyle = MaterialTheme.typography.titleLarge.copy(
-                            color = BlueMedium,
-                            fontSize = 18.sp,
-                            fontFamily = alphazet
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next,
-                            capitalization = KeyboardCapitalization.Words
-                        ),
-                        cursorBrush = SolidColor(BlueMedium),
-                        decorationBox = { innerTextField ->
-                            Box(contentAlignment = Alignment.CenterStart) {
-                                if (blueName.isEmpty()) {
-                                    Text(
-                                        text = stringResource(R.string.name_blue),
-                                        modifier = Modifier.alpha(0.5f),
-                                        color = BlueMedium,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                    )
-                                }
-                                innerTextField()
-                            }
-                        }
-                    )
-                }
+                SetPlayerName(
+                    name = blueName,
+                    onNameChange = { onBlueNameChanged(it) },
+                    hint = R.string.name_blue,
+                    color = BlueMedium
+                )
 
                 SpacerSmall()
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painterResource(R.drawable.ic_human_down), null,
-                        tint = OrangeHard,
-                        modifier = Modifier.size(42.dp)
-                    )
-
-                    SpacerSmall(horizontal = true)
-
-                    BasicTextField(
-                        modifier = Modifier.fillMaxWidth()
-                            .border(width = 1.dp, color = GrayHard, shape = RoundedCornerShape(8.dp))
-                            .padding(8.dp),
-                        value = orangeName,
-                        onValueChange = { onOrangeNameChanged(it.take(20)) },
-                        singleLine = true,
-                        textStyle = MaterialTheme.typography.titleLarge.copy(
-                            color = OrangeHard,
-                            fontSize = 18.sp,
-                            fontFamily = alphazet
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next,
-                            capitalization = KeyboardCapitalization.Words
-                        ),
-                        cursorBrush = SolidColor(BlueMedium),
-                        decorationBox = { innerTextField ->
-                            Box(contentAlignment = Alignment.CenterStart) {
-                                if (orangeName.isEmpty()) {
-                                    Text(
-                                        text = stringResource(R.string.name_orange),
-                                        modifier = Modifier.alpha(0.5f),
-                                        color = OrangeHard,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                    )
-                                }
-                                innerTextField()
-                            }
-                        }
-                    )
-                }
+                SetPlayerName(
+                    name = orangeName,
+                    onNameChange = { onOrangeNameChanged(it) },
+                    hint = R.string.name_orange,
+                    color = OrangeHard
+                )
 
                 SpacerMedium()
 
@@ -226,5 +156,57 @@ fun InitialOfflineQuestionsDialog(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun SetPlayerName(
+    name: String,
+    onNameChange: (String) -> Unit,
+    hint: Int,
+    color: Color,
+    enabled: Boolean = true
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            painterResource(R.drawable.ic_human_down), null,
+            tint = color,
+            modifier = Modifier.size(42.dp)
+        )
+
+        SpacerSmall(horizontal = true)
+
+        BasicTextField(
+            modifier = Modifier.fillMaxWidth()
+                .border(width = 1.dp, color = color, shape = RoundedCornerShape(8.dp))
+                .padding(8.dp),
+            value = name,
+            onValueChange = { onNameChange(it.take(20)) },
+            enabled = enabled,
+            singleLine = true,
+            textStyle = MaterialTheme.typography.titleLarge.copy(
+                color = color,
+                fontSize = 18.sp,
+                fontFamily = alphazet
+            ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Words
+            ),
+            cursorBrush = SolidColor(color),
+            decorationBox = { innerTextField ->
+                Box(contentAlignment = Alignment.CenterStart) {
+                    if (name.isEmpty()) {
+                        Text(
+                            text = stringResource(hint),
+                            modifier = Modifier.alpha(0.5f),
+                            color = color,
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        )
     }
 }

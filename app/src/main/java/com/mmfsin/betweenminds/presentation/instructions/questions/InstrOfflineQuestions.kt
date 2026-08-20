@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -128,7 +129,10 @@ fun InstrOfflineQuestions() {
             SpacerMedium()
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painterResource(R.drawable.ic_player_one), null)
+                Image(
+                    painterResource(R.drawable.ic_player_one), null,
+                    modifier = Modifier.size(32.dp)
+                )
                 SpacerSmall(horizontal = true)
                 InstructionsText(R.string.instr_questions_7)
             }
@@ -169,7 +173,10 @@ fun InstrOfflineQuestions() {
             SpacerLarge()
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painterResource(R.drawable.ic_player_two), null)
+                Image(
+                    painterResource(R.drawable.ic_player_two), null,
+                    modifier = Modifier.size(32.dp)
+                )
                 SpacerSmall(horizontal = true)
                 InstructionsText(R.string.instr_questions_10_1)
             }
@@ -178,7 +185,7 @@ fun InstrOfflineQuestions() {
 
             InstructionsText(R.string.instr_questions_11)
 
-            SpacerMedium()
+            SpacerSmall()
 
             InstructionsText(R.string.instr_questions_12)
 
@@ -190,7 +197,7 @@ fun InstrOfflineQuestions() {
 
             InstructionsText(R.string.instr_questions_14)
 
-            SpacerMedium()
+            SpacerSmall()
 
             InstructionsText(R.string.instr_questions_15)
 
