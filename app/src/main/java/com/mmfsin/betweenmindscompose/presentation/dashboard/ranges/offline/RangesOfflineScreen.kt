@@ -3,6 +3,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 
 import android.content.Context
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -33,8 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,7 +64,8 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.Bullseye
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.RangeLimits
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.RangeRounds
-import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.components.InitialOfflineRangesDialog
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.components.ResultRangesDialog
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
@@ -88,28 +90,35 @@ fun RangesOfflineScreenPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
+        {}, {}, {},
     )
 }
 
 @Composable
 fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    val activity = LocalActivity.current
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
 
     RangesOfflineContent(
         uiState = uiStates,
-        goToInstructions = {},
+        goBack = { activity?.finish() },
+        goToInstructions = { context.goToInstructions() },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateHint = { viewModel.updateHint(it) },
         updateSliderValue = { viewModel.updateSliderValue(it) },
         readyBullseyePhase = { viewModel.readyBullseyePhase() },
         readySliderPhase = { viewModel.readySliderPhase() },
         nextRound = { viewModel.nextRound() },
+        showResultDialog = { viewModel.showResultDialog(true) },
+        replay = { viewModel.replay() },
     )
 }
 
 @Composable
 fun RangesOfflineContent(
     uiState: RangesOfflineStates,
+    goBack: () -> Unit,
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
     updateHint: (String) -> Unit,
@@ -117,6 +126,8 @@ fun RangesOfflineContent(
     readyBullseyePhase: () -> Unit,
     readySliderPhase: () -> Unit,
     nextRound: () -> Unit,
+    showResultDialog: (Boolean) -> Unit,
+    replay: () -> Unit,
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
 
@@ -132,7 +143,7 @@ fun RangesOfflineContent(
     Scaffold(
         topBar = {
             CustomToolbar(
-                goBack = {},
+                goBack = { goBack() },
                 goToInstructions = { goToInstructions() }
             )
         }
@@ -189,7 +200,7 @@ fun RangesOfflineContent(
 
                     ShowAlpha(!uiState.showEditTextHint) {
                         MediumText(
-                            text = uiState.hint.ifEmpty { stringResource(R.string.ranges_no_clue) },
+                            text = uiState.hint,
                             color = White
                         )
                     }
@@ -300,7 +311,7 @@ fun RangesOfflineContent(
                                 SHOW_BULLSEYE -> readyBullseyePhase()
                                 MOVE_ARROW -> readySliderPhase()
                                 NEXT_ROUND -> nextRound()
-                                RESULTS -> {}
+                                RESULTS -> showResultDialog(true)
                             }
                         }
                     },
@@ -314,19 +325,16 @@ fun RangesOfflineContent(
             if (uiState.showInitialDialog) {
                 InitialOfflineRangesDialog(
                     startGame = { hideInitialDialog() },
-                    howToPlay = {}
+                    howToPlay = { goToInstructions() }
                 )
             }
 
             if (uiState.showResultDialog) {
-                //                ResultDialog(
-                //                            points = uiState.points,
-                //                    blueName = uiState.blueName,
-                //                    orangeName = uiState.orangeName,
-                //                    exit = {},
-                //                    replay = { replay() },
-                //                    changeNames = {},
-                //                )
+                ResultRangesDialog(
+                    points = uiState.points,
+                    exit = { goBack() },
+                    replay = { replay() },
+                )
             }
         }
     }

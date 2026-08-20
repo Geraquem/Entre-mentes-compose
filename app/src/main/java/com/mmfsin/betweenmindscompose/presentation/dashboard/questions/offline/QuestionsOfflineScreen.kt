@@ -58,7 +58,7 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultOfflineQuestionsDialog
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.NAV_INSTR_QUESTIONS_OFFLINE
@@ -321,7 +321,7 @@ fun QuestionsOfflineContent(
             }
 
             if (uiState.showResultDialog) {
-                ResultOfflineQuestionsDialog(
+                ResultQuestionsDialog(
                     points = uiState.points,
                     blueName = uiState.blueName,
                     orangeName = uiState.orangeName,

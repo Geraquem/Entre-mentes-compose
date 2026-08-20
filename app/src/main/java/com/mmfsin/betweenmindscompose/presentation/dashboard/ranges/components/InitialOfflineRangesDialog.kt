@@ -1,4 +1,4 @@
-package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline.components
+package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

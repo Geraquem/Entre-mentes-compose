@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.MOVE_ARROW
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.NEXT_ROUND
+import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenmindscompose.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenmindscompose.domain.usecases.GetRangesUseCase
 import com.mmfsin.betweenmindscompose.presentation.core.base.BaseViewModel
@@ -47,7 +48,7 @@ class RangesOfflineViewModel @Inject constructor(
         }
 
         /** delete */
-//        hideInitialDialog()
+        //        hideInitialDialog()
         /****/
     }
 
@@ -118,7 +119,7 @@ class RangesOfflineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                phase = NEXT_ROUND,
+                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = if (roundPoints == 5) states.confettiTrigger + 1 else 0,
                 showBullseye = true,
@@ -166,6 +167,12 @@ class RangesOfflineViewModel @Inject constructor(
             delay(1000)
             showBullseye()
         }
+    }
+
+    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
+
+    fun replay() {
+
     }
 
     private fun sww() {}
