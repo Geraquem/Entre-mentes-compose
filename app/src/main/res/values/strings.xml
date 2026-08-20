@@ -116,13 +116,14 @@
 
     <!-- ENDGAME -->
     <string name="endgame_result">Resultado</string>
-    <string name="endgame_max_points">De un máximo de 60 puntos</string>
-    <string name="endgame_get_one_point">Habéis conseguido 1 punto</string>
-    <string name="endgame_get_points">Habéis conseguido %s puntos</string>
+    <string name="endgame_questions_max_points">De un máximo de 60 puntos</string>
+    <string name="endgame_get_one_point">habéis conseguido 1 punto</string>
+    <string name="endgame_get_points">habéis conseguido %s puntos</string>
     <string name="endgame_you_have">Tenéis un</string>
     <string name="endgame_affinity">de afinidad</string>
 
-    <string name="endgame_top_text">Habéis conseguido</string>
+    <string name="endgame_ranges_max_points">De un máximo de 20 puntos</string>
+    <string name="endgame_top_text">habéis conseguido</string>
     <string name="endgame_one_point">1 punto</string>
     <string name="endgame_pts">%s puntos</string>
     <string name="endgame_phrase_perfect">Ha sido todo tan perfecto y milimétrico que seguro que habéis hecho trampas</string>

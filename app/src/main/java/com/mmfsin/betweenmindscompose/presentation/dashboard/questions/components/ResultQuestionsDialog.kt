@@ -88,7 +88,7 @@ fun ResultQuestionsDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SpacerSmall()
-                MediumText(text = R.string.endgame_max_points)
+                MediumText(text = R.string.endgame_questions_max_points)
                 SpacerMini()
                 if (totalPoints == 1) {
                     MediumText(text = R.string.endgame_get_one_point)

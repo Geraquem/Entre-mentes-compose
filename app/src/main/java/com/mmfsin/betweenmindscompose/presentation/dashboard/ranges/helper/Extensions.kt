@@ -33,7 +33,7 @@ fun getTotalPoints(points: List<Int?>): Int {
 }
 
 fun getAffinity(points: Int): String {
-    val value = (points.toFloat() / 60f) * 100f
+    val value = (points.toFloat() / 20f) * 100f
     return if (value % 1f == 0f) value.toInt().toString()
     else "%.2f".format(value)
 }

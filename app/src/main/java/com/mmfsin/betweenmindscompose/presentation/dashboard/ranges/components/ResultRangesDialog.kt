@@ -24,9 +24,11 @@ import androidx.compose.ui.window.DialogProperties
 import com.mmfsin.betweenmindscompose.R
 import com.mmfsin.betweenmindscompose.presentation.core.components.BigText
 import com.mmfsin.betweenmindscompose.presentation.core.components.ButtonCustom
+import com.mmfsin.betweenmindscompose.presentation.core.components.MediumText
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerCustom
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMedium
+import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Black
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GreenHard
@@ -34,8 +36,8 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
 import com.mmfsin.betweenmindscompose.presentation.core.theme.august_shining
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getAffinity
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.helper.getTotalPoints
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.helper.getAffinity
+import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.helper.getTotalPoints
 
 @Preview
 @Composable
@@ -80,12 +82,19 @@ fun ResultRangesDialog(
             ) {
                 SpacerLarge()
 
+                MediumText(
+                    text = R.string.endgame_ranges_max_points,
+                    fontSize = 20.sp,
+                )
+
+                SpacerMini()
+
                 BigText(
                     text = R.string.endgame_top_text,
                     fontSize = 20.sp,
                 )
 
-                SpacerSmall()
+                SpacerMedium()
 
                 val text = if (totalPoints == 1) stringResource(R.string.endgame_one_point)
                 else stringResource(R.string.endgame_pts, totalPoints.toString())
@@ -96,6 +105,21 @@ fun ResultRangesDialog(
                     fontFamily = august_shining,
                     fontSize = 32.sp,
                 )
+
+                SpacerLarge()
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    BigText(text = R.string.endgame_you_have)
+                    SpacerSmall(horizontal = true)
+                    BigText(
+                        text = "$affinity%",
+                        color = GreenHard,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 26.sp,
+                    )
+                    SpacerSmall(horizontal = true)
+                    BigText(text = R.string.endgame_affinity)
+                }
 
                 SpacerCustom(34.dp)
 
