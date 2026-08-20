@@ -118,7 +118,7 @@ class RangesOfflineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = roundPoints,
                 showBullseye = true,
@@ -172,7 +172,35 @@ class RangesOfflineViewModel @Inject constructor(
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
 
     fun replay() {
+        showResultDialog(false)
 
+        _uiState.update {
+            it.copy(
+                roundCount = 0,
+                showRoundView = true,
+                points = listOf(null, null, null, null),
+                showSlider = false,
+                sliderEnabled = false,
+                buttonEnabled = false,
+            )
+        }
+
+        closeCurtains()
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showRoundView = false,
+                    sliderValue = 50f,
+                    hint = ""
+                )
+            }
+
+            setRange()
+            delay(1000)
+            showBullseye()
+        }
     }
 
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }

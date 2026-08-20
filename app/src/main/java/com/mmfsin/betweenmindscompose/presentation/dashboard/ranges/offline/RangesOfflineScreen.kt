@@ -15,11 +15,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
@@ -37,6 +39,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,6 +59,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerMini
 import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
+import com.mmfsin.betweenmindscompose.presentation.core.theme.GreenHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
@@ -236,7 +240,7 @@ fun RangesOfflineContent(
                             thumb = {
                                 Box(
                                     modifier = Modifier
-                                        .width(6.dp)
+                                        .width(4.dp)
                                         .fillMaxHeight()
                                         .background(White)
                                 )
