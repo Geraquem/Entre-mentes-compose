@@ -19,3 +19,15 @@ const val QUESTIONS = "questions"
 const val RANGES = "ranges"
 const val PACKS = "packs"
 const val VERSION = "version"
+
+/** ROOM */
+const val DDBB_NAME = "betweenminds_room_ddbb"
+const val TABLE_QUESTIONS = "table_questions"
+const val TABLE_RANGES = "table_ranges"
+const val TABLE_PACKS = "table_packs"
+
+/** SHARED PREFS */
+const val SHARED_PREFS_NAME = "betweenminds_shared_prefs"
+const val SP_QUESTIONS_SERVER = "sp_questions_server"
+const val SP_RANGES_SERVER = "sp_ranges_server"
+const val SP_PACKS_SERVER = "sp_packs_server"
