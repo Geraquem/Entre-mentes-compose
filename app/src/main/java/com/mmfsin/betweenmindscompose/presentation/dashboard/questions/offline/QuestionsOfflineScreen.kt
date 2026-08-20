@@ -3,6 +3,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import android.content.Context
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,7 +50,6 @@ import com.mmfsin.betweenmindscompose.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenmindscompose.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GrayHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
-import com.mmfsin.betweenmindscompose.presentation.core.theme.RedLight
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
@@ -58,8 +58,8 @@ import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.People
-import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultQuestionsDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.QuestionRounds
+import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.ResultQuestionsDialog
 import com.mmfsin.betweenmindscompose.utils.AnimateX
 import com.mmfsin.betweenmindscompose.utils.NAV_INSTR_QUESTIONS_OFFLINE
 import com.mmfsin.betweenmindscompose.utils.ShowAlpha
@@ -77,21 +77,25 @@ fun QuestionsOfflinePV() {
             showInitialDialog = false,
             curtainsOpen = true,
             showRoundView = false,
-            showWhiteIndicator = true
+            showWhiteIndicator = true,
+            controllerEnabled = false,
         ),
         {}, {}, {}, {},
         {}, {}, {},
         {}, {}, {}, {},
+        {},
     )
 }
 
 @Composable
 fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel()) {
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     QuestionsOfflineContent(
         uiState = uiState,
+        goBack = { activity?.finish() },
         goToInstructions = { context.goToInstructions() },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         onBlueNameChange = { viewModel.onBlueNameChanged(it) },
@@ -109,6 +113,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
 @Composable
 fun QuestionsOfflineContent(
     uiState: QuestionsOfflineStates,
+    goBack: () -> Unit,
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
     onBlueNameChange: (String) -> Unit,
@@ -127,7 +132,7 @@ fun QuestionsOfflineContent(
     Scaffold(
         topBar = {
             CustomToolbar(
-                goBack = {},
+                goBack = { goBack() },
                 goToInstructions = { goToInstructions() }
             )
         }
@@ -154,7 +159,7 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
 
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(80.dp).background(RedLight),
+                    modifier = Modifier.fillMaxWidth().height(100.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     MediumText(
@@ -201,6 +206,7 @@ fun QuestionsOfflineContent(
                             value = uiState.firstSlider,
                             onValueChange = { updateFirstOpinionPercents(it.roundToInt()) },
                             valueRange = 0f..100f,
+                            enabled = uiState.controllerEnabled,
                             thumb = {
                                 Box(
                                     modifier = Modifier
@@ -212,7 +218,9 @@ fun QuestionsOfflineContent(
                             colors = SliderDefaults.colors(
                                 thumbColor = White,
                                 activeTrackColor = Transparent,
-                                inactiveTrackColor = Transparent
+                                disabledActiveTrackColor = Transparent,
+                                inactiveTrackColor = Transparent,
+                                disabledInactiveTrackColor = Transparent,
                             ),
                         )
                     }
@@ -273,18 +281,14 @@ fun QuestionsOfflineContent(
                             else updateSecondOpinionPercents(it.roundToInt())
                         },
                         valueRange = 0f..100f,
-                        thumb = {
-                            Box(
-                                modifier = Modifier
-                                    .width(10.dp)
-                                    .fillMaxHeight()
-                                    .background(RedMedium)
-                            )
-                        },
+                        enabled = uiState.controllerEnabled,
+                        thumb = { Box(modifier = Modifier.fillMaxHeight()) },
                         colors = SliderDefaults.colors(
-                            thumbColor = White,
+                            thumbColor = Transparent,
                             activeTrackColor = Transparent,
-                            inactiveTrackColor = Transparent
+                            disabledActiveTrackColor = Transparent,
+                            inactiveTrackColor = Transparent,
+                            disabledInactiveTrackColor = Transparent,
                         ),
                     )
                 }
@@ -325,7 +329,7 @@ fun QuestionsOfflineContent(
                     points = uiState.points,
                     blueName = uiState.blueName,
                     orangeName = uiState.orangeName,
-                    exit = {},
+                    exit = { goBack() },
                     replay = { replay() },
                     changeNames = {},
                 )

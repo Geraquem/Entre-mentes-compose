@@ -129,16 +129,8 @@ fun RangesOfflineContent(
     showResultDialog: (Boolean) -> Unit,
     replay: () -> Unit,
 ) {
-    var parentWidth by remember { mutableIntStateOf(0) }
 
-    if (uiState.confettiTrigger > 0) {
-        key(uiState.confettiTrigger) {
-            KonfettiView(
-                modifier = Modifier.fillMaxSize(),
-                parties = listOf(getKonfettiParty())
-            )
-        }
-    }
+    var parentWidth by remember { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -154,6 +146,16 @@ fun RangesOfflineContent(
                 .padding(innerPadding)
                 .padding(vertical = 12.dp, horizontal = 18.dp)
         ) {
+
+            if (uiState.confettiTrigger > 0) {
+                key(uiState.confettiTrigger) {
+                    KonfettiView(
+                        modifier = Modifier.fillMaxSize(),
+                        parties = listOf(getKonfettiParty(uiState.confettiTrigger))
+                    )
+                }
+            }
+
             Column {
                 RangeRounds(uiState.points)
 

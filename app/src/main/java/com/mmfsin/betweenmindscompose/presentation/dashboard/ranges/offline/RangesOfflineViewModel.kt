@@ -46,10 +46,6 @@ class RangesOfflineViewModel @Inject constructor(
                 actualRangeRight = ranges[states.ragesPos].rightRange
             )
         }
-
-        /** delete */
-        //        hideInitialDialog()
-        /****/
     }
 
     fun hideInitialDialog() {
@@ -71,8 +67,11 @@ class RangesOfflineViewModel @Inject constructor(
                 buttonText = R.string.btn_ready,
                 showSlider = false,
                 showEditTextHint = true,
-                buttonEnabled = true,
             )
+        }
+        viewModelScope.launch {
+            delay(500)
+            _uiState.update { it.copy(buttonEnabled = true) }
         }
         openCurtains()
     }
@@ -119,9 +118,9 @@ class RangesOfflineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
-                confettiTrigger = if (roundPoints == 5) states.confettiTrigger + 1 else 0,
+                confettiTrigger = roundPoints,
                 showBullseye = true,
                 sliderEnabled = false,
                 buttonEnabled = false,
@@ -158,6 +157,7 @@ class RangesOfflineViewModel @Inject constructor(
                     showRoundView = false,
                     showSlider = false,
                     sliderValue = 50f,
+                    confettiTrigger = 0,
                     showEditTextHint = true,
                     hint = ""
                 )

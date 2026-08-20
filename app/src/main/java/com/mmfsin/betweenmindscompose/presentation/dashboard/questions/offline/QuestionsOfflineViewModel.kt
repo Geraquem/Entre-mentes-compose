@@ -73,9 +73,6 @@ class QuestionsOfflineViewModel @Inject constructor(
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
-    fun showIndicatorOpinionOne(value: Boolean) = _uiState.update { it.copy(showWhiteIndicator = value) }
-    fun showIndicatorOpinionTwo(value: Boolean) = _uiState.update { it.copy(showRedIndicator = value) }
-
     fun updateFirstOpinionPercents(value: Int) {
         val firstOpBlue = 100 - value
         handleHandsUp(percent = firstOpBlue)
@@ -123,20 +120,20 @@ class QuestionsOfflineViewModel @Inject constructor(
         }
         handleHandsUp(50)
         closeCurtains()
-        showIndicatorOpinionOne(false)
 
         viewModelScope.launch {
             delay(1500)
             _uiState.update {
                 it.copy(
                     phase = SECOND_OPINION,
+                    showWhiteIndicator = false,
+                    showRedIndicator = true,
                     buttonEnabled = true,
                     controllerEnabled = true,
                     buttonText = R.string.btn_check
                 )
             }
             openCurtains()
-            showIndicatorOpinionTwo(true)
         }
     }
 

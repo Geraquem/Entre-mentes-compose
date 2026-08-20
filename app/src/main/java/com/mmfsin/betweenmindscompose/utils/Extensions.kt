@@ -73,17 +73,26 @@ fun ShowAlpha(
     Box(modifier = Modifier.alpha(alpha)) { content() }
 }
 
-fun getKonfettiParty() = Party(
-    speed = 0f,
-    maxSpeed = 30f,
-    damping = 0.9f,
-    spread = 360,
-    colors = listOf(
-        0xfce18a,
-        0xff726d,
-        0xf4306d,
-        0xb48def
-    ),
-    emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100),
-    position = Position.Relative(0.5, 0.3)
-)
+fun getKonfettiParty(points: Int = 5): Party {
+    val size = when (points) {
+        1 -> 10
+        2 -> 40
+        5 -> 100
+        else -> 0
+    }
+
+    return Party(
+        speed = 0f,
+        maxSpeed = 30f,
+        damping = 0.9f,
+        spread = 360,
+        colors = listOf(
+            0xfce18a,
+            0xff726d,
+            0xf4306d,
+            0xb48def
+        ),
+        emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(size),
+        position = Position.Relative(0.5, 0.3)
+    )
+}
