@@ -1,0 +1,79 @@
+package com.mmfsin.betweenminds.presentation.dashboard.questions.components
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.presentation.core.components.BigText
+import com.mmfsin.betweenminds.presentation.core.components.MediumText
+import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
+import com.mmfsin.betweenminds.presentation.core.theme.Background
+import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
+import com.mmfsin.betweenminds.presentation.core.theme.White
+import com.mmfsin.betweenminds.presentation.core.theme.alphazet
+import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.getPointsColor
+
+@Preview
+@Composable
+fun QuestionRoundsPV() {
+    QuestionRounds(listOf(12, 5, null, null))
+}
+
+@Composable
+fun QuestionRounds(points: List<Int?>) {
+    Column {
+        MediumText(
+            text = stringResource(R.string.scoreboard_rounds),
+            fontFamily = alphazet,
+            color = White,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        SpacerMini()
+
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(Background)
+                .padding(8.dp)
+        ) {
+            points.take(4).forEachIndexed { i, p ->
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AnimatedContent(
+                        targetState = p,
+                        label = "point_animation"
+                    ) { point ->
+                        if (point == null) {
+                            BigText(
+                                text = "${i + 1}",
+                                color = GrayHard,
+                                fontFamily = alphazet,
+                                fontWeight = FontWeight.Bold
+                            )
+                        } else {
+                            BigText(
+                                text = if (p == 1) "$p pt" else "$p pts",
+                                color = getPointsColor(point)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

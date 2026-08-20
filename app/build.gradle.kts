@@ -5,11 +5,11 @@ plugins {
     alias(libs.plugins.kotlin.parecelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-//    id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.mmfsin.betweenmindscompose"
+    namespace = "com.mmfsin.betweenminds"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.mmfsin.betweenmindscompose"
+        applicationId = "com.mmfsin.betweenminds"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
