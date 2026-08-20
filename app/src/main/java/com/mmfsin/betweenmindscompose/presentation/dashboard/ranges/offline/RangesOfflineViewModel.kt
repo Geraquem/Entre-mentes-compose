@@ -175,5 +175,7 @@ class RangesOfflineViewModel @Inject constructor(
 
     }
 
+    fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
+
     private fun sww() {}
 }

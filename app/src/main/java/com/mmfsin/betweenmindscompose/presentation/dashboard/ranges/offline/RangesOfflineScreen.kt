@@ -3,6 +3,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.offline
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -59,6 +60,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.alphazet
+import com.mmfsin.betweenmindscompose.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.ranges.common.Bullseye
@@ -90,7 +92,7 @@ fun RangesOfflineScreenPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {}, {}, {},
+        {}, {}, {}, {},
     )
 }
 
@@ -112,6 +114,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         nextRound = { viewModel.nextRound() },
         showResultDialog = { viewModel.showResultDialog(true) },
         replay = { viewModel.replay() },
+        showExitDialog = { viewModel.showExitDialog(it) },
     )
 }
 
@@ -128,6 +131,7 @@ fun RangesOfflineContent(
     nextRound: () -> Unit,
     showResultDialog: (Boolean) -> Unit,
     replay: () -> Unit,
+    showExitDialog: (Boolean) -> Unit
 ) {
 
     var parentWidth by remember { mutableIntStateOf(0) }
@@ -217,8 +221,6 @@ fun RangesOfflineContent(
                         .background(GrayHard)
                         .onSizeChanged { parentWidth = it.width },
                 ) {
-
-                    /** bullseye */
 
                     if (uiState.showBullseye) {
                         Bullseye(uiState.bullsEyeStart)
@@ -338,6 +340,15 @@ fun RangesOfflineContent(
                     replay = { replay() },
                 )
             }
+
+            if (uiState.showExitDialog) {
+                ExitGameDialog(
+                    exit = { goBack() },
+                    cancel = { showExitDialog(false) }
+                )
+            }
+
+            BackHandler { showExitDialog(true) }
         }
     }
 }

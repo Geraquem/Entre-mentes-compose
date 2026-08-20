@@ -3,6 +3,7 @@
 package com.mmfsin.betweenmindscompose.presentation.dashboard.questions.offline
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -54,6 +55,7 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.RedMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.Transparent
 import com.mmfsin.betweenmindscompose.presentation.core.theme.White
 import com.mmfsin.betweenmindscompose.presentation.core.theme.courier
+import com.mmfsin.betweenmindscompose.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenmindscompose.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenmindscompose.presentation.dashboard.questions.components.InitialOfflineQuestionsDialog
@@ -83,7 +85,7 @@ fun QuestionsOfflinePV() {
         {}, {}, {}, {},
         {}, {}, {},
         {}, {}, {}, {},
-        {},
+        {}, {},
     )
 }
 
@@ -106,7 +108,8 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
         readyOpinionTwo = { viewModel.readyOpinionTwo() },
         handleNextRound = { viewModel.handleNextRound() },
         showResultDialog = { viewModel.showResultDialog(it) },
-        replay = { viewModel.replay() }
+        replay = { viewModel.replay() },
+        showExitDialog = { viewModel.showExitDialog(it) }
     )
 }
 
@@ -125,6 +128,7 @@ fun QuestionsOfflineContent(
     handleNextRound: () -> Unit,
     showResultDialog: (Boolean) -> Unit,
     replay: () -> Unit,
+    showExitDialog: (Boolean) -> Unit
 ) {
 
     var parentWidth by remember { mutableIntStateOf(0) }
@@ -334,6 +338,15 @@ fun QuestionsOfflineContent(
                     changeNames = {},
                 )
             }
+
+            if (uiState.showExitDialog) {
+                ExitGameDialog(
+                    exit = { goBack() },
+                    cancel = { showExitDialog(false) },
+                )
+            }
+
+            BackHandler { showExitDialog(true) }
         }
     }
 }

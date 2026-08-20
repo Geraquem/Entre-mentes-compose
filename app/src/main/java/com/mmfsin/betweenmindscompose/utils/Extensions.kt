@@ -76,7 +76,7 @@ fun ShowAlpha(
 fun getKonfettiParty(points: Int = 5): Party {
     val size = when (points) {
         1 -> 10
-        2 -> 40
+        2 -> 20
         5 -> 100
         else -> 0
     }
