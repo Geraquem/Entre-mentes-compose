@@ -164,8 +164,7 @@ class QuestionsOfflineViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     buttonEnabled = true,
-                    buttonText = if (states.roundCount != 3) R.string.btn_next_round
-                    else R.string.btn_see_result
+                    buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
                 )
             }
         }

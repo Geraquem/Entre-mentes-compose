@@ -87,7 +87,7 @@ fun RangesOfflineScreenPV() {
             showSlider = true
         ),
         {}, {}, {}, {},
-        {}, {},
+        {}, {}, {},
     )
 }
 
@@ -103,6 +103,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         updateSliderValue = { viewModel.updateSliderValue(it) },
         readyBullseyePhase = { viewModel.readyBullseyePhase() },
         readySliderPhase = { viewModel.readySliderPhase() },
+        nextRound = { viewModel.nextRound() },
     )
 }
 
@@ -115,6 +116,7 @@ fun RangesOfflineContent(
     updateSliderValue: (Int) -> Unit,
     readyBullseyePhase: () -> Unit,
     readySliderPhase: () -> Unit,
+    nextRound: () -> Unit,
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
 
@@ -150,7 +152,7 @@ fun RangesOfflineContent(
                     modifier = Modifier.fillMaxWidth().height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    ShowAlpha(uiState.phase == SHOW_BULLSEYE) {
+                    ShowAlpha(uiState.showEditTextHint) {
                         Column(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -185,7 +187,7 @@ fun RangesOfflineContent(
                         }
                     }
 
-                    ShowAlpha(uiState.phase == MOVE_ARROW) {
+                    ShowAlpha(!uiState.showEditTextHint) {
                         MediumText(
                             text = uiState.hint.ifEmpty { stringResource(R.string.ranges_no_clue) },
                             color = White
@@ -267,7 +269,7 @@ fun RangesOfflineContent(
 
                     RangeLimits(
                         leftRange = uiState.sliderValue.toString(),
-                        rightRange = uiState.actualRangeRight
+                        rightRange = uiState.bullsEyeStart.toString()
                     )
 
                     if (uiState.showSlider) {
@@ -289,16 +291,15 @@ fun RangesOfflineContent(
                     }
                 }
 
+                SpacerSmall()
+
                 ButtonCustom(
                     onClick = {
                         if (uiState.buttonEnabled) {
                             when (uiState.phase) {
                                 SHOW_BULLSEYE -> readyBullseyePhase()
-                                MOVE_ARROW -> {
-                                    readySliderPhase()
-                                }
-
-                                NEXT_ROUND -> {}
+                                MOVE_ARROW -> readySliderPhase()
+                                NEXT_ROUND -> nextRound()
                                 RESULTS -> {}
                             }
                         }

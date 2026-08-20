@@ -11,6 +11,8 @@ data class RangesOfflineStates(
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
 
+    val showEditTextHint: Boolean = true,
+
     val showRoundView: Boolean = true,
     var roundCount: Int = 0,
     val phase: RangePhaseType = SHOW_BULLSEYE,

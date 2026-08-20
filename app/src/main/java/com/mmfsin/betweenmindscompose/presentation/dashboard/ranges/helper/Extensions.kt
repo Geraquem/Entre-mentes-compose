@@ -5,13 +5,16 @@ import com.mmfsin.betweenmindscompose.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.GreenMedium
 import com.mmfsin.betweenmindscompose.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenmindscompose.presentation.core.theme.RedHard
-import nl.dionsegijn.konfetti.core.Party
-import nl.dionsegijn.konfetti.core.Position
-import nl.dionsegijn.konfetti.core.emitter.Emitter
-import java.util.concurrent.TimeUnit
 
-fun calculateRangePoints(sliderPosisition: Float, bullseyeStart: Float): Int {
-    return 1
+fun calculateRangePoints(sliderPosition: Float, bullseyeStart: Float): Int {
+    return when (sliderPosition) {
+        in bullseyeStart..<(bullseyeStart + 6f) -> 5
+        in (bullseyeStart - 5f)..<bullseyeStart -> 2
+        in (bullseyeStart + 6f)..<(bullseyeStart + 11f) -> 2
+        in (bullseyeStart - 10f)..<(bullseyeStart - 5f) -> 1
+        in (bullseyeStart + 11f)..<(bullseyeStart + 16f) -> 1
+        else -> 0
+    }
 }
 
 fun getPointsColor(points: Int): Color {

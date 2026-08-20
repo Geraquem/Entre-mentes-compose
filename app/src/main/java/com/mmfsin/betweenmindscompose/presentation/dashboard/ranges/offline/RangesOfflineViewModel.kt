@@ -47,7 +47,7 @@ class RangesOfflineViewModel @Inject constructor(
         }
 
         /** delete */
-        hideInitialDialog()
+//        hideInitialDialog()
         /****/
     }
 
@@ -69,6 +69,7 @@ class RangesOfflineViewModel @Inject constructor(
                 phase = SHOW_BULLSEYE,
                 buttonText = R.string.btn_ready,
                 showSlider = false,
+                showEditTextHint = true,
                 buttonEnabled = true,
             )
         }
@@ -76,6 +77,7 @@ class RangesOfflineViewModel @Inject constructor(
     }
 
     fun updateHint(value: String) = _uiState.update { it.copy(hint = value) }
+
     fun updateSliderValue(value: Int) = _uiState.update { it.copy(sliderValue = value.toFloat()) }
 
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
@@ -94,8 +96,10 @@ class RangesOfflineViewModel @Inject constructor(
             delay(1500)
             _uiState.update {
                 it.copy(
+                    showEditTextHint = false,
                     showBullseye = false,
                     showSlider = true,
+                    sliderEnabled = true,
                     buttonEnabled = true,
                     buttonText = R.string.btn_check
                 )
@@ -108,7 +112,7 @@ class RangesOfflineViewModel @Inject constructor(
         val states = uiState.value
 
         val roundPoints = calculateRangePoints(
-            sliderPosisition = states.sliderValue,
+            sliderPosition = states.sliderValue,
             bullseyeStart = states.bullsEyeStart
         )
 
@@ -118,8 +122,49 @@ class RangesOfflineViewModel @Inject constructor(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = if (roundPoints == 5) states.confettiTrigger + 1 else 0,
                 showBullseye = true,
-                sliderEnabled = false
+                sliderEnabled = false,
+                buttonEnabled = false,
+                ragesPos = states.ragesPos + 1,
+                roundCount = states.roundCount + 1,
             )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    buttonEnabled = true,
+                    buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
+                )
+            }
+        }
+    }
+
+    fun nextRound() {
+        closeCurtains()
+        _uiState.update {
+            it.copy(
+                showRoundView = true,
+                buttonEnabled = false,
+                sliderEnabled = false,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showRoundView = false,
+                    showSlider = false,
+                    sliderValue = 50f,
+                    showEditTextHint = true,
+                    hint = ""
+                )
+            }
+            setRange()
+
+            delay(1000)
+            showBullseye()
         }
     }
 
