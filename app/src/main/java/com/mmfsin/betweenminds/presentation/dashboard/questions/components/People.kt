@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
@@ -150,7 +149,7 @@ fun People(
             )
         }
 
-        SpacerMedium()
+        SpacerSmall()
 
         Row(
             modifier = Modifier.fillMaxWidth(),
