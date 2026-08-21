@@ -6,25 +6,25 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mmfsin.betweenminds.presentation.dashboard.questions.online.QuestionsOnlineScreen
+import com.mmfsin.betweenminds.presentation.dashboard.questions.online.creator.QuestionsOnlineCreatorScreen
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavigationQuestionsOnline() {
+fun NavigationQuestionsOnlineCreator() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = QuestionsOnline,
+        startDestination = QuestionsOnlineCreator,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable<QuestionsOnline> { QuestionsOnlineScreen() }
+        composable<QuestionsOnlineCreator> { QuestionsOnlineCreatorScreen() }
     }
 }
 
 /** SCREENS */
 @Serializable
-object QuestionsOnline
+object QuestionsOnlineCreator

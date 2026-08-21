@@ -59,7 +59,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
-import com.mmfsin.betweenminds.presentation.dashboard.questions.components.InitialOfflineQuestionsDialog
+import com.mmfsin.betweenminds.presentation.dashboard.questions.offline.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
@@ -75,7 +75,7 @@ import kotlin.math.roundToInt
 @Composable
 fun QuestionsOfflinePV() {
     QuestionsOfflineContent(
-        uiState = QuestionsOfflineStates(
+        uiStates = QuestionsOfflineStates(
             isLoading = false,
             showInitialDialog = false,
             curtainsOpen = true,
@@ -94,10 +94,10 @@ fun QuestionsOfflinePV() {
 fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val activity = LocalActivity.current
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
 
     QuestionsOfflineContent(
-        uiState = uiState,
+        uiStates = uiStates,
         goBack = { activity?.finish() },
         goToInstructions = { context.goToInstructions() },
         hideInitialDialog = { viewModel.hideInitialDialog() },
@@ -116,7 +116,7 @@ fun QuestionsOfflineScreen(viewModel: QuestionsOfflineViewModel = hiltViewModel(
 
 @Composable
 fun QuestionsOfflineContent(
-    uiState: QuestionsOfflineStates,
+    uiStates: QuestionsOfflineStates,
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
@@ -149,8 +149,8 @@ fun QuestionsOfflineContent(
                 .padding(12.dp)
         ) {
 
-            if (uiState.confettiTrigger > 0) {
-                key(uiState.confettiTrigger) {
+            if (uiStates.confettiTrigger > 0) {
+                key(uiStates.confettiTrigger) {
                     KonfettiView(
                         modifier = Modifier.fillMaxSize(),
                         parties = listOf(getKonfettiParty())
@@ -159,7 +159,7 @@ fun QuestionsOfflineContent(
             }
 
             Column {
-                QuestionRounds(uiState.points)
+                QuestionRounds(uiStates.points)
 
                 SpacerLarge()
 
@@ -168,7 +168,7 @@ fun QuestionsOfflineContent(
                     contentAlignment = Alignment.Center
                 ) {
                     MediumText(
-                        text = uiState.actualQuestion,
+                        text = uiStates.actualQuestion,
                         color = White,
                         fontFamily = courier,
                         gravity = TextAlign.Center,
@@ -179,18 +179,18 @@ fun QuestionsOfflineContent(
                 SpacerMedium()
 
                 People(
-                    blueName = uiState.blueName,
+                    blueName = uiStates.blueName,
                     onBlueNameChange = { onBlueNameChange(it) },
-                    firstBlueOpinion = uiState.firstOpinionBlue,
-                    secondBlueOpinion = uiState.secondOpinionBlue,
-                    orangeName = uiState.orangeName,
+                    firstBlueOpinion = uiStates.firstOpinionBlue,
+                    secondBlueOpinion = uiStates.secondOpinionBlue,
+                    orangeName = uiStates.orangeName,
                     onOrangeNameChange = { onOrangeNameChange(it) },
-                    firstOrangeOpinion = uiState.firstOpinionOrange,
-                    secondOrangeOpinion = uiState.secondOpinionOrange,
-                    showFirstOpinion = uiState.showFirstOpinionPercents,
-                    showSecondOpinion = uiState.showSecondOpinionPercents,
-                    blueHandsUp = uiState.blueHandsUp,
-                    orangeHandsUp = uiState.orangeHandsUp
+                    firstOrangeOpinion = uiStates.firstOpinionOrange,
+                    secondOrangeOpinion = uiStates.secondOpinionOrange,
+                    showFirstOpinion = uiStates.showFirstOpinionPercents,
+                    showSecondOpinion = uiStates.showSecondOpinionPercents,
+                    blueHandsUp = uiStates.blueHandsUp,
+                    orangeHandsUp = uiStates.orangeHandsUp
                 )
 
                 SpacerLarge()
@@ -205,13 +205,13 @@ fun QuestionsOfflineContent(
                         .onSizeChanged { parentWidth = it.width },
                 ) {
 
-                    if (uiState.showWhiteIndicator) {
+                    if (uiStates.showWhiteIndicator) {
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
-                            value = uiState.firstSlider,
+                            value = uiStates.firstSlider,
                             onValueChange = { updateFirstOpinionPercents(it.roundToInt()) },
                             valueRange = 0f..100f,
-                            enabled = uiState.controllerEnabled,
+                            enabled = uiStates.controllerEnabled,
                             thumb = {
                                 Box(
                                     modifier = Modifier
@@ -230,13 +230,13 @@ fun QuestionsOfflineContent(
                         )
                     }
 
-                    if (uiState.showRedIndicator) {
+                    if (uiStates.showRedIndicator) {
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
-                            value = uiState.secondSlider,
+                            value = uiStates.secondSlider,
                             onValueChange = { updateSecondOpinionPercents(it.roundToInt()) },
                             valueRange = 0f..100f,
-                            enabled = uiState.controllerEnabled,
+                            enabled = uiStates.controllerEnabled,
                             thumb = {
                                 Box(
                                     modifier = Modifier
@@ -258,7 +258,7 @@ fun QuestionsOfflineContent(
                     val halfWidth = with(LocalDensity.current) { (parentWidth / 2).toDp() }
 
                     /** Left curtain */
-                    AnimateX(if (uiState.curtainsOpen) -parentWidth / 2f else 0f) {
+                    AnimateX(if (uiStates.curtainsOpen) -parentWidth / 2f else 0f) {
                         Box(
                             modifier = Modifier
                                 .width(halfWidth)
@@ -268,7 +268,7 @@ fun QuestionsOfflineContent(
                     }
 
                     /** Right curtain */
-                    AnimateX(if (uiState.curtainsOpen) parentWidth.toFloat() else 0f) {
+                    AnimateX(if (uiStates.curtainsOpen) parentWidth.toFloat() else 0f) {
                         Box(
                             modifier = Modifier
                                 .width(halfWidth)
@@ -283,13 +283,13 @@ fun QuestionsOfflineContent(
                     SwipeBox(modifier = Modifier.align(Alignment.BottomCenter))
 
                     Slider(
-                        value = if (uiState.phase == FIRST_OPINION) uiState.firstSlider else uiState.secondSlider,
+                        value = if (uiStates.phase == FIRST_OPINION) uiStates.firstSlider else uiStates.secondSlider,
                         onValueChange = {
-                            if (uiState.phase == FIRST_OPINION) updateFirstOpinionPercents(it.roundToInt())
+                            if (uiStates.phase == FIRST_OPINION) updateFirstOpinionPercents(it.roundToInt())
                             else updateSecondOpinionPercents(it.roundToInt())
                         },
                         valueRange = 0f..100f,
-                        enabled = uiState.controllerEnabled,
+                        enabled = uiStates.controllerEnabled,
                         thumb = { Box(modifier = Modifier.fillMaxHeight()) },
                         colors = SliderDefaults.colors(
                             thumbColor = Transparent,
@@ -304,8 +304,8 @@ fun QuestionsOfflineContent(
                 SpacerLarge()
                 ButtonCustom(
                     onClick = {
-                        if (uiState.buttonEnabled) {
-                            when (uiState.phase) {
+                        if (uiStates.buttonEnabled) {
+                            when (uiStates.phase) {
                                 FIRST_OPINION -> readyOpinionOne()
                                 SECOND_OPINION -> readyOpinionTwo()
                                 NEXT_ROUND -> handleNextRound()
@@ -313,45 +313,45 @@ fun QuestionsOfflineContent(
                             }
                         }
                     },
-                    text = uiState.buttonText,
+                    text = uiStates.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
                 SpacerSmall()
             }
 
-            ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }
+            ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }
 
-            if (uiState.showInitialDialog) {
+            if (uiStates.showInitialDialog) {
                 InitialOfflineQuestionsDialog(
-                    blueName = uiState.blueName,
+                    blueName = uiStates.blueName,
                     onBlueNameChanged = { onBlueNameChange(it) },
-                    orangeName = uiState.orangeName,
+                    orangeName = uiStates.orangeName,
                     onOrangeNameChanged = { onOrangeNameChange(it) },
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
-                    isLoading = uiState.isLoading
+                    isLoading = uiStates.isLoading
                 )
             }
 
-            if (uiState.showResultDialog) {
+            if (uiStates.showResultDialog) {
                 ResultQuestionsDialog(
-                    points = uiState.points,
-                    blueName = uiState.blueName,
-                    orangeName = uiState.orangeName,
+                    points = uiStates.points,
+                    blueName = uiStates.blueName,
+                    orangeName = uiStates.orangeName,
                     exit = { goBack() },
                     replay = { replay() },
                     changeNames = {},
                 )
             }
 
-            if (uiState.showExitDialog) {
+            if (uiStates.showExitDialog) {
                 ExitGameDialog(
                     exit = { goBack() },
                     cancel = { showExitDialog(false) },
                 )
             }
 
-            if (uiState.showSwwDialog) ErrorDialog(accept = { goBack() })
+            if (uiStates.showSwwDialog) ErrorDialog(accept = { goBack() })
 
             BackHandler { showExitDialog(true) }
         }

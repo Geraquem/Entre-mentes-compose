@@ -9,6 +9,7 @@ import com.mmfsin.betweenminds.utils.PLAYER_1
 import com.mmfsin.betweenminds.utils.PLAYER_2
 import com.mmfsin.betweenminds.utils.ROOMS
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class RoomRepository @Inject constructor(
                 return
             }
 
-            val roomId = generateRoomId()
+            val roomId = generateRoomId().uppercase()
             val roomRef = db.collection(ROOMS).document(roomId)
 
             db.runTransaction { transaction ->
@@ -74,7 +75,7 @@ class RoomRepository @Inject constructor(
         var joined = false
         val latch = CountDownLatch(1)
 
-        val roomRef = db.collection(ROOMS).document(roomId)
+        val roomRef = db.collection(ROOMS).document(roomId.uppercase())
 
         roomRef.get().addOnSuccessListener { snapshot ->
             if (!snapshot.exists()) {
@@ -110,7 +111,25 @@ class RoomRepository @Inject constructor(
         return joined
     }
 
-    override suspend fun waitToJoinRoom(roomId: String) {
+    override suspend fun waitToJoinRoom(roomId: String) = suspendCancellableCoroutine { cont ->
+        val db = Firebase.firestore
+        val roomRef = db.collection(ROOMS).document(roomId)
+
+        val listener = roomRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                if (cont.isActive) cont.resumeWith(Result.failure(e))
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val players = (snapshot.get(PLAYERS) as? List<String>) ?: emptyList()
+                if (players.size >= 2) {
+                    if (cont.isActive) cont.resumeWith(Result.success(Unit))
+                }
+            }
+        }
+
+        cont.invokeOnCancellation { listener.remove() }
     }
 
     override suspend fun restartGameAndResetRoom(roomId: String) {

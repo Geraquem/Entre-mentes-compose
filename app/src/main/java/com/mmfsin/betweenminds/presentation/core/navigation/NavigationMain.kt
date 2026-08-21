@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mmfsin.betweenminds.presentation.choose.ChooseScreen
-import com.mmfsin.betweenminds.presentation.choose.createroom.RoomCodeScreen
+import com.mmfsin.betweenminds.presentation.choose.roomcode.RoomCodeScreen
 import com.mmfsin.betweenminds.presentation.menu.MenuScreen
 import kotlinx.serialization.Serializable
 

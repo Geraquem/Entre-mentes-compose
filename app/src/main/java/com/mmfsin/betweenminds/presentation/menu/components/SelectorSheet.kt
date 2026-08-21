@@ -174,7 +174,8 @@ fun SelectorButtonPV() {
         icon = R.drawable.ic_book,
         text = R.string.selector_how_to_play,
         modifier = Modifier,
-        {})
+        {}
+    )
 }
 
 @Composable
@@ -184,8 +185,8 @@ fun SelectorButton(icon: Int?, text: Int, modifier: Modifier, onClick: () -> Uni
             .height(40.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(White)
-            .padding(vertical = 8.dp, horizontal = 12.dp)
-            .clickable(onClick = { onClick() }),
+            .clickable(onClick = { onClick() })
+            .padding(vertical = 8.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

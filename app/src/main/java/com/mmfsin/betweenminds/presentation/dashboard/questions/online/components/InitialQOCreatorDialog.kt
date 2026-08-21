@@ -1,30 +1,21 @@
-package com.mmfsin.betweenminds.presentation.dashboard.questions.components
+package com.mmfsin.betweenminds.presentation.dashboard.questions.online.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,7 +24,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
-import com.mmfsin.betweenminds.presentation.core.components.MediumText
+import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
@@ -41,18 +32,23 @@ import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
+import com.mmfsin.betweenminds.presentation.dashboard.questions.offline.components.SetPlayerName
+
 
 @Preview
 @Composable
-fun InitialOfflineQuestionsDialogPV() {
-    InitialOfflineQuestionsDialog(
-        "", {}, "María", {},
+fun InitialQOCreatorDialogPV() {
+    InitialQOCreatorDialog(
+        blueName = "Paco",
+        onBlueNameChanged = {},
+        orangeName = "",
+        onOrangeNameChanged = {},
         {}, {}, true
     )
 }
 
 @Composable
-fun InitialOfflineQuestionsDialog(
+fun InitialQOCreatorDialog(
     blueName: String,
     onBlueNameChanged: (String) -> Unit,
     orangeName: String,
@@ -95,7 +91,7 @@ fun InitialOfflineQuestionsDialog(
                 SpacerSmall()
 
                 Text(
-                    text = stringResource(R.string.questions_welcome_two),
+                    text = stringResource(R.string.questions_welcome_three_extra),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         lineHeight = 18.sp
                     ),
@@ -103,17 +99,36 @@ fun InitialOfflineQuestionsDialog(
 
                 SpacerSmall()
 
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.questions_welcome_you_are),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            lineHeight = 18.sp
+                        ),
+                    )
+                    SpacerSmall(horizontal = true)
+                    Image(
+                        painterResource(R.drawable.ic_player_one), null,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+
+                SpacerSmall()
+
                 Text(
-                    text = stringResource(R.string.questions_welcome_three_extra),
+                    text = stringResource(R.string.questions_welcome_you_move_white),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         lineHeight = 18.sp
                     ),
                 )
 
-                SpacerMedium()
+                SpacerLarge()
 
-                MediumText(
-                    text = R.string.questions_welcome_four,
+                Text(
+                    text = stringResource(R.string.questions_welcome_four),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineHeight = 18.sp
+                    ),
                 )
 
                 SpacerSmall()
@@ -156,57 +171,5 @@ fun InitialOfflineQuestionsDialog(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun SetPlayerName(
-    name: String,
-    onNameChange: (String) -> Unit,
-    hint: Int,
-    color: Color,
-    enabled: Boolean = true
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            painterResource(R.drawable.ic_human_down), null,
-            tint = color,
-            modifier = Modifier.size(42.dp)
-        )
-
-        SpacerSmall(horizontal = true)
-
-        BasicTextField(
-            modifier = Modifier.fillMaxWidth()
-                .border(width = 1.dp, color = color, shape = RoundedCornerShape(8.dp))
-                .padding(8.dp),
-            value = name,
-            onValueChange = { onNameChange(it.take(20)) },
-            enabled = enabled,
-            singleLine = true,
-            textStyle = MaterialTheme.typography.titleLarge.copy(
-                color = color,
-                fontSize = 18.sp,
-                fontFamily = alphazet
-            ),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                capitalization = KeyboardCapitalization.Words
-            ),
-            cursorBrush = SolidColor(color),
-            decorationBox = { innerTextField ->
-                Box(contentAlignment = Alignment.CenterStart) {
-                    if (name.isEmpty()) {
-                        Text(
-                            text = stringResource(hint),
-                            modifier = Modifier.alpha(0.5f),
-                            color = color,
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
-                    innerTextField()
-                }
-            }
-        )
     }
 }
