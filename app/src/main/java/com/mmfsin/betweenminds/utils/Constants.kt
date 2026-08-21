@@ -4,6 +4,7 @@ package com.mmfsin.betweenminds.utils
 const val BEDROCK_NAV_GRAPH = "bedrock_nav_graph"
 const val BEDROCK_STR_ARGS = "bedrock_str_args"
 
+const val NAV_CREATE_ROOM = "nav_create_room"
 const val NAV_QUESTIONS_ONLINE = "nav_questions_online"
 const val NAV_QUESTIONS_OFFLINE = "nav_questions_offline"
 const val NAV_RANGES_ONLINE = "nav_ranges_online"
@@ -19,6 +20,14 @@ const val QUESTIONS = "questions"
 const val RANGES = "ranges"
 const val PACKS = "packs"
 const val VERSION = "version"
+
+const val ROOMS = "rooms"
+const val PLAYERS = "players"
+const val ROUNDS = "rounds"
+const val ROUND_DATA = "round_data"
+const val POINTS = "points"
+const val PLAYER_1 = "player_one"
+const val PLAYER_2 = "player_two"
 
 /** ROOM */
 const val DDBB_NAME = "betweenminds_room_ddbb"

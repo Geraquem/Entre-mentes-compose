@@ -1,0 +1,8 @@
+package com.mmfsin.betweenminds.domain.usecases
+
+import com.mmfsin.betweenminds.domain.interfaces.IRoomRepository
+import javax.inject.Inject
+
+class CreateRoomUseCase @Inject constructor(private val repository: IRoomRepository) {
+    suspend fun execute(gameType: String) = repository.createRoom(gameType)
+}

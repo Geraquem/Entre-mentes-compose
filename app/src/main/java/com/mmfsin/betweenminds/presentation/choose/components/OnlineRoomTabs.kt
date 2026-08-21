@@ -49,7 +49,7 @@ fun OnlineRoomTabsPV() {
 fun OnlineRoomTabs(
     roomCode: String,
     onRoomCodeChange: (String) -> Unit,
-    joinRoom: () -> Unit,
+    joinRoom: (String) -> Unit,
     createRoom: () -> Unit
 ) {
     val pagerState = rememberPagerState(
@@ -92,7 +92,7 @@ fun OnlineRoomTabs(
             modifier = Modifier.fillMaxWidth()
         ) { page ->
             when (page) {
-                0 -> JoinRoom(roomCode, onRoomCodeChange) { joinRoom() }
+                0 -> JoinRoom(roomCode, onRoomCodeChange) { joinRoom(it) }
                 else -> CreateRoom(createRoom = { createRoom() })
             }
         }
@@ -103,7 +103,7 @@ fun OnlineRoomTabs(
 fun JoinRoom(
     value: String,
     onValueChange: (String) -> Unit,
-    joinRoom: () -> Unit
+    joinRoom: (String) -> Unit
 ) {
     Column(Modifier.fillMaxWidth().height(172.dp).background(BackgroundBlack)) {
         SpacerMedium()
@@ -149,7 +149,7 @@ fun JoinRoom(
         SpacerMedium()
 
         ButtonCustom(
-            onClick = { joinRoom() },
+            onClick = { joinRoom(value) },
             text = R.string.online_btn_join,
             modifier = Modifier.fillMaxWidth()
         )

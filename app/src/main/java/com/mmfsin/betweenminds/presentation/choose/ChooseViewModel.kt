@@ -1,8 +1,10 @@
 package com.mmfsin.betweenminds.presentation.choose
 
 import androidx.lifecycle.SavedStateHandle
-import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.Companion.getGameTypeById
+import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
+import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.usecases.CreateRoomUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -10,30 +12,51 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChooseViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val createRoomUseCase: CreateRoomUseCase
 ) : BaseViewModel<ChooseStates>(ChooseStates()) {
 
-    private val gameType: String? = savedStateHandle["gameType"]
+    private val gameTypeId: String? = savedStateHandle["gameTypeId"]
 
     init {
         checkGameType()
     }
 
     private fun checkGameType() {
-        if (gameType == null) sww()
+        if (gameTypeId == null) sww()
         else {
-            val type = getGameTypeById(gameType)
-            _uiState.update { it.copy(gameType = type) }
+            val type = getGameTypeById(gameTypeId)
+            _uiState.update {
+                it.copy(
+                    gameTypeId = gameTypeId,
+                    gameType = type
+                )
+            }
         }
     }
 
-    fun onRoomCodeChanged(value: String) = _uiState.update { it.copy(roomCode = value) }
-
-    fun joinRoom() {
-
-    }
+    fun onRoomCodeChanged(value: String) = _uiState.update { it.copy(roomCodeToJoin = value) }
 
     fun createRoom() {
+        val states = uiState.value
+        executeUseCase(
+            { createRoomUseCase.execute(states.gameTypeId) },
+            { code ->
+                if (code == null) sww()
+                else {
+                    _uiState.update { it.copy(roomCodeCreated = code) }
+                    when (states.gameType) {
+                        QUESTIONS -> createRoomQuestionsOnline(true)
+                        RANGES -> createRoomRangesOnline(true)
+                        else -> sww()
+                    }
+                }
+            },
+            {}
+        )
+    }
+
+    fun joinRoom() {
 
     }
 
@@ -41,15 +64,15 @@ class ChooseViewModel @Inject constructor(
         val gameType = uiState.value.gameType
         gameType?.let { type ->
             when (type) {
-                GameType.QUESTIONS -> startQuestionsOffline(true)
-                else -> startRangesOffline(true)
+                QUESTIONS -> startQuestionsOffline(true)
+                RANGES -> startRangesOffline(true)
             }
         }
     }
 
-    fun startQuestionsOnline(value: Boolean) = _uiState.update { it.copy(startQuestionsOnline = value) }
+    fun createRoomQuestionsOnline(value: Boolean) = _uiState.update { it.copy(createRoomQuestionsOnline = value) }
     fun startQuestionsOffline(value: Boolean) = _uiState.update { it.copy(startQuestionsOffline = value) }
-    fun startRangesOnline(value: Boolean) = _uiState.update { it.copy(startRangesOnline = value) }
+    fun createRoomRangesOnline(value: Boolean) = _uiState.update { it.copy(createRoomRangesOnline = value) }
     fun startRangesOffline(value: Boolean) = _uiState.update { it.copy(startRangesOffline = value) }
 
     private fun sww() {}

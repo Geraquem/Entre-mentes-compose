@@ -1,5 +1,6 @@
 package com.mmfsin.betweenminds.presentation.choose
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,12 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.domain.models.GameType
+import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
+import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.presentation.choose.components.ChooseTitle
-import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.choose.components.OnlineRoomTabs
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
+import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
@@ -35,6 +37,8 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
+import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_OFFLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
@@ -42,37 +46,59 @@ import com.mmfsin.betweenminds.utils.openBedRockActivity
 @Composable
 fun ChoosePV() {
     ChooseContent(
-        uiState = ChooseStates(
-            gameType = GameType.RANGES
+        uiStates = ChooseStates(
+            gameType = RANGES
         ),
         {}, {}, {}, {},
+        {}, {},
     )
 }
 
 @Composable
-fun ChooseScreen(viewModel: ChooseViewModel = hiltViewModel()) {
+fun ChooseScreen(
+    viewModel: ChooseViewModel = hiltViewModel(),
+    goBack: () -> Unit,
+    joinRoom: (String) -> Unit,
+    roomCreated: (String, String) -> Unit
+) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
     ChooseContent(
-        uiState = uiStates,
+        uiStates = uiStates,
+        goBack = { goBack() },
+        goToInstructions = {
+            uiStates.gameType?.let { type ->
+                when (type) {
+                    QUESTIONS -> context.goToInstructions(NAV_INSTR_QUESTIONS_ONLINE)
+                    RANGES -> context.goToInstructions(NAV_INSTR_RANGES_ONLINE)
+                }
+            }
+        },
         onRoomCodeChange = { value -> viewModel.onRoomCodeChanged(value) },
-        joinRoom = {},
-        createRoom = {},
+        joinRoom = { joinRoom(it) },
+        createRoom = { viewModel.createRoom() },
         playOffline = { viewModel.playOffline() }
     )
 
-    val context = LocalContext.current
+    if (uiStates.createRoomQuestionsOnline) {
+        roomCreated(uiStates.roomCodeCreated, uiStates.gameTypeId)
+        viewModel.createRoomQuestionsOnline(false)
+    }
+
     if (uiStates.startQuestionsOffline) {
         context.openBedRockActivity(NAV_QUESTIONS_OFFLINE)
         viewModel.startQuestionsOffline(false)
     }
-
 }
 
 @Composable
 fun ChooseContent(
-    uiState: ChooseStates,
+    uiStates: ChooseStates,
+    goBack: () -> Unit,
+    goToInstructions: () -> Unit,
     onRoomCodeChange: (String) -> Unit,
-    joinRoom: () -> Unit,
+    joinRoom: (String) -> Unit,
     createRoom: () -> Unit,
     playOffline: () -> Unit,
 ) {
@@ -80,8 +106,8 @@ fun ChooseContent(
     Scaffold(
         topBar = {
             CustomToolbar(
-                goBack = {},
-                goToInstructions = {}
+                goBack = { goBack() },
+                goToInstructions = { goToInstructions() }
             )
         },
         containerColor = BackgroundBlack
@@ -89,7 +115,7 @@ fun ChooseContent(
     { innerPadding ->
         Column(Modifier.padding(innerPadding).padding(horizontal = 16.dp)) {
             SpacerLarge()
-            uiState.gameType?.let { type -> ChooseTitle(type) }
+            uiStates.gameType?.let { type -> ChooseTitle(type) }
             SpacerMedium()
             Box(Modifier.fillMaxWidth().height(25.dp).background(RedHard))
             SpacerMedium()
@@ -120,9 +146,9 @@ fun ChooseContent(
             SpacerSmall()
 
             OnlineRoomTabs(
-                roomCode = uiState.roomCode,
+                roomCode = uiStates.roomCodeToJoin,
                 onRoomCodeChange = { onRoomCodeChange(it) },
-                joinRoom = { joinRoom() },
+                joinRoom = { joinRoom(it) },
                 createRoom = { createRoom() }
             )
 
@@ -162,3 +188,5 @@ fun ChooseContent(
         }
     }
 }
+
+private fun Context.goToInstructions(navGraph: String) = openBedRockActivity(navGraph)
