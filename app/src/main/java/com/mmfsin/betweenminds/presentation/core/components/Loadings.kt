@@ -1,6 +1,8 @@
 package com.mmfsin.betweenminds.presentation.core.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +12,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -28,19 +32,28 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 
-//@Preview
+@Preview
 @Composable
 fun LoadingFullScreen() {
-    Box(Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(
-            Modifier.size(64.dp),
-            strokeWidth = 6.dp,
-            color = Color.Blue,
-            strokeCap = StrokeCap.Round
+    Box(
+        Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            Modifier.fillMaxSize()
+                .alpha(0.75f)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = {}
+                )
+                .background(BackgroundBlack)
         )
+        LoadingLottie()
     }
 }
 

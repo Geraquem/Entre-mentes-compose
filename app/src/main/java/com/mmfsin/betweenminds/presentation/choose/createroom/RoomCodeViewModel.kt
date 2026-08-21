@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateRoomViewModel @Inject constructor(
+class RoomCodeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CreateRoomStates>(CreateRoomStates()) {
+) : BaseViewModel<RoomCodeStates>(RoomCodeStates()) {
 
     private val roomCode: String? = savedStateHandle["roomCode"]
     private val gameTypeId: String? = savedStateHandle["gameTypeId"]

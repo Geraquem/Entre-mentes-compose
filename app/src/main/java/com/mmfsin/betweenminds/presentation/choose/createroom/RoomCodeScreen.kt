@@ -21,6 +21,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
@@ -36,7 +37,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 @Composable
 fun RoomCodeCodePV() {
     RoomCodeContent(
-        uiStates = CreateRoomStates(
+        uiStates = RoomCodeStates(
             roomCode = "afwd0o"
         ),
         {}
@@ -45,7 +46,7 @@ fun RoomCodeCodePV() {
 
 @Composable
 fun RoomCodeScreen(
-    viewModel: CreateRoomViewModel = hiltViewModel(),
+    viewModel: RoomCodeViewModel = hiltViewModel(),
     goBack: () -> Unit
 ) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
@@ -57,7 +58,7 @@ fun RoomCodeScreen(
 
 @Composable
 fun RoomCodeContent(
-    uiStates: CreateRoomStates,
+    uiStates: RoomCodeStates,
     goBack: () -> Unit,
 ) {
 
@@ -103,7 +104,8 @@ fun RoomCodeContent(
 
             LottieAnimation(
                 composition = composition,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.size(100.dp),
+                iterations = LottieConstants.IterateForever
             )
 
             MediumText(
@@ -111,7 +113,7 @@ fun RoomCodeContent(
                 color = White,
                 fontFamily = alphazet,
                 gravity = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 24.dp)
+                modifier = Modifier.padding(horizontal = 32.dp)
             )
         }
     }

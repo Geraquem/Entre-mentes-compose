@@ -38,6 +38,8 @@ class ChooseViewModel @Inject constructor(
     fun onRoomCodeChanged(value: String) = _uiState.update { it.copy(roomCodeToJoin = value) }
 
     fun createRoom() {
+        showLoading(true)
+
         val states = uiState.value
         executeUseCase(
             { createRoomUseCase.execute(states.gameTypeId) },
@@ -50,6 +52,7 @@ class ChooseViewModel @Inject constructor(
                         RANGES -> createRoomRangesOnline(true)
                         else -> sww()
                     }
+                    showLoading(false)
                 }
             },
             {}
@@ -74,6 +77,8 @@ class ChooseViewModel @Inject constructor(
     fun startQuestionsOffline(value: Boolean) = _uiState.update { it.copy(startQuestionsOffline = value) }
     fun createRoomRangesOnline(value: Boolean) = _uiState.update { it.copy(createRoomRangesOnline = value) }
     fun startRangesOffline(value: Boolean) = _uiState.update { it.copy(startRangesOffline = value) }
+
+    fun showLoading(value: Boolean) = _uiState.update { it.copy(isLoading = value) }
 
     private fun sww() {}
 }

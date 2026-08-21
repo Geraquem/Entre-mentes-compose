@@ -3,6 +3,8 @@ package com.mmfsin.betweenminds.presentation.choose
 import com.mmfsin.betweenminds.domain.models.GameType
 
 data class ChooseStates(
+    val isLoading: Boolean = false,
+
     val gameTypeId: String = "",
     val gameType: GameType? = null,
 

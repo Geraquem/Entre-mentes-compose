@@ -30,6 +30,7 @@ import com.mmfsin.betweenminds.presentation.choose.components.OnlineRoomTabs
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
+import com.mmfsin.betweenminds.presentation.core.components.LoadingFullScreen
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
@@ -47,7 +48,8 @@ import com.mmfsin.betweenminds.utils.openBedRockActivity
 fun ChoosePV() {
     ChooseContent(
         uiStates = ChooseStates(
-            gameType = RANGES
+            gameType = RANGES,
+            isLoading = true,
         ),
         {}, {}, {}, {},
         {}, {},
@@ -186,6 +188,8 @@ fun ChooseContent(
                 modifier = Modifier.fillMaxWidth()
             )
         }
+
+        if (uiStates.isLoading) LoadingFullScreen()
     }
 }
 
