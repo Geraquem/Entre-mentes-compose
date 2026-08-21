@@ -34,7 +34,7 @@ fun NavigationMain() {
         composable<Choose> {
             ChooseScreen(
                 goBack = { navController.popBackStack() },
-                joinRoom = {},
+                roomJoined = {},
                 roomCreated = { roomCode, gameTypeId ->
                     navController.navigate(
                         RoomCode(

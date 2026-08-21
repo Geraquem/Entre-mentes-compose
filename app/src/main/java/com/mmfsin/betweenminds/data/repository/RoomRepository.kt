@@ -4,7 +4,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mmfsin.betweenminds.domain.interfaces.IRoomRepository
+import com.mmfsin.betweenminds.utils.PLAYERS
 import com.mmfsin.betweenminds.utils.PLAYER_1
+import com.mmfsin.betweenminds.utils.PLAYER_2
 import com.mmfsin.betweenminds.utils.ROOMS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -68,7 +70,44 @@ class RoomRepository @Inject constructor(
     }
 
     override suspend fun joinRoom(roomId: String, gameType: String): Boolean {
-        return false
+        val db = Firebase.firestore
+        var joined = false
+        val latch = CountDownLatch(1)
+
+        val roomRef = db.collection(ROOMS).document(roomId)
+
+        roomRef.get().addOnSuccessListener { snapshot ->
+            if (!snapshot.exists()) {
+                latch.countDown()
+                return@addOnSuccessListener
+            }
+
+            val type = snapshot.get("gameType")
+            if (gameType != type) latch.countDown()
+            else {
+                val players =
+                    (snapshot.get(PLAYERS) as? List<String>)?.toMutableList() ?: mutableListOf()
+
+                if (players.size >= 2) {
+                    latch.countDown()
+                    return@addOnSuccessListener
+                } else {
+                    players.add(PLAYER_2)
+                    roomRef.update(PLAYERS, players).addOnSuccessListener {
+                        joined = true
+                        println("Joined succesfully to room: $roomId")
+                        latch.countDown()
+
+                    }.addOnFailureListener { latch.countDown() }
+                }
+            }
+        }.addOnFailureListener {
+            println("Error: ${it.message}")
+            latch.countDown()
+        }
+
+        withContext(Dispatchers.IO) { latch.await() }
+        return joined
     }
 
     override suspend fun waitToJoinRoom(roomId: String) {

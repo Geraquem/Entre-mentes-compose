@@ -149,7 +149,7 @@ fun JoinRoom(
         SpacerMedium()
 
         ButtonCustom(
-            onClick = { joinRoom(value) },
+            onClick = { if (value.isNotEmpty()) joinRoom(value) },
             text = R.string.online_btn_join,
             modifier = Modifier.fillMaxWidth()
         )

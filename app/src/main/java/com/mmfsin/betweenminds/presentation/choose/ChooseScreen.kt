@@ -26,10 +26,12 @@ import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.presentation.choose.components.ChooseTitle
+import com.mmfsin.betweenminds.presentation.choose.components.JoinedErrorDialog
 import com.mmfsin.betweenminds.presentation.choose.components.OnlineRoomTabs
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
+import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.LoadingFullScreen
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
@@ -41,6 +43,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_OFFLINE
+import com.mmfsin.betweenminds.utils.NAV_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
 @Preview
@@ -49,10 +52,10 @@ fun ChoosePV() {
     ChooseContent(
         uiStates = ChooseStates(
             gameType = RANGES,
-            isLoading = true,
+            isLoading = false,
         ),
         {}, {}, {}, {},
-        {}, {},
+        {}, {}, {}, {},
     )
 }
 
@@ -60,7 +63,7 @@ fun ChoosePV() {
 fun ChooseScreen(
     viewModel: ChooseViewModel = hiltViewModel(),
     goBack: () -> Unit,
-    joinRoom: (String) -> Unit,
+    roomJoined: (String) -> Unit,
     roomCreated: (String, String) -> Unit
 ) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,18 +81,25 @@ fun ChooseScreen(
             }
         },
         onRoomCodeChange = { value -> viewModel.onRoomCodeChanged(value) },
-        joinRoom = { joinRoom(it) },
+        joinRoom = { viewModel.joinRoom() },
         createRoom = { viewModel.createRoom() },
-        playOffline = { viewModel.playOffline() }
+        playOffline = { viewModel.playOffline() },
+        showJoinErrorDialog = { viewModel.joinedError(it) },
+        showSwwDialog = { viewModel.sww(it) }
     )
 
-    if (uiStates.createRoomQuestionsOnline) {
+    if (uiStates.createOnlineRoom) {
         roomCreated(uiStates.roomCodeCreated, uiStates.gameTypeId)
-        viewModel.createRoomQuestionsOnline(false)
+        viewModel.createOnlineRoom(false)
     }
 
     if (uiStates.startQuestionsOffline) {
         context.openBedRockActivity(NAV_QUESTIONS_OFFLINE)
+        viewModel.startQuestionsOffline(false)
+    }
+
+    if (uiStates.startRangesOffline) {
+        context.openBedRockActivity(NAV_RANGES_OFFLINE)
         viewModel.startQuestionsOffline(false)
     }
 }
@@ -100,9 +110,11 @@ fun ChooseContent(
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
     onRoomCodeChange: (String) -> Unit,
-    joinRoom: (String) -> Unit,
+    joinRoom: () -> Unit,
     createRoom: () -> Unit,
     playOffline: () -> Unit,
+    showJoinErrorDialog: (Boolean) -> Unit,
+    showSwwDialog: (Boolean) -> Unit,
 ) {
 
     Scaffold(
@@ -150,7 +162,7 @@ fun ChooseContent(
             OnlineRoomTabs(
                 roomCode = uiStates.roomCodeToJoin,
                 onRoomCodeChange = { onRoomCodeChange(it) },
-                joinRoom = { joinRoom(it) },
+                joinRoom = { joinRoom() },
                 createRoom = { createRoom() }
             )
 
@@ -188,6 +200,9 @@ fun ChooseContent(
                 modifier = Modifier.fillMaxWidth()
             )
         }
+
+        if (uiStates.showErrorJoinedDialog) JoinedErrorDialog { showJoinErrorDialog(false) }
+        if (uiStates.showSwwDialog) ErrorDialog(accept = { showSwwDialog(false) })
 
         if (uiStates.isLoading) LoadingFullScreen()
     }

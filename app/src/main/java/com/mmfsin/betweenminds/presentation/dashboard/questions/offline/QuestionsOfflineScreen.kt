@@ -236,6 +236,7 @@ fun QuestionsOfflineContent(
                             value = uiState.secondSlider,
                             onValueChange = { updateSecondOpinionPercents(it.roundToInt()) },
                             valueRange = 0f..100f,
+                            enabled = uiState.controllerEnabled,
                             thumb = {
                                 Box(
                                     modifier = Modifier
@@ -247,7 +248,9 @@ fun QuestionsOfflineContent(
                             colors = SliderDefaults.colors(
                                 thumbColor = White,
                                 activeTrackColor = Transparent,
-                                inactiveTrackColor = Transparent
+                                disabledActiveTrackColor = Transparent,
+                                inactiveTrackColor = Transparent,
+                                disabledInactiveTrackColor = Transparent,
                             ),
                         )
                     }
