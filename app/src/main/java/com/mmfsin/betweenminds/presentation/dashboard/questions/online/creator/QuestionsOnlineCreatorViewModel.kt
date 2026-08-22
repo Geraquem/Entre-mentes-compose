@@ -1,8 +1,11 @@
 package com.mmfsin.betweenminds.presentation.dashboard.questions.online.creator
 
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.Question
+import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.FIRST_OPINION
 import com.mmfsin.betweenminds.domain.usecases.GetQuestionsUseCase
+import com.mmfsin.betweenminds.domain.usecases.SendOpinionOQuestionsToRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.SetOQuestionsInRoomUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +18,7 @@ import javax.inject.Inject
 class QuestionsOnlineCreatorViewModel @Inject constructor(
     private val getQuestionsUseCase: GetQuestionsUseCase,
     private val setOQuestionsInRoomUseCase: SetOQuestionsInRoomUseCase,
+    private val sendOpinionOQuestionsToRoomUseCase: SendOpinionOQuestionsToRoomUseCase,
 ) : BaseViewModel<QuestionsOnlineCreatorStates>(QuestionsOnlineCreatorStates()) {
 
     init {
@@ -33,8 +37,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(questions = questions)
                 }
-                //                setQuestion()
-                setDataInRoom()
+                setQuestion()
             },
             { sww() }
         )
@@ -52,6 +55,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
             } else questions[states.questionPos].question
 
             _uiState.update { it.copy(actualQuestion = newQuestion) }
+            setDataInRoom()
         }
     }
 
@@ -89,15 +93,79 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
             delay(1000)
             _uiState.update { it.copy(showRoundView = false) }
             delay(1000)
-//            startOpinions()
+            startMyOpinion()
         }
     }
 
+    fun updateMyOpinionPercents(value: Int) {
+        val firstOpBlue = 100 - value
+        handleHandsUp(percent = firstOpBlue)
+
+        _uiState.update {
+            it.copy(
+                whiteSlider = value.toFloat(),
+                firstOpinionBlue = firstOpBlue,
+                firstOpinionOrange = value
+            )
+        }
+    }
+
+    private fun handleHandsUp(percent: Int) {
+        if (percent > 50) {
+            _uiState.update { it.copy(blueHandsUp = true, orangeHandsUp = false) }
+        } else if (percent == 50) {
+            _uiState.update { it.copy(blueHandsUp = false, orangeHandsUp = false) }
+        } else {
+            _uiState.update { it.copy(blueHandsUp = false, orangeHandsUp = true) }
+        }
+    }
+
+    private fun startMyOpinion() {
+        _uiState.update {
+            it.copy(
+                phase = FIRST_OPINION,
+                showWhiteIndicator = true,
+                showFirstOpinionPercents = true,
+                buttonText = R.string.btn_ready,
+                controllerEnabled = true,
+                buttonEnabled = true,
+            )
+        }
+        openCurtains()
+    }
+
+    fun readyMyOpinion() {
+        showWaitingOtherPlayerDialog(true)
+
+        val states = uiState.value
+        executeUseCase(
+            {
+                sendOpinionOQuestionsToRoomUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = true,
+                    round = states.roundCount,
+                    orangeOpinion = states.whiteSlider,
+                )
+            },
+            { waitForOtherPlayerOpinion() },
+            { sww() })
+    }
+
+    private fun waitForOtherPlayerOpinion() {
+        executeUseCase(
+            {},
+            {},
+            { sww() }
+        )
+    }
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
 
+    fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
+    fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
+    fun showWaitingOtherPlayerDialog(value: Boolean) = _uiState.update { it.copy(showWaitingOtherPlayerDialog = value) }
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 
     private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }

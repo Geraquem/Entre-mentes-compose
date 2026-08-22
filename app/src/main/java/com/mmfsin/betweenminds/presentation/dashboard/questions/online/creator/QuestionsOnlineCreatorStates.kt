@@ -12,6 +12,7 @@ data class QuestionsOnlineCreatorStates(
 
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
+    val showWaitingOtherPlayerDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
 
@@ -27,12 +28,12 @@ data class QuestionsOnlineCreatorStates(
     val confettiTrigger: Int = 0,
 
     val blueName: String = "",
-    val firstSlider: Float = 50f,
+    val whiteSlider: Float = 50f,
     val firstOpinionBlue: Int = 50,
     val secondOpinionBlue: Int = 50,
 
     val orangeName: String = "",
-    val secondSlider: Float = 50f,
+    val redSlider: Float = 50f,
     val firstOpinionOrange: Int = 50,
     val secondOpinionOrange: Int = 50,
 

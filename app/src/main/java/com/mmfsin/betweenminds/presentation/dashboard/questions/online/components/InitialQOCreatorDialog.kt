@@ -34,7 +34,6 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.dashboard.questions.offline.components.SetPlayerName
 
-
 @Preview
 @Composable
 fun InitialQOCreatorDialogPV() {
