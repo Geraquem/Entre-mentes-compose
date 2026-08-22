@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -39,11 +40,17 @@ fun QuestionsOnlineCreatorCreatorPV() {
 }
 
 @Composable
-fun QuestionsOnlineCreatorScreen(viewModel: QuestionsOnlineCreatorViewModel = hiltViewModel()) {
+fun QuestionsOnlineCreatorScreen(
+    viewModel: QuestionsOnlineCreatorViewModel = hiltViewModel(),
+    roomCode: String?
+) {
     val context = LocalContext.current
     val activity = LocalActivity.current
 
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(roomCode) { viewModel.updateRoomCode(roomCode) }
+
     QuestionsOnlineCreatorContent(
         uiStates = uiStates,
         goBack = { activity?.finish() },

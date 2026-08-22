@@ -8,6 +8,8 @@ import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.FIRST_OPINION
 data class QuestionsOnlineCreatorStates(
     val isLoading: Boolean = true,
 
+    val roomCode: String = "",
+
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
     val showExitDialog: Boolean = false,
@@ -15,6 +17,7 @@ data class QuestionsOnlineCreatorStates(
 
     val showRoundView: Boolean = true,
     var roundCount: Int = 0,
+    var gameNumber: Int = 0,
     val phase: QuestionPhaseType = FIRST_OPINION,
     val questions: List<Question> = emptyList(),
     var questionPos: Int = 0,

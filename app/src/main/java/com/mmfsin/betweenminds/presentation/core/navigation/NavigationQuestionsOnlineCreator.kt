@@ -10,7 +10,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.questions.online.creator.Q
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavigationQuestionsOnlineCreator() {
+fun NavigationQuestionsOnlineCreator(roomCode: String?) {
     val navController = rememberNavController()
 
     NavHost(
@@ -21,7 +21,7 @@ fun NavigationQuestionsOnlineCreator() {
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable<QuestionsOnlineCreator> { QuestionsOnlineCreatorScreen() }
+        composable<QuestionsOnlineCreator> { QuestionsOnlineCreatorScreen(roomCode = roomCode) }
     }
 }
 

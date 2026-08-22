@@ -34,7 +34,7 @@ class BedRockActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             when (navGraph) {
-                NAV_QUESTIONS_ONLINE_CREATOR -> NavigationQuestionsOnlineCreator()
+                NAV_QUESTIONS_ONLINE_CREATOR -> NavigationQuestionsOnlineCreator(strArgs)
                 NAV_QUESTIONS_ONLINE_JOINED -> {}
                 NAV_QUESTIONS_OFFLINE -> NavigationQuestionsOffline()
 

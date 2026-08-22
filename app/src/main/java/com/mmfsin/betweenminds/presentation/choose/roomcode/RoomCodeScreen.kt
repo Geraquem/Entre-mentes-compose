@@ -34,7 +34,6 @@ import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.courier
-import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_OFFLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_ONLINE_CREATOR
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
@@ -63,7 +62,10 @@ fun RoomCodeScreen(
     )
 
     if (uiStates.goToQuestionsCreator) {
-        context.openBedRockActivity(NAV_QUESTIONS_ONLINE_CREATOR)
+        context.openBedRockActivity(
+            navGraph = NAV_QUESTIONS_ONLINE_CREATOR,
+            strArgs = uiStates.roomCode
+        )
         goBack()
     }
 
