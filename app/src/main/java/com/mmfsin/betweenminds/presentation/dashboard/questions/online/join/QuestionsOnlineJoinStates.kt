@@ -6,6 +6,8 @@ import com.mmfsin.betweenminds.domain.models.QuestionPhaseType
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.FIRST_OPINION
 
 data class QuestionsOnlineJoinStates(
+    val isLoading: Boolean = true,
+
     val roomCode: String = "",
 
     val showInitialDialog: Boolean = true,
@@ -38,8 +40,8 @@ data class QuestionsOnlineJoinStates(
     val blueHandsUp: Boolean = false,
     val orangeHandsUp: Boolean = false,
 
-    val showFirstOpinionPercents: Boolean = true,
-    val showSecondOpinionPercents: Boolean = false,
+    val showFirstOpinionPercents: Boolean = false,
+    val showSecondOpinionPercents: Boolean = true,
 
     val showWhiteIndicator: Boolean = false,
     val showRedIndicator: Boolean = false,

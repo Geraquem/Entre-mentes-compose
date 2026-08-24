@@ -47,7 +47,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 @Composable
 fun InitialQOJoinDialogPV() {
     InitialQOJoinDialog(
-        {}, {}
+        {}, {}, true
     )
 }
 
@@ -55,6 +55,7 @@ fun InitialQOJoinDialogPV() {
 fun InitialQOJoinDialog(
     startGame: () -> Unit,
     howToPlay: () -> Unit,
+    isLoading: Boolean
 ) {
     Dialog(
         onDismissRequest = {},
@@ -156,12 +157,14 @@ fun InitialQOJoinDialog(
 
                 SpacerLarge()
 
+
                 ButtonCustom(
                     onClick = { startGame() },
-                    text =  R.string.online_btn_start,
+                    text = if (isLoading) R.string.online_btn_wait else R.string.online_btn_start,
                     modifier = Modifier.fillMaxWidth(),
                     color = Black,
-                    textColor = White
+                    textColor = White,
+                    enabled = !isLoading
                 )
 
                 SpacerSmall()

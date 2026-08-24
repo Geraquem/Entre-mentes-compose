@@ -81,7 +81,7 @@ fun QuestionsOnlineJoinPV() {
 
         ),
         {}, {}, {}, {},
-        {},{},
+        {}, {},
     )
 }
 
@@ -207,7 +207,7 @@ fun QuestionsOnlineJoinContent(
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
                             value = uiStates.whiteSlider,
-                            onValueChange = { updateMyOpinionPercents(it.roundToInt()) },
+                            onValueChange = { },
                             valueRange = 0f..100f,
                             enabled = uiStates.controllerEnabled,
                             thumb = {
@@ -232,7 +232,7 @@ fun QuestionsOnlineJoinContent(
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
                             value = uiStates.redSlider,
-                            onValueChange = {},
+                            onValueChange = { updateMyOpinionPercents(it.roundToInt()) },
                             valueRange = 0f..100f,
                             enabled = uiStates.controllerEnabled,
                             thumb = {
@@ -342,6 +342,7 @@ fun QuestionsOnlineJoinContent(
                 InitialQOJoinDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
+                    isLoading = uiStates.isLoading
                 )
             }
 

@@ -43,7 +43,7 @@ class QuestionsOnlineRepository @Inject constructor(
     override suspend fun getQuestionsAndNames(roomId: String): OnlineQuestionsAndNames =
         suspendCancellableCoroutine { cont ->
 
-            println("-*-*-*-*-*-**--*-*-*-*-*-*-*-**--*-*-*-*-*-*-*-**--*-* $roomId")
+            println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* roomId: $roomId")
 
             val db = Firebase.firestore
             val roomRef = db.collection(ROOMS).document(roomId)
@@ -57,21 +57,13 @@ class QuestionsOnlineRepository @Inject constructor(
                     return@addSnapshotListener
                 }
 
-                println("-*-*-*-*-*-**--*-*-*-*-*-*-*-**--*-*-*-*-*-*-*-**--*-* ${snapshot?.exists()}")
-
                 if (snapshot != null && snapshot.exists()) {
                     val blueName = snapshot.getString("blueName")
                     val orangeName = snapshot.getString("orangeName")
                     val questionsList = snapshot.get("questions") as? List<Map<String, Any>>
 
 
-                    println("-*-*-*-*-*-**--*-*-*-*-*-*-*-* $blueName -- $orangeName -- $questionsList")
-
                     if (blueName != null && orangeName != null && !questionsList.isNullOrEmpty()) {
-
-                        println("*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/")
-                        println("Documento ya listo")
-
                         val parsedQuestions = questionsList.mapNotNull { map ->
                             try {
                                 Question(question = map["question"] as? String ?: "", pack = -1)
@@ -91,15 +83,10 @@ class QuestionsOnlineRepository @Inject constructor(
                             listener?.remove()
                         }
                     }
-                } else {
-                    println("Documento no listo todavía")
                 }
             }
 
-            cont.invokeOnCancellation {
-                println("invoke on cancellation")
-                listener.remove()
-            }
+            cont.invokeOnCancellation { listener.remove() }
         }
 
     override suspend fun sendOpinionOQuestionsToRoomUseCase(
