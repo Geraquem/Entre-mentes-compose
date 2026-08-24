@@ -43,6 +43,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_OFFLINE
+import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_ONLINE_JOINED
 import com.mmfsin.betweenminds.utils.NAV_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
@@ -91,6 +92,11 @@ fun ChooseScreen(
     if (uiStates.createOnlineRoom) {
         roomCreated(uiStates.roomCodeCreated, uiStates.gameTypeId)
         viewModel.createOnlineRoom(false)
+    }
+
+    if (uiStates.joinToQuestionsOnline) {
+        context.openBedRockActivity(NAV_QUESTIONS_ONLINE_JOINED)
+        viewModel.joinToQuestionsOnline(false)
     }
 
     if (uiStates.startQuestionsOffline) {

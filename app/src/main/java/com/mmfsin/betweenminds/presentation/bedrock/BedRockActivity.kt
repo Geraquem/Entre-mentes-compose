@@ -8,6 +8,7 @@ import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOffline
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOnlineCreator
+import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOnlineJoin
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRangesOffline
 import com.mmfsin.betweenminds.presentation.instructions.InstructionsScreen
 import com.mmfsin.betweenminds.utils.BEDROCK_NAV_GRAPH
@@ -35,7 +36,7 @@ class BedRockActivity : ComponentActivity() {
         setContent {
             when (navGraph) {
                 NAV_QUESTIONS_ONLINE_CREATOR -> NavigationQuestionsOnlineCreator(strArgs)
-                NAV_QUESTIONS_ONLINE_JOINED -> {}
+                NAV_QUESTIONS_ONLINE_JOINED -> NavigationQuestionsOnlineJoin(strArgs)
                 NAV_QUESTIONS_OFFLINE -> NavigationQuestionsOffline()
 
                 NAV_RANGES_ONLINE -> {}

@@ -68,12 +68,9 @@ class ChooseViewModel @Inject constructor(
                 )
             },
             { joined ->
-                if (joined) {
-
-                } else {
-                    joinedError(true)
-                    showLoading(false)
-                }
+                if (joined) joinToQuestionsOnline(true)
+                else joinedError(true)
+                showLoading(false)
             },
             {
                 joinedError(true)
@@ -91,6 +88,8 @@ class ChooseViewModel @Inject constructor(
             }
         }
     }
+
+    fun joinToQuestionsOnline(value: Boolean) = _uiState.update { it.copy(joinToQuestionsOnline = value) }
 
     fun createOnlineRoom(value: Boolean) = _uiState.update { it.copy(createOnlineRoom = value) }
     fun startQuestionsOffline(value: Boolean) = _uiState.update { it.copy(startQuestionsOffline = value) }
