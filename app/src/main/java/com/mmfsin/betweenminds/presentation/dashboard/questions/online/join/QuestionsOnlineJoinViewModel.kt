@@ -1,8 +1,11 @@
 package com.mmfsin.betweenminds.presentation.dashboard.questions.online.join
 
+import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,6 +18,39 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
     fun updateRoomCode(code: String?) {
         if (code == null) sww()
         else _uiState.update { it.copy(roomCode = code) }
+    }
+
+    fun hideInitialDialog() {
+        _uiState.update { it.copy(showInitialDialog = false) }
+        viewModelScope.launch {
+            delay(1000)
+            _uiState.update { it.copy(showRoundView = false) }
+            delay(1000)
+//            startMyOpinion()
+        }
+    }
+
+    fun updateMyOpinionPercents(value: Int) {
+        val firstOpBlue = 100 - value
+        handleHandsUp(percent = firstOpBlue)
+
+        _uiState.update {
+            it.copy(
+                whiteSlider = value.toFloat(),
+                firstOpinionBlue = firstOpBlue,
+                firstOpinionOrange = value
+            )
+        }
+    }
+
+    private fun handleHandsUp(percent: Int) {
+        if (percent > 50) {
+            _uiState.update { it.copy(blueHandsUp = true, orangeHandsUp = false) }
+        } else if (percent == 50) {
+            _uiState.update { it.copy(blueHandsUp = false, orangeHandsUp = false) }
+        } else {
+            _uiState.update { it.copy(blueHandsUp = false, orangeHandsUp = true) }
+        }
     }
 
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }

@@ -50,8 +50,8 @@
     <string name="btn_see_result">Ver resultado</string>
     <string name="name_blue">Jugador azul</string>
     <string name="name_orange">Jugador naranja</string>
-    <string name="controller_limited">Desliza desde aquí para mover la flecha y opinar</string>
-    <string name="controller_text">También puedes deslizar desde aqui para mover la flecha</string>
+    <string name="controller_limited">Desliza desde aquí para mover la barra y opinar</string>
+    <string name="controller_text">También puedes deslizar desde aqui para mover la barra</string>
     <string name="round">Ronda</string>
     <string name="back">Volver</string>
     <string name="how_to_play">Cómo jugar</string>
@@ -76,8 +76,8 @@
     <string name="questions_welcome_three_extra">El objetivo es <b>coincidir</b> para obtener la mayor puntuación en las <b>4 rondas</b> que dura la partida.</string>
     <string name="questions_welcome_four">¿Qué dos personas van a ser juzgadas?</string>
     <string name="questions_welcome_you_are">Eres el jugador</string>
-    <string name="questions_welcome_you_move_white">Manejas la flecha blanca.</string>
-    <string name="questions_welcome_you_move_red">Manejas la flecha roja</string>
+    <string name="questions_welcome_you_move_white">Manejas la barra blanca.</string>
+    <string name="questions_welcome_you_move_red">Manejas la barra roja</string>
     <string name="questions_blue_player">Jugador azul</string>
     <string name="questions_orange_player">Jugador naranja</string>
 
@@ -85,7 +85,7 @@
     <string name="ranges_start_quick_resume">Resumen rápido</string>
     <string name="ranges_start_resume">Un jugador ve en secreto la zona de puntos dentro de un segmento con dos conceptos opuestos y da una pista para orientar al resto.</string>
     <string name="ranges_start_resume_other">Un jugador da una pista para ayudar a conseguir puntos.</string>
-    <string name="ranges_start_resume_two">Usando esa pista, hay que mover una flecha para intentar acertar la posición.</string>
+    <string name="ranges_start_resume_two">Usando esa pista, hay que mover una barra para intentar acertar la posición.</string>
     <string name="ranges_start_resume_three">Entre todos hay que tratar de obtener la mayor puntuación posible en <b>4 rondas</b>.</string>
     <string name="ranges_start_play">Empezar</string>
     <string name="ranges_start_instructions">Cómo se juega</string>
@@ -96,7 +96,7 @@
     <string name="ranges_points_five">5</string>
 
     <string name="ranges_start_online"><b>Objetivo:</b> Ayudar a vuestro compañero a conseguir puntos.</string>
-    <string name="ranges_start_online_1">Para ello deberéis mandar pistas para orientar al otro jugador a poner la flecha en la zona marcada para ganar puntos, y luego mover la flecha en función de la pista recibida.</string>
+    <string name="ranges_start_online_1">Para ello deberéis mandar pistas para orientar al otro jugador a poner la barra en la zona marcada para ganar puntos, y luego mover la barra en función de la pista recibida.</string>
     <string name="ranges_start_online_2"><b>3 rondas</b> seguidas de mandar pistas, <b>3 rondas</b> seguidas de conseguir puntos con la pista de vuestro compañero.</string>
     <string name="ranges_start_online_3">Hay que tratar de obtener la <b>mayor puntuación posible</b>.</string>
 
@@ -188,8 +188,8 @@
     <string name="instr_online_questions_1">Dos personas juegan para ver si tienen la misma opinión sobre ellas mismas (o sobre otras personas)</string>
     <string name="instr_online_questions_2">Lo primero de todo es dar nombre a las dos personas principales. El jugador que crea la sala deberá introducir los nombres al inicio del juego.</string>
     <string name="instr_online_questions_3">Ahora, a ambos jugadores les aparecerá la misma pregunta en la pantalla.</string>
-    <string name="instr_online_questions_4">El <b>jugador 1</b> (el que ha creado la sala) maneja los porcentajes del icono 1 y mueve la flecha de color <b><i>blanco</i></b></string>
-    <string name="instr_online_questions_5">Y el <b>jugador 2</b> (el que se ha unido) maneja los porcentajes del icono 2 y mueve la flecha de color <b><i>rojo</i></b></string>
+    <string name="instr_online_questions_4">El <b>jugador 1</b> (el que ha creado la sala) maneja los porcentajes del icono 1 y mueve la barra de color <b><i>blanco</i></b></string>
+    <string name="instr_online_questions_5">Y el <b>jugador 2</b> (el que se ha unido) maneja los porcentajes del icono 2 y mueve la barra de color <b><i>rojo</i></b></string>
     <string name="instr_online_questions_6">Los dos jugadores opinan individualmente, cada uno con su móvil, sin saber de la opinión del otro jugador.</string>
     <string name="instr_online_questions_7">Cuando cada uno tiene su respuesta completada, pulsa el botón <b><i>Comparar respuesta</i></b> para ver cómo ha opinado el otro jugador y se comparan cuánto se parecen los resultados.</string>
     <string name="instr_online_questions_8">Cuanto más se parezcan, más puntos obtendréis.</string>
@@ -201,7 +201,7 @@
     <string name="instr_ranges_3">Ese jugador escribe una pista (una palabra o idea) para <b>ayudar a que el resto de jugadores coloque el marcador</b> en el punto donde se encuentra la zona para ganar puntos.</string>
     <string name="instr_ranges_4">Después pulsa el botón <b><i>Listo</i></b>.</string>
     <string name="instr_ranges_5">Fase 2</string>
-    <string name="instr_ranges_6">El resto de jugadores, con la pista dada por el anterior jugador tienen que desplazar la flecha para intentar colocar el marcador en el lugar donde el primer jugador vio la zona donde se ganan puntos.</string>
+    <string name="instr_ranges_6">El resto de jugadores, con la pista dada por el anterior jugador tienen que desplazar la barra para intentar colocar el marcador en el lugar donde el primer jugador vio la zona donde se ganan puntos.</string>
     <string name="instr_ranges_7">Una vez está colocado el marcador, pulsan el botón <b><i>Comprobar</i></b> para ver si colocaron bien el marcador y obtuvieron algún punto.</string>
     <string name="instr_ranges_8">Fase 3</string>
     <string name="instr_ranges_9">Darle al botón <b><i>Siguiente ronda</i></b>, turnarse y volver a empezar.</string>
@@ -222,9 +222,9 @@
     <string name="instr_online_ranges_6">Esta fase se repite <b>3 veces</b>. Por lo que aparecerán 3 rangos distintos y tendréis que dar una pista diferente para cada uno de ellos.</string>
     <string name="instr_online_ranges_7">Fase de adivinar</string>
     <string name="instr_online_ranges_8">Una vez ambos jugadores hayan escrito y enviado todas sus pistas, estas se intercambian.</string>
-    <string name="instr_online_ranges_9">El jugador 1 recibe los conceptos opuestos que vio el jugador 2 y debe <b>mover la flecha y colocarla</b>, con ayuda de la pista que el jugador 2 le dio, <b>donde crea que está la zona de puntos oculta</b>.</string>
+    <string name="instr_online_ranges_9">El jugador 1 recibe los conceptos opuestos que vio el jugador 2 y debe <b>mover la barra y colocarla</b>, con ayuda de la pista que el jugador 2 le dio, <b>donde crea que está la zona de puntos oculta</b>.</string>
     <string name="instr_online_ranges_10">El jugador 2 hará exactamente lo mismo con la pista enviada por el jugador 1.</string>
-    <string name="instr_online_ranges_11">Cuando creáis que la flecha está correctamente colocada, pulsad el botón <b><i>Comprobar</i></b> para ver cuántos puntos ha obtenido cada uno.</string>
+    <string name="instr_online_ranges_11">Cuando creáis que la barra está correctamente colocada, pulsad el botón <b><i>Comprobar</i></b> para ver cuántos puntos ha obtenido cada uno.</string>
     <string name="instr_online_ranges_12">Cuanta mayor sea la puntuación obtenida, <b>mejor</b>.</string>
 
 </resources>

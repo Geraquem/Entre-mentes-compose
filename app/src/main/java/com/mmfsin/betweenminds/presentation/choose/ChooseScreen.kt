@@ -64,7 +64,6 @@ fun ChoosePV() {
 fun ChooseScreen(
     viewModel: ChooseViewModel = hiltViewModel(),
     goBack: () -> Unit,
-    roomJoined: (String) -> Unit,
     roomCreated: (String, String) -> Unit
 ) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
@@ -95,7 +94,10 @@ fun ChooseScreen(
     }
 
     if (uiStates.joinToQuestionsOnline) {
-        context.openBedRockActivity(NAV_QUESTIONS_ONLINE_JOINED)
+        context.openBedRockActivity(
+            NAV_QUESTIONS_ONLINE_JOINED,
+            uiStates.roomCodeToJoin
+        )
         viewModel.joinToQuestionsOnline(false)
     }
 
