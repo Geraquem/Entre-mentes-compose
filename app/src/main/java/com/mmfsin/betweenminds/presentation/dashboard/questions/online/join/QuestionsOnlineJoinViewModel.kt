@@ -1,33 +1,50 @@
 package com.mmfsin.betweenminds.presentation.dashboard.questions.online.join
 
-import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.domain.usecases.GetOQuestionsAndNamesUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class QuestionsOnlineJoinViewModel @Inject constructor(
+    private val getOQuestionsAndNamesUseCase: GetOQuestionsAndNamesUseCase,
 ) : BaseViewModel<QuestionsOnlineJoinStates>(QuestionsOnlineJoinStates()) {
 
-    init {
-    }
+    init {}
 
     fun updateRoomCode(code: String?) {
         if (code == null) sww()
         else _uiState.update { it.copy(roomCode = code) }
     }
 
+    private fun getQuestionsAndNames() {
+        val states = uiState.value
+        executeUseCase(
+            { getOQuestionsAndNamesUseCase.execute(states.roomCode) },
+            { data ->
+                _uiState.update { it.copy(showWaitingOtherPlayerDialog = false) }
+            },
+            {
+                sww()
+            },
+        )
+    }
+
     fun hideInitialDialog() {
-        _uiState.update { it.copy(showInitialDialog = false) }
-        viewModelScope.launch {
-            delay(1000)
-            _uiState.update { it.copy(showRoundView = false) }
-            delay(1000)
-//            startMyOpinion()
+        _uiState.update {
+            it.copy(
+                showInitialDialog = false,
+                showWaitingOtherPlayerDialog = true
+            )
         }
+        getQuestionsAndNames()
+        //        viewModelScope.launch {
+        //            delay(1000)
+        //            _uiState.update { it.copy(showRoundView = false) }
+        //            delay(1000)
+        //                        startMyOpinion()
+        //        }
     }
 
     fun updateMyOpinionPercents(value: Int) {

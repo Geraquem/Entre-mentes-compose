@@ -64,6 +64,10 @@ fun MenuContent(
     goToChooseFragment: (String) -> Unit
 ) {
 
+
+    goToChooseFragment(GameType.QUESTIONS.id)
+
+
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
 
     ParticlesBackground()

@@ -118,7 +118,7 @@ fun JoinRoom(
                 .background(BackgroundBlackSoft)
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             value = value.uppercase(),
-            onValueChange = { onValueChange(it.take(5)) },
+            onValueChange = { onValueChange(it.take(5).uppercase()) },
             singleLine = true,
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = White,

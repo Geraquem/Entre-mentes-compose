@@ -63,7 +63,6 @@ import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
-import com.mmfsin.betweenminds.presentation.dashboard.questions.online.components.InitialQOCreatorDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.online.components.InitialQOJoinDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.online.components.WaitingPartnerDialog
 import com.mmfsin.betweenminds.utils.AnimateX
@@ -82,7 +81,7 @@ fun QuestionsOnlineJoinPV() {
 
         ),
         {}, {}, {}, {},
-        {},
+        {},{},
     )
 }
 
@@ -102,6 +101,7 @@ fun QuestionsOnlineJoinScreen(
         uiStates = uiStates,
         goBack = { activity?.finish() },
         goToInstructions = { context.goToInstructions() },
+        waitForOtherPlayer = { viewModel.showWaitingOtherPlayerDialog(it) },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateMyOpinionPercents = { viewModel.updateMyOpinionPercents(it) },
         //        updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
@@ -119,6 +119,7 @@ fun QuestionsOnlineJoinContent(
     uiStates: QuestionsOnlineJoinStates,
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
+    waitForOtherPlayer: (Boolean) -> Unit,
     hideInitialDialog: () -> Unit,
     updateMyOpinionPercents: (Int) -> Unit,
     //    updateSecondOpinionPercents: (Int) -> Unit,
@@ -341,7 +342,6 @@ fun QuestionsOnlineJoinContent(
                 InitialQOJoinDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
-                    isLoading = uiStates.isLoading
                 )
             }
 

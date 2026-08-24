@@ -54,8 +54,12 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 questions[0].question
             } else questions[states.questionPos].question
 
-            _uiState.update { it.copy(actualQuestion = newQuestion) }
-            setDataInRoom()
+            _uiState.update {
+                it.copy(
+                    actualQuestion = newQuestion,
+                    isLoading = false
+                )
+            }
         }
     }
 
@@ -70,7 +74,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                     gameNumber = states.gameNumber
                 )
             },
-            { _uiState.update { it.copy(isLoading = false) } },
+            { startMyOpinion() },
             { sww() }
         )
     }
@@ -88,12 +92,12 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
     }
 
     fun hideInitialDialog() {
+        setDataInRoom()
         _uiState.update { it.copy(showInitialDialog = false) }
         viewModelScope.launch {
             delay(1000)
             _uiState.update { it.copy(showRoundView = false) }
             delay(1000)
-            startMyOpinion()
         }
     }
 
