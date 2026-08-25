@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranges.components
+package com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -28,12 +28,12 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 
 @Preview
 @Composable
-fun InitialOfflineRangesDialogPV() {
-    InitialOfflineRangesDialog({}, {}, true)
+fun InitialOnlineRangesDialogPV() {
+    InitialOnlineRangesDialog({}, {}, true)
 }
 
 @Composable
-fun InitialOfflineRangesDialog(
+fun InitialOnlineRangesDialog(
     startGame: () -> Unit,
     howToPlay: () -> Unit,
     isLoading: Boolean
@@ -63,25 +63,29 @@ fun InitialOfflineRangesDialog(
                     .padding(12.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.ranges_start_resume),
+                    text = stringResource(R.string.ranges_start_online),
                     style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp)
                 )
 
                 SpacerSmall()
 
                 Text(
-                    text = stringResource(R.string.ranges_start_resume_two),
+                    text = stringResource(R.string.ranges_start_online_1),
                     style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp)
                 )
 
                 SpacerSmall()
 
                 Text(
-                    text = stringResource(R.string.ranges_start_resume_three),
+                    text = stringResource(R.string.ranges_start_online_2),
                     style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp)
                 )
                 SpacerSmall()
 
+                Text(
+                    text = stringResource(R.string.ranges_start_online_3),
+                    style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp)
+                )
                 SpacerMedium()
 
                 ButtonCustom(

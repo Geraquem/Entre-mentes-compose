@@ -46,10 +46,10 @@ class RangesOfflineViewModel @Inject constructor(
 
         if (ranges.isEmpty()) sww()
         else {
-            val newRange = if (states.ragesPos >= states.ranges.size) {
-                _uiState.update { it.copy(ragesPos = 0) }
+            val newRange = if (states.rangesPos >= states.ranges.size) {
+                _uiState.update { it.copy(rangesPos = 0) }
                 ranges[0]
-            } else ranges[states.ragesPos]
+            } else ranges[states.rangesPos]
 
             _uiState.update {
                 it.copy(
@@ -135,7 +135,7 @@ class RangesOfflineViewModel @Inject constructor(
                 showBullseye = true,
                 sliderEnabled = false,
                 buttonEnabled = false,
-                ragesPos = states.ragesPos + 1,
+                rangesPos = states.rangesPos + 1,
                 roundCount = states.roundCount + 1,
             )
         }

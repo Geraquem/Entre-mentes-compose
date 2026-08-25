@@ -68,8 +68,13 @@ class ChooseViewModel @Inject constructor(
                 )
             },
             { joined ->
-                if (joined) joinToQuestionsOnline(true)
-                else joinedError(true)
+                if (joined) {
+                    when (states.gameType) {
+                        QUESTIONS -> joinToQuestionsOnline(true)
+                        RANGES -> joinToRangesOnline(true)
+                        else -> sww()
+                    }
+                } else joinedError(true)
                 showLoading(false)
             },
             {
@@ -89,9 +94,11 @@ class ChooseViewModel @Inject constructor(
         }
     }
 
-    fun joinToQuestionsOnline(value: Boolean) = _uiState.update { it.copy(joinToQuestionsOnline = value) }
-
     fun createOnlineRoom(value: Boolean) = _uiState.update { it.copy(createOnlineRoom = value) }
+
+    fun joinToQuestionsOnline(value: Boolean) = _uiState.update { it.copy(joinToQuestionsOnline = value) }
+    fun joinToRangesOnline(value: Boolean) = _uiState.update { it.copy(joinToRangesOnline = value) }
+
     fun startQuestionsOffline(value: Boolean) = _uiState.update { it.copy(startQuestionsOffline = value) }
     fun startRangesOffline(value: Boolean) = _uiState.update { it.copy(startRangesOffline = value) }
 

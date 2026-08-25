@@ -24,9 +24,14 @@ class RoomCodeViewModel @Inject constructor(
     }
 
     private fun checkGameType() {
-        if (roomCode == null) sww()
+        if (roomCode == null || gameTypeId == null) sww()
         else {
-            _uiState.update { it.copy(roomCode = roomCode) }
+            _uiState.update {
+                it.copy(
+                    roomCode = roomCode,
+                    gameTypeId = gameTypeId
+                )
+            }
             waitForOtherPlayer()
         }
     }

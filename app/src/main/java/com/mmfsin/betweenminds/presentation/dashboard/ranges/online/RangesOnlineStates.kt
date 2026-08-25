@@ -1,15 +1,20 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranges.offline
+package com.mmfsin.betweenminds.presentation.dashboard.ranges.online
 
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.OnlineRangeRoundData
 import com.mmfsin.betweenminds.domain.models.Range
 import com.mmfsin.betweenminds.domain.models.RangePhaseType
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.SHOW_BULLSEYE
 
-data class RangesOfflineStates(
-    val isLoading: Boolean = true,
+data class RangesOnlineStates(
+    val isLoading: Boolean = false,
+
+    val roomCode: String = "",
+    val isCreator: Boolean = false,
 
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
+    val showWaitingOtherPlayerDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
 
@@ -18,6 +23,8 @@ data class RangesOfflineStates(
     val showRoundView: Boolean = true,
     var roundCount: Int = 0,
     val phase: RangePhaseType = SHOW_BULLSEYE,
+
+    val roundData: List<OnlineRangeRoundData?> = listOf(null, null, null),
 
     val ranges: List<Range> = emptyList(),
     var rangesPos: Int = 0,
@@ -29,7 +36,7 @@ data class RangesOfflineStates(
     val sliderValue: Float = 50f,
     val bullsEyeStart: Float = 47f,
 
-    val points: List<Int?> = listOf(null, null, null, null),
+    val points: List<Int?> = listOf(null, null, null),
     val confettiTrigger: Int = 0,
 
     val curtainsOpen: Boolean = false,
@@ -39,5 +46,5 @@ data class RangesOfflineStates(
     val showBullseye: Boolean = true,
 
     val buttonEnabled: Boolean = false,
-    val buttonText: Int = R.string.btn_ready
+    val buttonText: Int = R.string.online_btn_save_answer
 )

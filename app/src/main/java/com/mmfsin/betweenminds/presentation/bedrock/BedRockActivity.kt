@@ -10,7 +10,9 @@ import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsO
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOnlineCreator
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOnlineJoin
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRangesOffline
+import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRangesOnline
 import com.mmfsin.betweenminds.presentation.instructions.InstructionsScreen
+import com.mmfsin.betweenminds.utils.BEDROCK_BOOL_ARGS
 import com.mmfsin.betweenminds.utils.BEDROCK_NAV_GRAPH
 import com.mmfsin.betweenminds.utils.BEDROCK_STR_ARGS
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_OFFLINE
@@ -31,15 +33,17 @@ class BedRockActivity : ComponentActivity() {
 
         val navGraph = intent?.getStringExtra(BEDROCK_NAV_GRAPH)
         val strArgs = intent?.getStringExtra(BEDROCK_STR_ARGS)
+        val boolArgs = intent?.getBooleanExtra(BEDROCK_BOOL_ARGS, false)
 
         enableEdgeToEdge()
         setContent {
             when (navGraph) {
-                NAV_QUESTIONS_ONLINE_CREATOR -> NavigationQuestionsOnlineCreator(strArgs)
-                NAV_QUESTIONS_ONLINE_JOINED -> NavigationQuestionsOnlineJoin(strArgs)
+                /** Dashboard */
+                NAV_QUESTIONS_ONLINE_CREATOR -> NavigationQuestionsOnlineCreator(roomCode = strArgs)
+                NAV_QUESTIONS_ONLINE_JOINED -> NavigationQuestionsOnlineJoin(roomCode = strArgs)
                 NAV_QUESTIONS_OFFLINE -> NavigationQuestionsOffline()
 
-                NAV_RANGES_ONLINE -> {}
+                NAV_RANGES_ONLINE -> NavigationRangesOnline(roomCode = strArgs, isCreator = boolArgs)
                 NAV_RANGES_OFFLINE -> NavigationRangesOffline()
 
                 /** Instructions */
@@ -47,6 +51,7 @@ class BedRockActivity : ComponentActivity() {
                 NAV_INSTR_QUESTIONS_OFFLINE -> InstructionsScreen(gameType = QUESTIONS, onlineMode = false)
                 NAV_INSTR_RANGES_ONLINE -> InstructionsScreen(gameType = RANGES, onlineMode = true)
                 NAV_INSTR_RANGES_OFFLINE -> InstructionsScreen(gameType = RANGES, onlineMode = false)
+
                 else -> finish()
             }
         }

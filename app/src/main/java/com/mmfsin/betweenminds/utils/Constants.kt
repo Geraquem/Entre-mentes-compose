@@ -3,6 +3,7 @@ package com.mmfsin.betweenminds.utils
 /** BEDROCK ARGS */
 const val BEDROCK_NAV_GRAPH = "bedrock_nav_graph"
 const val BEDROCK_STR_ARGS = "bedrock_str_args"
+const val BEDROCK_BOOL_ARGS = "bedrock_bool_args"
 
 const val NAV_QUESTIONS_ONLINE_CREATOR = "nav_questions_online_creator"
 const val NAV_QUESTIONS_ONLINE_JOINED = "nav_questions_online_joined"

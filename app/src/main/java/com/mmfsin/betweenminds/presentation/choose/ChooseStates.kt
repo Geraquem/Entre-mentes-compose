@@ -14,9 +14,11 @@ data class ChooseStates(
     val roomCodeToJoin: String = "",
     val roomCodeCreated: String = "",
 
-    val joinToQuestionsOnline: Boolean = false,
-
     val createOnlineRoom: Boolean = false,
+
+    val joinToQuestionsOnline: Boolean = false,
+    val joinToRangesOnline: Boolean = false,
+
     val startQuestionsOffline: Boolean = false,
     val startRangesOffline: Boolean = false
 )

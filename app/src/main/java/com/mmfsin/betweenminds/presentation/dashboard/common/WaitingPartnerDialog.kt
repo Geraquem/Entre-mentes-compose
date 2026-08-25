@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.questions.online.components
+package com.mmfsin.betweenminds.presentation.dashboard.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

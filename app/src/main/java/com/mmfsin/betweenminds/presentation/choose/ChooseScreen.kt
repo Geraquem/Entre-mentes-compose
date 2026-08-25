@@ -46,6 +46,7 @@ import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_OFFLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_ONLINE_JOINED
 import com.mmfsin.betweenminds.utils.NAV_RANGES_OFFLINE
+import com.mmfsin.betweenminds.utils.NAV_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
 @Preview
@@ -100,6 +101,15 @@ fun ChooseScreen(
             uiStates.roomCodeToJoin
         )
         viewModel.joinToQuestionsOnline(false)
+    }
+
+    if (uiStates.joinToRangesOnline) {
+        context.openBedRockActivity(
+            NAV_RANGES_ONLINE,
+            uiStates.roomCodeToJoin,
+            boolArgs = false //isCreator = no
+        )
+        viewModel.joinToRangesOnline(false)
     }
 
     if (uiStates.startQuestionsOffline) {

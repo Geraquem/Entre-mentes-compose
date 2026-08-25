@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.mmfsin.betweenminds.presentation.dashboard.ranges.offline
+package com.mmfsin.betweenminds.presentation.dashboard.ranges.online
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -64,13 +65,14 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
+import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.InitialOnlineRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
-import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
@@ -79,59 +81,60 @@ import kotlin.math.roundToInt
 
 @Preview
 @Composable
-fun RangesOfflineScreenPV() {
-    RangesOfflineContent(
-        uiState = RangesOfflineStates(
-            showRoundView = false,
+fun RangesOnlinePV() {
+    RangesOnlineContent(
+        uiStates = RangesOnlineStates(
             showInitialDialog = false,
-            actualRangeLeft = "Rango izquierdo",
-            actualRangeRight = "Rango derecho",
-            hint = "El caballo blanco de Santiago",
-            phase = MOVE_ARROW,
-            curtainsOpen = true,
-            showSlider = true
+            showRoundView = false,
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {}, {}, {}, {},
     )
 }
 
 @Composable
-fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
+fun RangesOnlineScreen(
+    viewModel: RangesOnlineViewModel = hiltViewModel(),
+    roomCode: String?,
+    isCreator: Boolean?
+) {
     val context = LocalContext.current
     val activity = LocalActivity.current
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
 
-    RangesOfflineContent(
-        uiState = uiStates,
+    LaunchedEffect(roomCode, isCreator) {
+        viewModel.updateRoomCodeAndStatus(roomCode, isCreator)
+    }
+
+    RangesOnlineContent(
+        uiStates = uiStates,
         goBack = { activity?.finish() },
         goToInstructions = { context.goToInstructions() },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateHint = { viewModel.updateHint(it) },
         updateSliderValue = { viewModel.updateSliderValue(it) },
-        readyBullseyePhase = { viewModel.readyBullseyePhase() },
-        readySliderPhase = { viewModel.readySliderPhase() },
-        nextRound = { viewModel.nextRound() },
-        showResultDialog = { viewModel.showResultDialog(true) },
-        replay = { viewModel.replay() },
+        checkBullseyePhase = { viewModel.checkBullseyePhase() },
+        //        readySliderPhase = { viewModel.readySliderPhase() },
+        //        nextRound = { viewModel.nextRound() },
+        //        showResultDialog = { viewModel.showResultDialog(true) },
+        //        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
     )
 }
 
 @Composable
-fun RangesOfflineContent(
-    uiState: RangesOfflineStates,
+fun RangesOnlineContent(
+    uiStates: RangesOnlineStates,
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
     updateHint: (String) -> Unit,
     updateSliderValue: (Int) -> Unit,
-    readyBullseyePhase: () -> Unit,
-    readySliderPhase: () -> Unit,
-    nextRound: () -> Unit,
-    showResultDialog: (Boolean) -> Unit,
-    replay: () -> Unit,
+    checkBullseyePhase: () -> Unit,
+    //    readySliderPhase: () -> Unit,
+    //    nextRound: () -> Unit,
+    //    showResultDialog: (Boolean) -> Unit,
+    //    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
 
@@ -152,17 +155,17 @@ fun RangesOfflineContent(
                 .padding(vertical = 12.dp, horizontal = 18.dp)
         ) {
 
-            if (uiState.confettiTrigger > 0) {
-                key(uiState.confettiTrigger) {
+            if (uiStates.confettiTrigger > 0) {
+                key(uiStates.confettiTrigger) {
                     KonfettiView(
                         modifier = Modifier.fillMaxSize(),
-                        parties = listOf(getKonfettiParty(uiState.confettiTrigger))
+                        parties = listOf(getKonfettiParty(uiStates.confettiTrigger))
                     )
                 }
             }
 
             Column {
-                RangeRounds(uiState.points)
+                RangeRounds(uiStates.points)
 
                 SpacerLarge()
 
@@ -170,7 +173,7 @@ fun RangesOfflineContent(
                     modifier = Modifier.fillMaxWidth().height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    ShowAlpha(uiState.showEditTextHint) {
+                    ShowAlpha(uiStates.showEditTextHint) {
                         Column(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -184,7 +187,7 @@ fun RangesOfflineContent(
                             SpacerSmall()
 
                             BasicTextField(
-                                enabled = uiState.phase == SHOW_BULLSEYE,
+                                enabled = uiStates.phase == SHOW_BULLSEYE,
                                 modifier = Modifier.fillMaxWidth()
                                     .border(
                                         width = 2.dp,
@@ -192,7 +195,7 @@ fun RangesOfflineContent(
                                         shape = RoundedCornerShape(8.dp)
                                     )
                                     .padding(horizontal = 12.dp, vertical = 18.dp),
-                                value = uiState.hint,
+                                value = uiStates.hint,
                                 onValueChange = { updateHint(it.take(150)) },
                                 singleLine = true,
                                 textStyle = MaterialTheme.typography.bodyLarge.copy(color = White),
@@ -205,9 +208,9 @@ fun RangesOfflineContent(
                         }
                     }
 
-                    ShowAlpha(!uiState.showEditTextHint) {
+                    ShowAlpha(!uiStates.showEditTextHint) {
                         MediumText(
-                            text = uiState.hint,
+                            text = uiStates.hint,
                             color = White
                         )
                     }
@@ -223,15 +226,15 @@ fun RangesOfflineContent(
                         .onSizeChanged { parentWidth = it.width },
                 ) {
 
-                    if (uiState.showBullseye) {
-                        Bullseye(uiState.bullsEyeStart)
+                    if (uiStates.showBullseye) {
+                        Bullseye(uiStates.bullsEyeStart)
                     }
 
-                    if (uiState.showSlider) {
+                    if (uiStates.showSlider) {
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.sliderEnabled,
-                            value = uiState.sliderValue,
+                            enabled = uiStates.sliderEnabled,
+                            value = uiStates.sliderValue,
                             onValueChange = { updateSliderValue(it.roundToInt()) },
                             valueRange = 0f..100f,
                             thumb = {
@@ -255,7 +258,7 @@ fun RangesOfflineContent(
                     val halfWidth = with(LocalDensity.current) { (parentWidth / 2).toDp() }
 
                     /** Left curtain */
-                    AnimateX(if (uiState.curtainsOpen) -parentWidth / 2f else 0f) {
+                    AnimateX(if (uiStates.curtainsOpen) -parentWidth / 2f else 0f) {
                         Box(
                             modifier = Modifier
                                 .width(halfWidth)
@@ -265,7 +268,7 @@ fun RangesOfflineContent(
                     }
 
                     /** Right curtain */
-                    AnimateX(if (uiState.curtainsOpen) parentWidth.toFloat() else 0f) {
+                    AnimateX(if (uiStates.curtainsOpen) parentWidth.toFloat() else 0f) {
                         Box(
                             modifier = Modifier
                                 .width(halfWidth)
@@ -280,19 +283,19 @@ fun RangesOfflineContent(
 
                 Box(modifier = Modifier.weight(1f)) {
                     Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                        ShowAlpha(uiState.showSlider) { SwipeBox() }
+                        ShowAlpha(uiStates.showSlider) { SwipeBox() }
                     }
 
                     RangeLimits(
-                        leftRange = uiState.sliderValue.toString(),
-                        rightRange = uiState.bullsEyeStart.toString()
+                        leftRange = uiStates.sliderValue.toString(),
+                        rightRange = uiStates.bullsEyeStart.toString()
                     )
 
-                    if (uiState.showSlider) {
+                    if (uiStates.showSlider) {
                         Slider(
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.sliderEnabled,
-                            value = uiState.sliderValue,
+                            enabled = uiStates.sliderEnabled,
+                            value = uiStates.sliderValue,
                             onValueChange = { updateSliderValue(it.roundToInt()) },
                             valueRange = 0f..100f,
                             thumb = { Box(modifier = Modifier.fillMaxHeight()) },
@@ -311,50 +314,54 @@ fun RangesOfflineContent(
 
                 ButtonCustom(
                     onClick = {
-                        if (uiState.buttonEnabled) {
-                            when (uiState.phase) {
-                                SHOW_BULLSEYE -> readyBullseyePhase()
-                                MOVE_ARROW -> readySliderPhase()
-                                NEXT_ROUND -> nextRound()
-                                RESULTS -> showResultDialog(true)
+                        if (uiStates.buttonEnabled) {
+                            when (uiStates.phase) {
+                                SHOW_BULLSEYE -> checkBullseyePhase()
+                                MOVE_ARROW -> {} //readySliderPhase()
+                                NEXT_ROUND -> {} //nextRound()
+                                RESULTS -> {} //showResultDialog(true)
                             }
                         }
                     },
-                    text = uiState.buttonText,
+                    text = uiStates.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }
+            ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }
 
-            if (uiState.showInitialDialog) {
-                InitialOfflineRangesDialog(
+            if (uiStates.showInitialDialog) {
+                InitialOnlineRangesDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
-                    isLoading = uiState.isLoading
+                    isLoading = uiStates.isLoading
                 )
             }
 
-            if (uiState.showResultDialog) {
+            if (uiStates.showWaitingOtherPlayerDialog) {
+                WaitingPartnerDialog(goBack = { showExitDialog(true) })
+            }
+
+            if (uiStates.showResultDialog) {
                 ResultRangesDialog(
-                    points = uiState.points,
+                    points = uiStates.points,
                     exit = { goBack() },
-                    replay = { replay() },
+                    replay = { /*replay() */ },
                 )
             }
 
-            if (uiState.showExitDialog) {
+            if (uiStates.showExitDialog) {
                 ExitGameDialog(
                     exit = { goBack() },
                     cancel = { showExitDialog(false) }
                 )
             }
 
-            if (uiState.showSwwDialog) ErrorDialog(accept = { goBack() })
+            if (uiStates.showSwwDialog) ErrorDialog(accept = { goBack() })
 
             BackHandler { showExitDialog(true) }
         }
     }
 }
 
-private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANGES_OFFLINE)
+private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANGES_ONLINE)

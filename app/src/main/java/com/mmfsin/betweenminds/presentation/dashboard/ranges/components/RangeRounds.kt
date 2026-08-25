@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranges.common
+package com.mmfsin.betweenminds.presentation.dashboard.ranges.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background

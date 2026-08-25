@@ -36,8 +36,8 @@ import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
 import com.mmfsin.betweenminds.presentation.core.theme.Transparent
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.common.Bullseye
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.common.RangeLimits
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 
 @Preview
 @Composable

@@ -18,10 +18,11 @@ import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import java.util.concurrent.TimeUnit
 
-fun Context.openBedRockActivity(navGraph: String, strArgs: String? = null) {
+fun Context.openBedRockActivity(navGraph: String, strArgs: String? = null, boolArgs: Boolean? = null) {
     val intent = Intent(this, BedRockActivity::class.java)
     intent.putExtra(BEDROCK_NAV_GRAPH, navGraph)
     strArgs?.let { intent.putExtra(BEDROCK_STR_ARGS, strArgs) }
+    boolArgs?.let { intent.putExtra(BEDROCK_BOOL_ARGS, boolArgs) }
     startActivity(intent)
 }
 

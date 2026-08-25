@@ -65,7 +65,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.questions.components.Peopl
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.online.components.InitialQOCreatorDialog
-import com.mmfsin.betweenminds.presentation.dashboard.questions.online.components.WaitingPartnerDialog
+import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
