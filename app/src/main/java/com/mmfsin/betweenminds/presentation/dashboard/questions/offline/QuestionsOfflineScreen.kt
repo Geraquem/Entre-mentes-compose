@@ -59,10 +59,10 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
-import com.mmfsin.betweenminds.presentation.dashboard.questions.offline.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
+import com.mmfsin.betweenminds.presentation.dashboard.questions.offline.components.InitialOfflineQuestionsDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
@@ -340,7 +340,9 @@ fun QuestionsOfflineContent(
                     orangeName = uiStates.orangeName,
                     exit = { goBack() },
                     replay = { replay() },
+                    loadingReplay = false,
                     changeNames = {},
+                    showChangeNames = true
                 )
             }
 

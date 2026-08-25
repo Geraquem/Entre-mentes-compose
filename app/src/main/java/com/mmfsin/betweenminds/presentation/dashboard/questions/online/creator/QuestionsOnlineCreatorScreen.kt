@@ -83,7 +83,7 @@ fun QuestionsOnlineCreatorCreatorPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
-        {},
+        {}, {}, {},
     )
 }
 
@@ -111,8 +111,8 @@ fun QuestionsOnlineCreatorScreen(
         readyMyOpinion = { viewModel.readyMyOpinion() },
         //        readyOpinionTwo = { viewModel.readyOpinionTwo() },
         handleNextRound = { viewModel.handleNextRound() },
-        //        showResultDialog = { viewModel.showResultDialog(it) },
-        //        replay = { viewModel.replay() },
+        showResultDialog = { viewModel.showResultDialog(it) },
+        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
     )
 }
@@ -130,8 +130,8 @@ fun QuestionsOnlineCreatorContent(
     readyMyOpinion: () -> Unit,
     //    readyOpinionTwo: () -> Unit,
     handleNextRound: () -> Unit,
-    //    showResultDialog: (Boolean) -> Unit,
-    //    replay: () -> Unit,
+    showResultDialog: (Boolean) -> Unit,
+    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
@@ -308,7 +308,7 @@ fun QuestionsOnlineCreatorContent(
                                 FIRST_OPINION -> readyMyOpinion()
                                 SECOND_OPINION -> {}
                                 NEXT_ROUND -> handleNextRound()
-                                RESULTS -> {} //showResultDialog(true)
+                                RESULTS -> showResultDialog(true)
                             }
                         }
                     },
@@ -326,8 +326,10 @@ fun QuestionsOnlineCreatorContent(
                     blueName = uiStates.blueName,
                     orangeName = uiStates.orangeName,
                     exit = { goBack() },
-                    replay = { /*replay()*/ },
+                    replay = { replay() },
+                    loadingReplay = uiStates.isLoading,
                     changeNames = {},
+                    showChangeNames = true
                 )
             }
 

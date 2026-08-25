@@ -10,6 +10,7 @@ import com.mmfsin.betweenminds.utils.PLAYER_2
 import com.mmfsin.betweenminds.utils.ROOMS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
@@ -133,5 +134,16 @@ class RoomRepository @Inject constructor(
     }
 
     override suspend fun restartGameAndResetRoom(roomId: String) {
-    }
+        val db = Firebase.firestore
+        val roomRef = db.collection(ROOMS).document(roomId)
+
+        suspend fun clearPlayerData(playerId: String) {
+            val playerRef = roomRef.collection(playerId)
+            val snapshot = playerRef.get().await()
+            for (doc in snapshot.documents) {
+                playerRef.document(doc.id).delete().await()
+            }
+        }
+        clearPlayerData(PLAYER_1)
+        clearPlayerData(PLAYER_2)}
 }

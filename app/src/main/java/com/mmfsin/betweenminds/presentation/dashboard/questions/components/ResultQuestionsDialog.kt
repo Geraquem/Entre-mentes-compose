@@ -45,7 +45,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.getTotalP
 fun ResultQuestionsDialogPV() {
     ResultQuestionsDialog(
         listOf(20, 0, 0, 0), "", "Martín",
-        {}, {}, {},
+        {}, {}, true, {}, true
     )
 }
 
@@ -56,7 +56,9 @@ fun ResultQuestionsDialog(
     orangeName: String,
     exit: () -> Unit,
     replay: () -> Unit,
-    changeNames: () -> Unit
+    loadingReplay: Boolean,
+    changeNames: () -> Unit,
+    showChangeNames: Boolean
 ) {
 
     val totalPoints = getTotalPoints(points)
@@ -159,22 +161,24 @@ fun ResultQuestionsDialog(
 
                     ButtonCustom(
                         onClick = { replay() },
-                        text = R.string.endgame_replay,
+                        text = if (loadingReplay) R.string.online_btn_wait else R.string.endgame_replay,
+                        enabled = !loadingReplay,
                         color = Black,
                         textColor = White,
                         modifier = Modifier.weight(1f)
                     )
                 }
 
-                SpacerSmall()
-
-                ButtonCustom(
-                    onClick = { changeNames() },
-                    text = R.string.endgame_replay_new_names,
-                    color = Black,
-                    textColor = White,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                if (showChangeNames) {
+                    SpacerSmall()
+                    ButtonCustom(
+                        onClick = { changeNames() },
+                        text = R.string.endgame_replay_new_names,
+                        color = Black,
+                        textColor = White,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }

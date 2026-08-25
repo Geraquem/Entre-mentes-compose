@@ -83,7 +83,7 @@ fun QuestionsOnlineJoinPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {},
+        {}, {}, {},
     )
 }
 
@@ -110,8 +110,8 @@ fun QuestionsOnlineJoinScreen(
         readyMyOpinion = { viewModel.readyMyOpinion() },
         //        readyOpinionTwo = { viewModel.readyOpinionTwo() },
         handleNextRound = { viewModel.handleNextRound() },
-        //        showResultDialog = { viewModel.showResultDialog(it) },
-        //        replay = { viewModel.replay() },
+        showResultDialog = { viewModel.showResultDialog(it) },
+        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
     )
 }
@@ -128,8 +128,8 @@ fun QuestionsOnlineJoinContent(
     readyMyOpinion: () -> Unit,
     //    readyOpinionTwo: () -> Unit,
     handleNextRound: () -> Unit,
-    //    showResultDialog: (Boolean) -> Unit,
-    //    replay: () -> Unit,
+    showResultDialog: (Boolean) -> Unit,
+    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
     var parentWidth by remember { mutableIntStateOf(0) }
@@ -306,7 +306,7 @@ fun QuestionsOnlineJoinContent(
                                 FIRST_OPINION -> readyMyOpinion()
                                 SECOND_OPINION -> {} //readyOpinionTwo()
                                 NEXT_ROUND -> handleNextRound()
-                                RESULTS -> {} //showResultDialog(true)
+                                RESULTS -> showResultDialog(true)
                             }
                         }
                     },
@@ -324,8 +324,10 @@ fun QuestionsOnlineJoinContent(
                     blueName = uiStates.blueName,
                     orangeName = uiStates.orangeName,
                     exit = { goBack() },
-                    replay = { /*replay()*/ },
+                    replay = { replay() },
+                    loadingReplay = false,
                     changeNames = {},
+                    showChangeNames = false
                 )
             }
 

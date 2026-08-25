@@ -7,6 +7,7 @@ import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.usecases.GetOQuestionsAndNamesUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendOpinionOQuestionsToRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitCreatorToRestartOQuestionsUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerOpinionOQuestionsUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.calculatePoints
@@ -22,6 +23,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
     private val getOQuestionsAndNamesUseCase: GetOQuestionsAndNamesUseCase,
     private val sendOpinionOQuestionsToRoomUseCase: SendOpinionOQuestionsToRoomUseCase,
     private val waitOtherPlayerOpinionOQuestionsUseCase: WaitOtherPlayerOpinionOQuestionsUseCase,
+    private val waitCreatorToRestartOQuestionsUseCase: WaitCreatorToRestartOQuestionsUseCase,
 ) : BaseViewModel<QuestionsOnlineJoinStates>(QuestionsOnlineJoinStates()) {
 
     fun updateRoomCode(code: String?) {
@@ -32,7 +34,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
         }
     }
 
-    private fun getQuestionsAndNames() {
+    private fun getQuestionsAndNames(shouldStartGame: Boolean = false) {
         val states = uiState.value
         executeUseCase(
             { getOQuestionsAndNamesUseCase.execute(states.roomCode) },
@@ -44,13 +46,13 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                         questions = data.questions
                     )
                 }
-                setQuestion()
+                setQuestion(shouldStartGame)
             },
             { sww() },
         )
     }
 
-    private fun setQuestion() {
+    private fun setQuestion(shouldStartGame: Boolean = false) {
         val states = uiState.value
         val questions = states.questions
 
@@ -67,6 +69,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                     isLoading = false
                 )
             }
+            if (shouldStartGame) hideInitialDialog()
         }
     }
 
@@ -171,7 +174,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                 whiteSlider = otherPlayerOpinion.toFloat(),
                 firstOpinionBlue = firstOpBlue,
                 firstOpinionOrange = otherPlayerOpinion,
-                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
                 questionPos = states.questionPos + 1,
                 roundCount = states.roundCount + 1
             )
@@ -229,9 +232,50 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
         }
     }
 
+
+    fun replay() {
+        showWaitingOtherPlayerDialog(true)
+        val states = uiState.value
+        executeUseCase(
+            {
+                waitCreatorToRestartOQuestionsUseCase.execute(
+                    roomId = states.roomCode,
+                    gameNumber = states.gameNumber
+                )
+            },
+            { newGameNumber ->
+                _uiState.update {
+                    it.copy(
+                        gameNumber = newGameNumber,
+                        roundCount = 0,
+                        showRoundView = true,
+                        showWaitingOtherPlayerDialog = false,
+                        showResultDialog = false,
+                        points = listOf(null, null, null, null),
+                        controllerEnabled = false,
+                        buttonEnabled = false,
+                        showWhiteIndicator = false,
+                        showRedIndicator = false,
+                        showFirstOpinionPercents = false,
+                        showSecondOpinionPercents = false,
+                        whiteSlider = 50f,
+                        redSlider = 50f,
+                        firstOpinionBlue = 50,
+                        secondOpinionBlue = 50,
+                        firstOpinionOrange = 50,
+                        secondOpinionOrange = 50,
+                    )
+                }
+                getQuestionsAndNames(shouldStartGame = true)
+            },
+            { sww() }
+        )
+    }
+
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
+    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
     fun showWaitingOtherPlayerDialog(value: Boolean) = _uiState.update { it.copy(showWaitingOtherPlayerDialog = value) }
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 

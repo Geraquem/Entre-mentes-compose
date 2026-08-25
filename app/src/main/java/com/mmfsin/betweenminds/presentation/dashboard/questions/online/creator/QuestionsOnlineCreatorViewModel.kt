@@ -7,6 +7,7 @@ import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.FIRST_OPINION
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.usecases.GetQuestionsUseCase
+import com.mmfsin.betweenminds.domain.usecases.RestartGameAndResetRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendOpinionOQuestionsToRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.SetOQuestionsInRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerOpinionOQuestionsUseCase
@@ -25,6 +26,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
     private val setOQuestionsInRoomUseCase: SetOQuestionsInRoomUseCase,
     private val sendOpinionOQuestionsToRoomUseCase: SendOpinionOQuestionsToRoomUseCase,
     private val waitOtherPlayerOpinionOQuestionsUseCase: WaitOtherPlayerOpinionOQuestionsUseCase,
+    private val restartGameAndResetRoomUseCase: RestartGameAndResetRoomUseCase,
 ) : BaseViewModel<QuestionsOnlineCreatorStates>(QuestionsOnlineCreatorStates()) {
 
     init {
@@ -202,7 +204,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 redSlider = otherPlayerOpinion.toFloat(),
                 secondOpinionBlue = secondOpBlue,
                 secondOpinionOrange = otherPlayerOpinion,
-                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
                 roomQuestionPos = states.roomQuestionPos + 1,
                 roundCount = states.roundCount + 1
             )
@@ -260,12 +262,59 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
         }
     }
 
+    fun replay() {
+        val states = uiState.value
+
+        _uiState.update {
+            it.copy(
+                isLoading = true,
+                gameNumber = states.gameNumber + 1,
+                roundCount = 0,
+                showRoundView = true,
+                points = listOf(null, null, null, null),
+                controllerEnabled = false,
+                buttonEnabled = false,
+                showWhiteIndicator = false,
+                showRedIndicator = false,
+                showFirstOpinionPercents = false,
+                showSecondOpinionPercents = false,
+            )
+        }
+        closeCurtains()
+
+        executeUseCase(
+            { restartGameAndResetRoomUseCase.execute(states.roomCode) },
+            {
+                showResultDialog(false)
+                viewModelScope.launch {
+                    delay(1500)
+                    _uiState.update {
+                        it.copy(
+                            showRoundView = false,
+                            whiteSlider = 50f,
+                            redSlider = 50f,
+                            firstOpinionBlue = 50,
+                            secondOpinionBlue = 50,
+                            firstOpinionOrange = 50,
+                            secondOpinionOrange = 50
+                        )
+                    }
+                    getQuestionsToRoom()
+                    setDataInRoom()
+                }
+            },
+            { sww() }
+        )
+    }
+
+
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }
     fun onOrangeNameChanged(value: String) = _uiState.update { it.copy(orangeName = value) }
 
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
+    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
     fun showWaitingOtherPlayerDialog(value: Boolean) = _uiState.update { it.copy(showWaitingOtherPlayerDialog = value) }
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 
