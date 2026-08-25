@@ -66,6 +66,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     actualQuestion = newQuestion,
+                    showWaitingOtherPlayerDialog = false,
                     isLoading = false
                 )
             }
@@ -174,7 +175,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                 whiteSlider = otherPlayerOpinion.toFloat(),
                 firstOpinionBlue = firstOpBlue,
                 firstOpinionOrange = otherPlayerOpinion,
-                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
                 questionPos = states.questionPos + 1,
                 roundCount = states.roundCount + 1
             )
@@ -235,41 +236,50 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
 
     fun replay() {
         showWaitingOtherPlayerDialog(true)
-        val states = uiState.value
-        executeUseCase(
-            {
-                waitCreatorToRestartOQuestionsUseCase.execute(
-                    roomId = states.roomCode,
-                    gameNumber = states.gameNumber
-                )
-            },
-            { newGameNumber ->
-                _uiState.update {
-                    it.copy(
-                        gameNumber = newGameNumber,
-                        roundCount = 0,
-                        showRoundView = true,
-                        showWaitingOtherPlayerDialog = false,
-                        showResultDialog = false,
-                        points = listOf(null, null, null, null),
-                        controllerEnabled = false,
-                        buttonEnabled = false,
-                        showWhiteIndicator = false,
-                        showRedIndicator = false,
-                        showFirstOpinionPercents = false,
-                        showSecondOpinionPercents = false,
-                        whiteSlider = 50f,
-                        redSlider = 50f,
-                        firstOpinionBlue = 50,
-                        secondOpinionBlue = 50,
-                        firstOpinionOrange = 50,
-                        secondOpinionOrange = 50,
+
+        _uiState.update {
+            it.copy(
+                roundCount = 0,
+                showRoundView = true,
+                showResultDialog = false,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1000)
+
+            val states = uiState.value
+            executeUseCase(
+                {
+                    waitCreatorToRestartOQuestionsUseCase.execute(
+                        roomId = states.roomCode,
+                        gameNumber = states.gameNumber
                     )
-                }
-                getQuestionsAndNames(shouldStartGame = true)
-            },
-            { sww() }
-        )
+                },
+                { newGameNumber ->
+                    _uiState.update {
+                        it.copy(
+                            gameNumber = newGameNumber,
+                            points = listOf(null, null, null, null),
+                            controllerEnabled = false,
+                            buttonEnabled = false,
+                            showWhiteIndicator = false,
+                            showRedIndicator = false,
+                            showFirstOpinionPercents = false,
+                            showSecondOpinionPercents = false,
+                            whiteSlider = 50f,
+                            redSlider = 50f,
+                            firstOpinionBlue = 50,
+                            secondOpinionBlue = 50,
+                            firstOpinionOrange = 50,
+                            secondOpinionOrange = 50,
+                        )
+                    }
+                    getQuestionsAndNames(shouldStartGame = true)
+                },
+                { sww() }
+            )
+        }
     }
 
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }

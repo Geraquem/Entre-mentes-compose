@@ -204,7 +204,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 redSlider = otherPlayerOpinion.toFloat(),
                 secondOpinionBlue = secondOpBlue,
                 secondOpinionOrange = otherPlayerOpinion,
-                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
                 roomQuestionPos = states.roomQuestionPos + 1,
                 roundCount = states.roundCount + 1
             )
