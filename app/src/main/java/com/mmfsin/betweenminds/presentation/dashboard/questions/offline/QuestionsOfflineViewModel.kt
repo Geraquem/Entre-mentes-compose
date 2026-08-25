@@ -159,7 +159,7 @@ class QuestionsOfflineViewModel @Inject constructor(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else 0,
                 controllerEnabled = false,
-                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
                 buttonEnabled = false,
                 showFirstOpinionPercents = true,
                 showWhiteIndicator = true,
@@ -217,6 +217,19 @@ class QuestionsOfflineViewModel @Inject constructor(
 
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
 
+    fun showChangeNamesDialog(value: Boolean) {
+        if (value) {
+            _uiState.update {
+                it.copy(
+                    blueName = "",
+                    orangeName = "",
+                    showResultDialog = false
+                )
+            }
+        }
+        _uiState.update { it.copy(showChangeNamesDialog = value) }
+    }
+
     fun replay() {
         showResultDialog(false)
 
@@ -224,6 +237,7 @@ class QuestionsOfflineViewModel @Inject constructor(
             it.copy(
                 roundCount = 0,
                 showRoundView = true,
+                showChangeNamesDialog = false,
                 points = listOf(null, null, null, null),
                 controllerEnabled = false,
                 buttonEnabled = false,

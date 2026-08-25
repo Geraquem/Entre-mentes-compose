@@ -9,6 +9,7 @@ data class QuestionsOfflineStates(
     val isLoading: Boolean = true,
 
     val showInitialDialog: Boolean = true,
+    val showChangeNamesDialog: Boolean = false,
     val showResultDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,

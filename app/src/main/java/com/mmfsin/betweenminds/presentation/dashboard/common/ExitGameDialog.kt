@@ -88,6 +88,7 @@ fun ExitGameDialog(
 
                 Row {
                     Spacer(Modifier.weight(1f))
+                    
                     TextButton(onClick = { cancel() }) {
                         MediumText(text = R.string.stay, allCaps = true)
                     }
