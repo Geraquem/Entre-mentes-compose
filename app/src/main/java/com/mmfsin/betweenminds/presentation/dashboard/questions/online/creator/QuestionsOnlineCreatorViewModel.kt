@@ -262,6 +262,19 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
         }
     }
 
+    fun showChangeNamesDialog(value: Boolean) {
+        if (value) {
+            _uiState.update {
+                it.copy(
+                    blueName = "",
+                    orangeName = "",
+                    showResultDialog = false,
+                )
+            }
+        }
+        _uiState.update { it.copy(showChangeNamesDialog = value) }
+    }
+
     fun replay() {
         val states = uiState.value
 
@@ -271,6 +284,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 gameNumber = states.gameNumber + 1,
                 roundCount = 0,
                 showRoundView = true,
+                showChangeNamesDialog = false,
                 points = listOf(null, null, null, null),
                 controllerEnabled = false,
                 buttonEnabled = false,

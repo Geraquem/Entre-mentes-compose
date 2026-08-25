@@ -60,6 +60,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
+import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ChangeNamesQuestionsDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
@@ -83,7 +84,7 @@ fun QuestionsOnlineCreatorCreatorPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
-        {}, {}, {},
+        {}, {}, {}, {},
     )
 }
 
@@ -110,6 +111,7 @@ fun QuestionsOnlineCreatorScreen(
         readyMyOpinion = { viewModel.readyMyOpinion() },
         handleNextRound = { viewModel.handleNextRound() },
         showResultDialog = { viewModel.showResultDialog(it) },
+        showChangeNamesDialog = { viewModel.showChangeNamesDialog(it) },
         replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
     )
@@ -127,6 +129,7 @@ fun QuestionsOnlineCreatorContent(
     readyMyOpinion: () -> Unit,
     handleNextRound: () -> Unit,
     showResultDialog: (Boolean) -> Unit,
+    showChangeNamesDialog: (Boolean) -> Unit,
     replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
@@ -326,13 +329,24 @@ fun QuestionsOnlineCreatorContent(
                     exit = { goBack() },
                     replay = { replay() },
                     loadingReplay = uiStates.isLoading,
-                    changeNames = {},
+                    changeNames = { showChangeNamesDialog(true) },
                     showChangeNames = true
                 )
             }
 
             if (uiStates.showWaitingOtherPlayerDialog) {
                 WaitingPartnerDialog(goBack = { showExitDialog(true) })
+            }
+
+            if (uiStates.showChangeNamesDialog) {
+                ChangeNamesQuestionsDialog(
+                    blueName = uiStates.blueName,
+                    onBlueNameChanged = { onBlueNameChange(it) },
+                    orangeName = uiStates.orangeName,
+                    onOrangeNameChanged = { onOrangeNameChange(it) },
+                    exit = { goBack() },
+                    startGame = { replay() },
+                )
             }
 
             if (uiStates.showExitDialog) {

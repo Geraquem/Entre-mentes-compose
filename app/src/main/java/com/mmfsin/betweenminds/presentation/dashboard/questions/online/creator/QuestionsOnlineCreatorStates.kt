@@ -13,6 +13,7 @@ data class QuestionsOnlineCreatorStates(
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
     val showWaitingOtherPlayerDialog: Boolean = false,
+    val showChangeNamesDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
 
