@@ -40,10 +40,8 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
         executeUseCase(
             { getQuestionsUseCase() },
             { questions ->
-                _uiState.update {
-                    it.copy(questions = questions)
-                }
-                setQuestion()
+                _uiState.update { it.copy(questions = questions) }
+                getQuestionsToRoom()
             },
             { sww() }
         )
@@ -51,14 +49,14 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
 
     private fun setQuestion() {
         val states = uiState.value
-        val questions = states.questions
+        val roomQuestions = states.roomQuestions
 
-        if (questions.isEmpty()) sww()
+        if (roomQuestions.isEmpty()) sww()
         else {
-            val newQuestion = if (states.questionPos >= states.questions.size) {
-                _uiState.update { it.copy(questionPos = 0) }
-                questions[0].question
-            } else questions[states.questionPos].question
+            val newQuestion = if (states.roomQuestionPos >= states.roomQuestions.size) {
+                _uiState.update { it.copy(roomQuestionPos = 0) }
+                roomQuestions[0].question
+            } else roomQuestions[states.roomQuestionPos].question
 
             _uiState.update {
                 it.copy(
@@ -76,7 +74,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 setOQuestionsInRoomUseCase.execute(
                     roomId = states.roomCode,
                     names = Pair(states.blueName, states.orangeName),
-                    questions = getQuestionsToRoom(),
+                    questions = states.roomQuestions,
                     gameNumber = states.gameNumber
                 )
             },
@@ -89,12 +87,18 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
         val states = uiState.value
         if (states.questionPos >= states.questions.size) sww()
 
-        val result = states.questions.subList(
+        val roomQuestions = states.questions.subList(
             states.questionPos, (states.questionPos + 4).coerceAtMost(states.questions.size)
         )
 
-        _uiState.update { it.copy(questionPos = states.questionPos + 4) }
-        return result
+        _uiState.update {
+            it.copy(
+                roomQuestions = roomQuestions,
+                questionPos = states.questionPos + 4
+            )
+        }
+        setQuestion()
+        return roomQuestions
     }
 
     fun hideInitialDialog() {
@@ -199,13 +203,13 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                 secondOpinionBlue = secondOpBlue,
                 secondOpinionOrange = otherPlayerOpinion,
                 phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
-                questionPos = states.questionPos + 1,
+                roomQuestionPos = states.roomQuestionPos + 1,
                 roundCount = states.roundCount + 1
             )
         }
 
         viewModelScope.launch {
-            delay(1000)
+            delay(750)
 
             _uiState.update {
                 it.copy(
@@ -217,6 +221,42 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                     buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
                 )
             }
+        }
+    }
+
+    fun handleNextRound() {
+        closeCurtains()
+        handleHandsUp(50)
+
+        _uiState.update {
+            it.copy(
+                showRoundView = true,
+                controllerEnabled = false,
+                buttonEnabled = false,
+                showFirstOpinionPercents = false,
+                showSecondOpinionPercents = false,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showWhiteIndicator = false,
+                    showRedIndicator = false,
+                    showRoundView = false,
+                    whiteSlider = 50f,
+                    firstOpinionBlue = 50,
+                    secondOpinionBlue = 50,
+                    redSlider = 50f,
+                    firstOpinionOrange = 50,
+                    secondOpinionOrange = 50
+                )
+            }
+            setQuestion()
+
+            delay(250)
+            startMyOpinion()
         }
     }
 

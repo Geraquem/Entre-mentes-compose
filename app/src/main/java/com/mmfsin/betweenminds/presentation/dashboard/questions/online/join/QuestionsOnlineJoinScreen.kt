@@ -83,6 +83,7 @@ fun QuestionsOnlineJoinPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
+        {},
     )
 }
 
@@ -108,7 +109,7 @@ fun QuestionsOnlineJoinScreen(
         //        updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
         readyMyOpinion = { viewModel.readyMyOpinion() },
         //        readyOpinionTwo = { viewModel.readyOpinionTwo() },
-        //        handleNextRound = { viewModel.handleNextRound() },
+        handleNextRound = { viewModel.handleNextRound() },
         //        showResultDialog = { viewModel.showResultDialog(it) },
         //        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
@@ -126,7 +127,7 @@ fun QuestionsOnlineJoinContent(
     //    updateSecondOpinionPercents: (Int) -> Unit,
     readyMyOpinion: () -> Unit,
     //    readyOpinionTwo: () -> Unit,
-    //    handleNextRound: () -> Unit,
+    handleNextRound: () -> Unit,
     //    showResultDialog: (Boolean) -> Unit,
     //    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
@@ -304,7 +305,7 @@ fun QuestionsOnlineJoinContent(
                             when (uiStates.phase) {
                                 FIRST_OPINION -> readyMyOpinion()
                                 SECOND_OPINION -> {} //readyOpinionTwo()
-                                NEXT_ROUND -> {} //handleNextRound()
+                                NEXT_ROUND -> handleNextRound()
                                 RESULTS -> {} //showResultDialog(true)
                             }
                         }

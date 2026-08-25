@@ -178,7 +178,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            delay(1000)
+            delay(750)
 
             _uiState.update {
                 it.copy(
@@ -190,6 +190,42 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                     buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
                 )
             }
+        }
+    }
+
+    fun handleNextRound() {
+        closeCurtains()
+        handleHandsUp(50)
+
+        _uiState.update {
+            it.copy(
+                showRoundView = true,
+                controllerEnabled = false,
+                buttonEnabled = false,
+                showFirstOpinionPercents = false,
+                showSecondOpinionPercents = false,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showWhiteIndicator = false,
+                    showRedIndicator = false,
+                    showRoundView = false,
+                    whiteSlider = 50f,
+                    firstOpinionBlue = 50,
+                    secondOpinionBlue = 50,
+                    redSlider = 50f,
+                    firstOpinionOrange = 50,
+                    secondOpinionOrange = 50
+                )
+            }
+            setQuestion()
+
+            delay(250)
+            startMyOpinion()
         }
     }
 

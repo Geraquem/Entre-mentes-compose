@@ -22,6 +22,8 @@ data class QuestionsOnlineCreatorStates(
     val phase: QuestionPhaseType = FIRST_OPINION,
     val questions: List<Question> = emptyList(),
     var questionPos: Int = 0,
+    val roomQuestions: List<Question> = emptyList(),
+    var roomQuestionPos: Int = 0,
     val actualQuestion: String = "",
 
     val points: List<Int?> = listOf(null, null, null, null),

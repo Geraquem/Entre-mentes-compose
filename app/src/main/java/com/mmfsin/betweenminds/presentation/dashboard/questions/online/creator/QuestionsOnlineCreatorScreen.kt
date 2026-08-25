@@ -83,6 +83,7 @@ fun QuestionsOnlineCreatorCreatorPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
+        {},
     )
 }
 
@@ -109,7 +110,7 @@ fun QuestionsOnlineCreatorScreen(
         //        updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
         readyMyOpinion = { viewModel.readyMyOpinion() },
         //        readyOpinionTwo = { viewModel.readyOpinionTwo() },
-        //        handleNextRound = { viewModel.handleNextRound() },
+        handleNextRound = { viewModel.handleNextRound() },
         //        showResultDialog = { viewModel.showResultDialog(it) },
         //        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
@@ -128,7 +129,7 @@ fun QuestionsOnlineCreatorContent(
     //    updateSecondOpinionPercents: (Int) -> Unit,
     readyMyOpinion: () -> Unit,
     //    readyOpinionTwo: () -> Unit,
-    //    handleNextRound: () -> Unit,
+    handleNextRound: () -> Unit,
     //    showResultDialog: (Boolean) -> Unit,
     //    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
@@ -305,8 +306,8 @@ fun QuestionsOnlineCreatorContent(
                         if (uiStates.buttonEnabled) {
                             when (uiStates.phase) {
                                 FIRST_OPINION -> readyMyOpinion()
-                                SECOND_OPINION -> {} //readyOpinionTwo()
-                                NEXT_ROUND -> {} //handleNextRound()
+                                SECOND_OPINION -> {}
+                                NEXT_ROUND -> handleNextRound()
                                 RESULTS -> {} //showResultDialog(true)
                             }
                         }
