@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
+import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.SmallText
@@ -35,12 +36,14 @@ import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.instructions.questions.InstrOfflineQuestions
 import com.mmfsin.betweenminds.presentation.instructions.questions.InstrOnlineQuestions
+import com.mmfsin.betweenminds.presentation.instructions.ranges.InstrOfflineRanges
+import com.mmfsin.betweenminds.presentation.instructions.ranges.InstrOnlineRanges
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
 fun InstructionsScreenPV() {
-    InstructionsScreen(QUESTIONS, false)
+    InstructionsScreen(RANGES, false)
 }
 
 @Composable
@@ -113,8 +116,8 @@ fun InstructionsScreen(gameType: GameType, onlineMode: Boolean) {
                 modifier = Modifier.fillMaxWidth()
             ) { page ->
                 when (page) {
-                    0 -> InstrOnlineQuestions()
-                    1 -> InstrOfflineQuestions()
+                    0 -> if(gameType == QUESTIONS) InstrOnlineQuestions() else InstrOnlineRanges()
+                    1 -> if(gameType == QUESTIONS) InstrOfflineQuestions() else InstrOfflineRanges()
                 }
             }
         }

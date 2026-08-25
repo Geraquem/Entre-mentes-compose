@@ -1,5 +1,6 @@
 package com.mmfsin.betweenminds.presentation.menu
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +30,10 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.menu.components.ParticlesBackground
 import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
 import com.mmfsin.betweenminds.utils.AnimateY
+import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
+import com.mmfsin.betweenminds.utils.openBedRockActivity
 
 @Preview
 @Composable
@@ -37,7 +42,7 @@ fun MenuScreenPV() {
         uiState = MenuStates(
             positonButtons = 0f
         ),
-        {}, {},
+        {}, {}, {},
     )
 }
 
@@ -46,14 +51,14 @@ fun MenuScreen(
     viewModel: MenuViewModel = hiltViewModel(),
     goToChooseFragment: (String) -> Unit
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     MenuContent(
         uiState = uiState,
         showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
-        goToChooseFragment = { id ->
-            viewModel.showSelectorSheet(false)
-            goToChooseFragment(id)
-        }
+        openInstructions = { context.goToInstructions(it) },
+        goToChooseFragment = { id -> goToChooseFragment(id) }
     )
 }
 
@@ -61,11 +66,12 @@ fun MenuScreen(
 fun MenuContent(
     uiState: MenuStates,
     showSelectorSheet: (value: Boolean) -> Unit,
-    goToChooseFragment: (String) -> Unit
+    openInstructions: (String) -> Unit,
+    goToChooseFragment: (String) -> Unit,
 ) {
 
+    goToChooseFragment(GameType.RANGES.id)
 
-    goToChooseFragment(GameType.QUESTIONS.id)
 
 
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
@@ -119,9 +125,9 @@ fun MenuContent(
     if (uiState.showSelectorSheet) {
         SelectorSheet(
             onDismiss = { showSelectorSheet(false) },
-            questionsInstructions = {},
+            questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
             questions = { goToChooseFragment(GameType.QUESTIONS.id) },
-            rangesInstructions = {},
+            rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
             ranges = { goToChooseFragment(GameType.RANGES.id) },
         )
     }
@@ -133,3 +139,5 @@ fun MenuContent(
         LoadingLottie()
     }
 }
+
+private fun Context.goToInstructions(navGraph: String) = openBedRockActivity(navGraph)

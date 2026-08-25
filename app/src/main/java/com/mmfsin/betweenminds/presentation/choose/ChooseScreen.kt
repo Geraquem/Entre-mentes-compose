@@ -1,6 +1,7 @@
 package com.mmfsin.betweenminds.presentation.choose
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -213,6 +214,8 @@ fun ChooseContent(
         if (uiStates.showSwwDialog) ErrorDialog(accept = { showSwwDialog(false) })
 
         if (uiStates.isLoading) LoadingFullScreen()
+
+        BackHandler { goBack() }
     }
 }
 

@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +40,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -54,12 +56,22 @@ fun SelectorSheet(
     ranges: () -> Unit,
     rangesInstructions: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
 
+    fun closeDialog(action: () -> Unit = {}) {
+        scope.launch {
+            sheetState.hide()
+            onDismiss()
+            action()
+        }
+    }
+
     ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
+        onDismissRequest = { closeDialog() },
         sheetState = sheetState,
         dragHandle = { }
     ) {
@@ -106,13 +118,15 @@ fun SelectorSheet(
                     icon = R.drawable.ic_book,
                     text = R.string.selector_how_to_play,
                     modifier = Modifier.weight(1f),
-                    onClick = { questionsInstructions() }
+                    onClick = {
+                        questionsInstructions()
+                    }
                 )
                 SelectorButton(
                     icon = null,
                     text = R.string.menu_play,
                     modifier = Modifier.weight(1f),
-                    onClick = { questions() }
+                    onClick = { closeDialog { questions() } }
                 )
             }
 
@@ -158,7 +172,7 @@ fun SelectorSheet(
                     icon = null,
                     text = R.string.menu_play,
                     modifier = Modifier.weight(1f),
-                    onClick = { ranges() }
+                    onClick = { closeDialog { ranges() } }
                 )
             }
 
@@ -166,6 +180,7 @@ fun SelectorSheet(
         }
     }
 }
+
 
 @Preview
 @Composable

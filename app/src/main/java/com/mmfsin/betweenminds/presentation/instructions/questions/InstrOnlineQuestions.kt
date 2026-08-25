@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
+import com.mmfsin.betweenminds.presentation.core.components.SpacerCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
@@ -209,7 +210,7 @@ fun InstrOnlineQuestions() {
 
             InstructionsText(R.string.instr_online_questions_9)
 
-            SpacerLarge()
+            SpacerCustom(space = 100.dp)
         }
     }
 }
