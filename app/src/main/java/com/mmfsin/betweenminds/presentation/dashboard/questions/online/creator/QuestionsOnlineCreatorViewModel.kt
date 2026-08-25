@@ -4,21 +4,27 @@ import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.Question
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.FIRST_OPINION
+import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.NEXT_ROUND
+import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.usecases.GetQuestionsUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendOpinionOQuestionsToRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.SetOQuestionsInRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerOpinionOQuestionsUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
+import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.calculatePoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class QuestionsOnlineCreatorViewModel @Inject constructor(
     private val getQuestionsUseCase: GetQuestionsUseCase,
     private val setOQuestionsInRoomUseCase: SetOQuestionsInRoomUseCase,
     private val sendOpinionOQuestionsToRoomUseCase: SendOpinionOQuestionsToRoomUseCase,
+    private val waitOtherPlayerOpinionOQuestionsUseCase: WaitOtherPlayerOpinionOQuestionsUseCase,
 ) : BaseViewModel<QuestionsOnlineCreatorStates>(QuestionsOnlineCreatorStates()) {
 
     init {
@@ -141,6 +147,13 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
     fun readyMyOpinion() {
         showWaitingOtherPlayerDialog(true)
 
+        _uiState.update {
+            it.copy(
+                buttonEnabled = false,
+                controllerEnabled = false
+            )
+        }
+
         val states = uiState.value
         executeUseCase(
             {
@@ -148,7 +161,7 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
                     roomId = states.roomCode,
                     isCreator = true,
                     round = states.roundCount,
-                    orangeOpinion = states.whiteSlider,
+                    orangeOpinion = states.whiteSlider.roundToInt(),
                 )
             },
             { waitForOtherPlayerOpinion() },
@@ -156,11 +169,55 @@ class QuestionsOnlineCreatorViewModel @Inject constructor(
     }
 
     private fun waitForOtherPlayerOpinion() {
+        val states = uiState.value
         executeUseCase(
-            {},
-            {},
+            {
+                waitOtherPlayerOpinionOQuestionsUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = true,
+                    round = states.roundCount
+                )
+            },
+            { otherPlayerOpinion ->
+                showWaitingOtherPlayerDialog(false)
+                showOtherPlayerOpinion(otherPlayerOpinion)
+            },
             { sww() }
         )
+    }
+
+    private fun showOtherPlayerOpinion(otherPlayerOpinion: Int) {
+        val secondOpBlue = 100 - otherPlayerOpinion
+        handleHandsUp(percent = secondOpBlue)
+
+        val states = uiState.value
+        val roundPoints = calculatePoints(states.firstOpinionBlue, secondOpBlue)
+
+        _uiState.update {
+            it.copy(
+                redSlider = otherPlayerOpinion.toFloat(),
+                secondOpinionBlue = secondOpBlue,
+                secondOpinionOrange = otherPlayerOpinion,
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                questionPos = states.questionPos + 1,
+                roundCount = states.roundCount + 1
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1000)
+
+            _uiState.update {
+                it.copy(
+                    points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
+                    confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else 0,
+                    showSecondOpinionPercents = true,
+                    showRedIndicator = true,
+                    buttonEnabled = true,
+                    buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
+                )
+            }
+        }
     }
 
     fun onBlueNameChanged(value: String) = _uiState.update { it.copy(blueName = value) }

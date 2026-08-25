@@ -93,7 +93,7 @@ class QuestionsOnlineRepository @Inject constructor(
         roomId: String,
         isCreator: Boolean,
         round: Int,
-        orangeOpinion: Float
+        orangeOpinion: Int
     ) {
         val db = Firebase.firestore
         val playerId = if (isCreator) PLAYER_1 else PLAYER_2
@@ -110,7 +110,7 @@ class QuestionsOnlineRepository @Inject constructor(
         roomId: String,
         isCreator: Boolean,
         round: Int
-    ): Float = suspendCancellableCoroutine { cont ->
+    ): Int = suspendCancellableCoroutine { cont ->
         val db = Firebase.firestore
         val opponentId = if (isCreator) PLAYER_2 else PLAYER_1
 
@@ -127,7 +127,7 @@ class QuestionsOnlineRepository @Inject constructor(
                 return@addSnapshotListener
             }
 
-            val orangeOpinion = snapshot?.getDouble("orangeOpinion")?.toFloat()
+            val orangeOpinion = snapshot?.getDouble("orangeOpinion")?.toInt()
             if (orangeOpinion != null && !hasResumed && cont.isActive) {
                 hasResumed = true
                 cont.resume(orangeOpinion)

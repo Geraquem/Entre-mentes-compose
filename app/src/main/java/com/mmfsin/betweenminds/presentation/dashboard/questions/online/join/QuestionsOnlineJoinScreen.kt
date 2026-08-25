@@ -78,10 +78,11 @@ import kotlin.math.roundToInt
 fun QuestionsOnlineJoinPV() {
     QuestionsOnlineJoinContent(
         uiStates = QuestionsOnlineJoinStates(
-
+            showInitialDialog = false,
+            showRoundView = false
         ),
         {}, {}, {}, {},
-        {}, {},
+        {}, {}, {},
     )
 }
 
@@ -105,7 +106,7 @@ fun QuestionsOnlineJoinScreen(
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateMyOpinionPercents = { viewModel.updateMyOpinionPercents(it) },
         //        updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
-        //        readyMyOpinion = { viewModel.readyMyOpinion() },
+        readyMyOpinion = { viewModel.readyMyOpinion() },
         //        readyOpinionTwo = { viewModel.readyOpinionTwo() },
         //        handleNextRound = { viewModel.handleNextRound() },
         //        showResultDialog = { viewModel.showResultDialog(it) },
@@ -123,7 +124,7 @@ fun QuestionsOnlineJoinContent(
     hideInitialDialog: () -> Unit,
     updateMyOpinionPercents: (Int) -> Unit,
     //    updateSecondOpinionPercents: (Int) -> Unit,
-    //    readyMyOpinion: () -> Unit,
+    readyMyOpinion: () -> Unit,
     //    readyOpinionTwo: () -> Unit,
     //    handleNextRound: () -> Unit,
     //    showResultDialog: (Boolean) -> Unit,
@@ -301,7 +302,7 @@ fun QuestionsOnlineJoinContent(
                     onClick = {
                         if (uiStates.buttonEnabled) {
                             when (uiStates.phase) {
-                                FIRST_OPINION -> {} // readyMyOpinion()
+                                FIRST_OPINION -> readyMyOpinion()
                                 SECOND_OPINION -> {} //readyOpinionTwo()
                                 NEXT_ROUND -> {} //handleNextRound()
                                 RESULTS -> {} //showResultDialog(true)
@@ -328,7 +329,7 @@ fun QuestionsOnlineJoinContent(
             }
 
             if (uiStates.showWaitingOtherPlayerDialog) {
-                WaitingPartnerDialog()
+                WaitingPartnerDialog(goBack = { showExitDialog(true) })
             }
 
             if (uiStates.showExitDialog) {

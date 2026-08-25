@@ -331,7 +331,7 @@ fun QuestionsOnlineCreatorContent(
             }
 
             if (uiStates.showWaitingOtherPlayerDialog) {
-                WaitingPartnerDialog()
+                WaitingPartnerDialog(goBack = { showExitDialog(true) })
             }
 
             if (uiStates.showExitDialog) {

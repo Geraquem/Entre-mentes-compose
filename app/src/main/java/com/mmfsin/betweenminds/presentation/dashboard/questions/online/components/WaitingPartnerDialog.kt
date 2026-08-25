@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -23,18 +26,18 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
+import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 
 @Preview
 @Composable
 fun WaitingPartnerDialogPV() {
-    WaitingPartnerDialog()
+    WaitingPartnerDialog({})
 }
 
 @Composable
-fun WaitingPartnerDialog() {
-
+fun WaitingPartnerDialog(goBack: () -> Unit) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.waiting)
     )
@@ -52,9 +55,20 @@ fun WaitingPartnerDialog() {
             modifier = Modifier.fillMaxWidth(0.9f)
                 .clip(RoundedCornerShape(8.dp))
                 .background(White)
-                .padding(24.dp),
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp, top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            IconButton(
+                onClick = { goBack() },
+                modifier = Modifier.align(Alignment.Start)
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_exit), null,
+                    tint = GrayHard
+                )
+            }
 
             LottieAnimation(
                 composition = composition,
