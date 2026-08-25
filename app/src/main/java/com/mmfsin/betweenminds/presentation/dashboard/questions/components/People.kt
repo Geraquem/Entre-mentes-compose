@@ -38,9 +38,9 @@ import com.mmfsin.betweenminds.utils.ShowAlpha
 @Composable
 fun PeoplePV() {
     People(
-        "", {}, 55, 90,
-        "Sandra", {}, 45, 10,
-        true, true, true, true
+        "", {}, true, 55,
+        90, "Sandra", {}, false,
+        45, 10, true, true, true, true
     )
 }
 
@@ -48,10 +48,12 @@ fun PeoplePV() {
 fun People(
     blueName: String,
     onBlueNameChange: (String) -> Unit,
+    blueNameEditTextEnabled: Boolean,
     firstBlueOpinion: Int,
     secondBlueOpinion: Int,
     orangeName: String,
     onOrangeNameChange: (String) -> Unit,
+    orangeNameEditTextEnabled: Boolean,
     firstOrangeOpinion: Int,
     secondOrangeOpinion: Int,
     showFirstOpinion: Boolean,
@@ -87,6 +89,7 @@ fun People(
             BasicTextField(
                 value = blueName,
                 onValueChange = { onBlueNameChange(it) },
+                enabled = blueNameEditTextEnabled,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp),
@@ -118,6 +121,7 @@ fun People(
             BasicTextField(
                 value = orangeName,
                 onValueChange = { onOrangeNameChange(it) },
+                enabled = orangeNameEditTextEnabled,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp),

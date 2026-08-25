@@ -181,10 +181,12 @@ fun QuestionsOnlineJoinContent(
                 People(
                     blueName = uiStates.blueName,
                     onBlueNameChange = { },
+                    blueNameEditTextEnabled = false,
                     firstBlueOpinion = uiStates.firstOpinionBlue,
                     secondBlueOpinion = uiStates.secondOpinionBlue,
                     orangeName = uiStates.orangeName,
                     onOrangeNameChange = { },
+                    orangeNameEditTextEnabled = false,
                     firstOrangeOpinion = uiStates.firstOpinionOrange,
                     secondOrangeOpinion = uiStates.secondOpinionOrange,
                     showFirstOpinion = uiStates.showFirstOpinionPercents,

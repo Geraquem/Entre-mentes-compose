@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -136,6 +137,7 @@ fun QuestionsOfflineContent(
 ) {
 
     var parentWidth by remember { mutableIntStateOf(0) }
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         topBar = {
@@ -184,10 +186,12 @@ fun QuestionsOfflineContent(
                 People(
                     blueName = uiStates.blueName,
                     onBlueNameChange = { onBlueNameChange(it) },
+                    blueNameEditTextEnabled = true,
                     firstBlueOpinion = uiStates.firstOpinionBlue,
                     secondBlueOpinion = uiStates.secondOpinionBlue,
                     orangeName = uiStates.orangeName,
                     onOrangeNameChange = { onOrangeNameChange(it) },
+                    orangeNameEditTextEnabled = true,
                     firstOrangeOpinion = uiStates.firstOpinionOrange,
                     secondOrangeOpinion = uiStates.secondOpinionOrange,
                     showFirstOpinion = uiStates.showFirstOpinionPercents,
@@ -213,6 +217,7 @@ fun QuestionsOfflineContent(
                             modifier = Modifier.fillMaxWidth(),
                             value = uiStates.firstSlider,
                             onValueChange = { updateFirstOpinionPercents(it.roundToInt()) },
+                            onValueChangeFinished = { focusManager.clearFocus() },
                             valueRange = 0f..100f,
                             enabled = uiStates.controllerEnabled,
                             thumb = {
@@ -238,6 +243,7 @@ fun QuestionsOfflineContent(
                             modifier = Modifier.fillMaxWidth(),
                             value = uiStates.secondSlider,
                             onValueChange = { updateSecondOpinionPercents(it.roundToInt()) },
+                            onValueChangeFinished = { focusManager.clearFocus() },
                             valueRange = 0f..100f,
                             enabled = uiStates.controllerEnabled,
                             thumb = {
@@ -291,6 +297,7 @@ fun QuestionsOfflineContent(
                             if (uiStates.phase == FIRST_OPINION) updateFirstOpinionPercents(it.roundToInt())
                             else updateSecondOpinionPercents(it.roundToInt())
                         },
+                        onValueChangeFinished = { focusManager.clearFocus() },
                         valueRange = 0f..100f,
                         enabled = uiStates.controllerEnabled,
                         thumb = { Box(modifier = Modifier.fillMaxHeight()) },
