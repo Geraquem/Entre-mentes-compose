@@ -70,8 +70,8 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultRangesDialog
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components.OtherPlayerRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.InitialOnlineRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.OtherPlayerRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
@@ -89,7 +89,8 @@ fun RangesOnlinePV() {
             showRoundView = false,
         ),
         {}, {}, {}, {},
-        {}, {}, {},
+        {}, {}, {}, {},
+        {},
     )
 }
 
@@ -115,8 +116,8 @@ fun RangesOnlineScreen(
         updateHint = { viewModel.updateHint(it) },
         updateSliderValue = { viewModel.updateSliderValue(it) },
         checkBullseyePhase = { viewModel.checkBullseyePhase() },
-        //        readySliderPhase = { viewModel.readySliderPhase() },
-        //        nextRound = { viewModel.nextRound() },
+        checkSliderPhase = { viewModel.checkSliderPhase() },
+        nextRound = { viewModel.nextRound() },
         //        showResultDialog = { viewModel.showResultDialog(true) },
         //        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
@@ -132,8 +133,8 @@ fun RangesOnlineContent(
     updateHint: (String) -> Unit,
     updateSliderValue: (Int) -> Unit,
     checkBullseyePhase: () -> Unit,
-    //    readySliderPhase: () -> Unit,
-    //    nextRound: () -> Unit,
+    checkSliderPhase: () -> Unit,
+    nextRound: () -> Unit,
     //    showResultDialog: (Boolean) -> Unit,
     //    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
@@ -320,8 +321,8 @@ fun RangesOnlineContent(
                         if (uiStates.buttonEnabled) {
                             when (uiStates.phase) {
                                 SHOW_BULLSEYE -> checkBullseyePhase()
-                                MOVE_ARROW -> {} //readySliderPhase()
-                                NEXT_ROUND -> {} //nextRound()
+                                MOVE_ARROW -> checkSliderPhase()
+                                NEXT_ROUND -> nextRound()
                                 RESULTS -> {} //showResultDialog(true)
                             }
                         }
@@ -337,6 +338,7 @@ fun RangesOnlineContent(
                 InitialOnlineRangesDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
+                    exit = { goBack() },
                     isLoading = uiStates.isLoading
                 )
             }

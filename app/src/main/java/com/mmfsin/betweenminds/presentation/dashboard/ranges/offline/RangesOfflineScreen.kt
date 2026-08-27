@@ -331,6 +331,7 @@ fun RangesOfflineContent(
                 InitialOfflineRangesDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
+                    exit = { goBack() },
                     isLoading = uiState.isLoading
                 )
             }

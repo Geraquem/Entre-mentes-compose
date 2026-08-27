@@ -2,15 +2,19 @@ package com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +25,7 @@ import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
+import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
 import com.mmfsin.betweenminds.presentation.core.theme.White
@@ -29,13 +34,14 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 @Preview
 @Composable
 fun InitialOfflineRangesDialogPV() {
-    InitialOfflineRangesDialog({}, {}, true)
+    InitialOfflineRangesDialog({}, {},{}, true)
 }
 
 @Composable
 fun InitialOfflineRangesDialog(
     startGame: () -> Unit,
     howToPlay: () -> Unit,
+    exit: () -> Unit,
     isLoading: Boolean
 ) {
     Dialog(
@@ -95,13 +101,21 @@ fun InitialOfflineRangesDialog(
 
                 SpacerSmall()
 
-                ButtonCustom(
-                    onClick = { howToPlay() },
-                    text = R.string.ranges_start_instructions,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Black,
-                    textColor = White
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = { exit() }) {
+                        Icon(painterResource(R.drawable.ic_exit), null)
+                    }
+
+                    SpacerMini(horizontal = true)
+
+                    ButtonCustom(
+                        onClick = { howToPlay() },
+                        text = R.string.ranges_start_instructions,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Black,
+                        textColor = White
+                    )
+                }
             }
         }
     }

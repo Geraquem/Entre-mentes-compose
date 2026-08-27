@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -35,6 +37,7 @@ import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
+import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
 import com.mmfsin.betweenminds.presentation.core.theme.GrayMedium
@@ -47,7 +50,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 @Composable
 fun InitialQOJoinDialogPV() {
     InitialQOJoinDialog(
-        {}, {}, true
+        {}, {}, {}, true
     )
 }
 
@@ -55,6 +58,7 @@ fun InitialQOJoinDialogPV() {
 fun InitialQOJoinDialog(
     startGame: () -> Unit,
     howToPlay: () -> Unit,
+    exit: () -> Unit,
     isLoading: Boolean
 ) {
     Dialog(
@@ -169,13 +173,21 @@ fun InitialQOJoinDialog(
 
                 SpacerSmall()
 
-                ButtonCustom(
-                    onClick = { howToPlay() },
-                    text = R.string.ranges_start_instructions,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Black,
-                    textColor = White
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = { exit() }) {
+                        Icon(painterResource(R.drawable.ic_exit), null)
+                    }
+
+                    SpacerMini(horizontal = true)
+
+                    ButtonCustom(
+                        onClick = { howToPlay() },
+                        text = R.string.ranges_start_instructions,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Black,
+                        textColor = White
+                    )
+                }
             }
         }
     }

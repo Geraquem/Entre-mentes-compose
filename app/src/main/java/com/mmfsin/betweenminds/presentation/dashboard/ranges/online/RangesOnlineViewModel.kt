@@ -5,12 +5,14 @@ import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.OnlineRangeRoundData
 import com.mmfsin.betweenminds.domain.models.OnlineRangesData
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.MOVE_ARROW
+import com.mmfsin.betweenminds.domain.models.RangePhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenminds.domain.usecases.GetRangesUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendMyORangesDataToRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerORangesUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.calculateRangePoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -118,15 +120,6 @@ class RangesOnlineViewModel @Inject constructor(
 
         _uiState.update { it.copy(roundData = states.roundData.toMutableList().apply { this[states.roundCount] = data }) }
 
-
-        val dataresult = uiState.value
-        val a = dataresult.roundCount
-        val aa = dataresult.roundData
-        println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
-        println("roundCount: ${dataresult.roundCount}")
-        println("${dataresult.roundData}")
-        println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
-
         if ((states.roundCount) > 1) {
             readyBullseyePhase()
         } else {
@@ -161,9 +154,11 @@ class RangesOnlineViewModel @Inject constructor(
         val states = uiState.value
         _uiState.update {
             it.copy(
-                showWaitingOtherPlayerDialog = true,
+                hint = "",
+                showBullseye = false,
                 phase = MOVE_ARROW,
-                buttonEnabled = false
+                buttonEnabled = false,
+                showWaitingOtherPlayerDialog = true,
             )
         }
 
@@ -179,21 +174,6 @@ class RangesOnlineViewModel @Inject constructor(
                 { sww() }
             )
         } else sww()
-
-        //        viewModelScope.launch {
-        //            delay(1500)
-        //            _uiState.update {
-        //                it.copy(
-        //                    showEditTextHint = false,
-        //                    showBullseye = false,
-        //                    showSlider = true,
-        //                    sliderEnabled = true,
-        //                    buttonEnabled = true,
-        //                    buttonText = R.string.btn_check
-        //                )
-        //            }
-        //            openCurtains()
-        //        }
     }
 
     private fun waitForOtherPlayerData() {
@@ -220,17 +200,26 @@ class RangesOnlineViewModel @Inject constructor(
 
     private fun startGuessingPhase() {
         viewModelScope.launch {
-            showOtherPlayerRangesDialog(true)
-            delay(1000)
             _uiState.update {
                 it.copy(
-                    showOtherPlayerRangesDialog = false,
+                    showEditTextHint = false,
                     roundCount = 0,
                     buttonEnabled = false,
-                    sliderEnabled = false
+                    sliderEnabled = false,
+                    phase = MOVE_ARROW,
+                    showOtherPlayerRangesDialog = true,
                 )
             }
+            delay(2500)
             setOtherPlayerData()
+            _uiState.update {
+                it.copy(
+                    showSlider = true,
+                    sliderEnabled = true,
+                    buttonEnabled = true,
+                )
+            }
+            openCurtains()
         }
     }
 
@@ -242,15 +231,74 @@ class RangesOnlineViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 hint = newRange.hint,
+                bullsEyeStart = newRange.bullseyePosition,
                 actualRangeLeft = newRange.leftRange,
                 actualRangeRight = newRange.rightRange,
-                showSlider = true,
-                sliderEnabled = true,
                 buttonText = R.string.btn_check,
-                phase = if (states.roundCount != 2) MOVE_ARROW else RESULTS
+                showOtherPlayerRangesDialog = false
             )
         }
-        openCurtains()
+    }
+
+    fun checkSliderPhase() {
+        val states = uiState.value
+
+        val roundPoints = calculateRangePoints(
+            sliderPosition = states.sliderValue,
+            bullseyeStart = states.bullsEyeStart
+        )
+
+        _uiState.update {
+            it.copy(
+                phase = if (states.roundCount != 2) NEXT_ROUND else RESULTS,
+                points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
+                confettiTrigger = roundPoints,
+                showBullseye = true,
+                sliderEnabled = false,
+                buttonEnabled = false,
+                roundCount = states.roundCount + 1,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    buttonEnabled = true,
+                    buttonText = if (states.roundCount != 2) R.string.btn_next_round else R.string.btn_see_result
+                )
+            }
+        }
+    }
+
+    fun nextRound() {
+        closeCurtains()
+        _uiState.update {
+            it.copy(
+                showRoundView = true,
+                buttonEnabled = false,
+                sliderEnabled = false,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            setOtherPlayerData()
+            _uiState.update {
+                it.copy(
+                    showBullseye = false,
+                    sliderValue = 50f,
+                    confettiTrigger = 0,
+                    showSlider = true,
+                    sliderEnabled = true,
+                    buttonEnabled = true,
+                    phase = MOVE_ARROW,
+                    showRoundView = false,
+                )
+            }
+            delay(1000)
+            openCurtains()
+        }
     }
 
     fun updateHint(value: String) = _uiState.update { it.copy(hint = value) }

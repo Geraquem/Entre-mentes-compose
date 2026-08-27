@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components
+package com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,8 +26,8 @@ fun OtherPlayerRangesDialog(
     ) {
         Box(
             modifier = Modifier
-                .background(Black, shape = RoundedCornerShape(8.dp))
-                .padding(horizontal = 16.dp, vertical = 64.dp),
+                .background(Black, shape = RoundedCornerShape(16.dp))
+                .padding(horizontal = 16.dp, vertical = 200.dp),
             contentAlignment = Alignment.Center
         ) {
 

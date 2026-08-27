@@ -60,12 +60,12 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
+import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ChangeNamesQuestionsDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.QuestionRounds
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
 import com.mmfsin.betweenminds.presentation.dashboard.questions.online.components.InitialQOCreatorDialog
-import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
@@ -364,6 +364,7 @@ fun QuestionsOnlineCreatorContent(
                     onOrangeNameChanged = { onOrangeNameChange(it) },
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
+                    exit = { goBack() },
                     isLoading = uiStates.isLoading
                 )
             }

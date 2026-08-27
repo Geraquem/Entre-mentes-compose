@@ -348,6 +348,7 @@ fun QuestionsOnlineJoinContent(
                 InitialQOJoinDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
+                    exit = { goBack() },
                     isLoading = uiStates.isLoading
                 )
             }
