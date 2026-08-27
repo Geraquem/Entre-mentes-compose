@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mmfsin.betweenminds.presentation.choose.ChooseScreen
 import com.mmfsin.betweenminds.presentation.choose.roomcode.RoomCodeScreen
 import com.mmfsin.betweenminds.presentation.menu.MenuScreen
+import com.mmfsin.betweenminds.presentation.packs.PacksScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -25,9 +26,8 @@ fun NavigationMain() {
     ) {
         composable<Menu> {
             MenuScreen(
-                goToChooseFragment = { gameTypeId ->
-                    navController.navigate(Choose(gameTypeId = gameTypeId))
-                }
+                goToChooseScreen = { gameTypeId -> navController.navigate(Choose(gameTypeId = gameTypeId)) },
+                goToPacksScreen = { navController.navigate(Packs) }
             )
         }
 
@@ -50,6 +50,8 @@ fun NavigationMain() {
                 goBack = { navController.popBackStack() }
             )
         }
+
+        composable<Packs> { PacksScreen(goBack = { navController.popBackStack() }) }
     }
 }
 
@@ -62,3 +64,6 @@ data class Choose(val gameTypeId: String)
 
 @Serializable
 data class RoomCode(val roomCode: String, val gameTypeId: String)
+
+@Serializable
+data object Packs

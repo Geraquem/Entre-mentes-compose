@@ -42,14 +42,15 @@ fun MenuScreenPV() {
         uiState = MenuStates(
             positonButtons = 0f
         ),
-        {}, {}, {},
+        {}, {}, {}, {},
     )
 }
 
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel = hiltViewModel(),
-    goToChooseFragment: (String) -> Unit
+    goToChooseScreen: (String) -> Unit,
+    goToPacksScreen: () -> Unit
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -58,7 +59,8 @@ fun MenuScreen(
         uiState = uiState,
         showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
         openInstructions = { context.goToInstructions(it) },
-        goToChooseFragment = { id -> goToChooseFragment(id) }
+        goToChooseScreen = { id -> goToChooseScreen(id) },
+        goToPacksScreen = { goToPacksScreen() }
     )
 }
 
@@ -67,12 +69,11 @@ fun MenuContent(
     uiState: MenuStates,
     showSelectorSheet: (value: Boolean) -> Unit,
     openInstructions: (String) -> Unit,
-    goToChooseFragment: (String) -> Unit,
+    goToChooseScreen: (String) -> Unit,
+    goToPacksScreen: () -> Unit,
 ) {
 
-    goToChooseFragment(GameType.RANGES.id)
-
-
+//    goToChooseScreen(GameType.RANGES.id)
 
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
 
@@ -113,7 +114,7 @@ fun MenuContent(
                 SpacerMedium()
 
                 ButtonCustom(
-                    onClick = {},
+                    onClick = { goToPacksScreen() },
                     text = R.string.menu_packs,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -126,9 +127,9 @@ fun MenuContent(
         SelectorSheet(
             onDismiss = { showSelectorSheet(false) },
             questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
-            questions = { goToChooseFragment(GameType.QUESTIONS.id) },
+            questions = { goToChooseScreen(GameType.QUESTIONS.id) },
             rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
-            ranges = { goToChooseFragment(GameType.RANGES.id) },
+            ranges = { goToChooseScreen(GameType.RANGES.id) },
         )
     }
 
