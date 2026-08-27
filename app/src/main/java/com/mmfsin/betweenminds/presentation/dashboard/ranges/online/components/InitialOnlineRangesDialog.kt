@@ -1,6 +1,7 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,15 +53,23 @@ fun InitialOnlineRangesDialog(
             modifier = Modifier.fillMaxWidth(0.9f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            BigText(
-                text = R.string.selector_ranges,
-                allCaps = true,
-                color = White,
-                fontFamily = alphazet,
-                fontSize = 30.sp
-            )
+            Box(modifier = Modifier.fillMaxWidth()) {
+                IconButton(onClick = { exit() }) {
+                    Icon(
+                        painterResource(R.drawable.ic_exit), null,
+                        tint = White
+                    )
+                }
 
-            SpacerSmall()
+                BigText(
+                    text = R.string.selector_ranges,
+                    allCaps = true,
+                    color = White,
+                    fontFamily = alphazet,
+                    fontSize = 30.sp,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
 
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -106,9 +115,12 @@ fun InitialOnlineRangesDialog(
                 SpacerSmall()
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = { exit() }) {
-                        Icon(painterResource(R.drawable.ic_exit), null)
-                    }
+                    ButtonCustom(
+                        onClick = { exit() },
+                        text = R.string.exit,
+                        color = Black,
+                        textColor = White
+                    )
 
                     SpacerMini(horizontal = true)
 

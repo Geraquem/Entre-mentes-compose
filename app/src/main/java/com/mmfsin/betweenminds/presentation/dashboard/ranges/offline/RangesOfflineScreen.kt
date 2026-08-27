@@ -67,8 +67,8 @@ import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
@@ -113,7 +113,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         readyBullseyePhase = { viewModel.readyBullseyePhase() },
         readySliderPhase = { viewModel.readySliderPhase() },
         nextRound = { viewModel.nextRound() },
-        showResultDialog = { viewModel.showResultDialog(true) },
+        showResultDialog = { viewModel.showResultDialog(it) },
         replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
     )
@@ -339,6 +339,7 @@ fun RangesOfflineContent(
             if (uiState.showResultDialog) {
                 ResultRangesDialog(
                     points = uiState.points,
+                    isOnline = false,
                     exit = { goBack() },
                     replay = { replay() },
                 )

@@ -301,6 +301,8 @@ class RangesOnlineViewModel @Inject constructor(
         }
     }
 
+    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
+
     fun updateHint(value: String) = _uiState.update { it.copy(hint = value) }
 
     fun updateSliderValue(value: Int) = _uiState.update { it.copy(sliderValue = value.toFloat()) }

@@ -339,6 +339,7 @@ fun QuestionsOfflineContent(
                     onOrangeNameChanged = { onOrangeNameChange(it) },
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
+                    exit = { goBack() },
                     isLoading = uiStates.isLoading
                 )
             }

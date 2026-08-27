@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -174,9 +172,12 @@ fun InitialQOJoinDialog(
                 SpacerSmall()
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = { exit() }) {
-                        Icon(painterResource(R.drawable.ic_exit), null)
-                    }
+                    ButtonCustom(
+                        onClick = { exit() },
+                        text = R.string.exit,
+                        color = Black,
+                        textColor = White
+                    )
 
                     SpacerMini(horizontal = true)
 

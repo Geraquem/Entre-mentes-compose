@@ -32,8 +32,9 @@ fun getTotalPoints(points: List<Int?>): Int {
     return result
 }
 
-fun getAffinity(points: Int): String {
-    val value = (points.toFloat() / 20f) * 100f
+fun getAffinityOffline(isOnline: Boolean, points: Int): String {
+    val totalScore = if (isOnline) 15f else 20f
+    val value = (points.toFloat() / totalScore) * 100f
     return if (value % 1f == 0f) value.toInt().toString()
     else "%.2f".format(value)
 }

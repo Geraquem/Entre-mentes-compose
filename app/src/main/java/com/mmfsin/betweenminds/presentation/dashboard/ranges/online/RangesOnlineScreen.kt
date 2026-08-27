@@ -90,7 +90,7 @@ fun RangesOnlinePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
-        {},
+        {}, {},
     )
 }
 
@@ -118,7 +118,7 @@ fun RangesOnlineScreen(
         checkBullseyePhase = { viewModel.checkBullseyePhase() },
         checkSliderPhase = { viewModel.checkSliderPhase() },
         nextRound = { viewModel.nextRound() },
-        //        showResultDialog = { viewModel.showResultDialog(true) },
+        showResultDialog = { viewModel.showResultDialog(it) },
         //        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
     )
@@ -135,7 +135,7 @@ fun RangesOnlineContent(
     checkBullseyePhase: () -> Unit,
     checkSliderPhase: () -> Unit,
     nextRound: () -> Unit,
-    //    showResultDialog: (Boolean) -> Unit,
+    showResultDialog: (Boolean) -> Unit,
     //    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
@@ -323,7 +323,7 @@ fun RangesOnlineContent(
                                 SHOW_BULLSEYE -> checkBullseyePhase()
                                 MOVE_ARROW -> checkSliderPhase()
                                 NEXT_ROUND -> nextRound()
-                                RESULTS -> {} //showResultDialog(true)
+                                RESULTS -> showResultDialog(true)
                             }
                         }
                     },
@@ -354,6 +354,7 @@ fun RangesOnlineContent(
             if (uiStates.showResultDialog) {
                 ResultRangesDialog(
                     points = uiStates.points,
+                    isOnline = true,
                     exit = { goBack() },
                     replay = { /*replay() */ },
                 )

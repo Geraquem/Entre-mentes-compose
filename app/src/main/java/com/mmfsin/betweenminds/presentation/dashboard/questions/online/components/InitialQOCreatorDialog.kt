@@ -166,9 +166,12 @@ fun InitialQOCreatorDialog(
                 SpacerSmall()
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = { exit() }) {
-                        Icon(painterResource(R.drawable.ic_exit), null)
-                    }
+                    ButtonCustom(
+                        onClick = { exit() },
+                        text = R.string.exit,
+                        color = Black,
+                        textColor = White
+                    )
 
                     SpacerMini(horizontal = true)
 

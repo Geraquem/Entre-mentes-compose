@@ -35,6 +35,7 @@ import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
+import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
@@ -47,7 +48,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 fun InitialOfflineQuestionsDialogPV() {
     InitialOfflineQuestionsDialog(
         "", {}, "María", {},
-        {}, {}, true
+        {}, {}, {}, true
     )
 }
 
@@ -59,6 +60,7 @@ fun InitialOfflineQuestionsDialog(
     onOrangeNameChanged: (String) -> Unit,
     startGame: () -> Unit,
     howToPlay: () -> Unit,
+    exit: () -> Unit,
     isLoading: Boolean
 ) {
     Dialog(
@@ -147,13 +149,24 @@ fun InitialOfflineQuestionsDialog(
 
                 SpacerSmall()
 
-                ButtonCustom(
-                    onClick = { howToPlay() },
-                    text = R.string.ranges_start_instructions,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Black,
-                    textColor = White
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ButtonCustom(
+                        onClick = { exit() },
+                        text = R.string.exit,
+                        color = Black,
+                        textColor = White
+                    )
+
+                    SpacerMini(horizontal = true)
+
+                    ButtonCustom(
+                        onClick = { howToPlay() },
+                        text = R.string.ranges_start_instructions,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Black,
+                        textColor = White
+                    )
+                }
             }
         }
     }

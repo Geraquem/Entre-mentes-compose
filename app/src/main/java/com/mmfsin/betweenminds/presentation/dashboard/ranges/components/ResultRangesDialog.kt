@@ -36,24 +36,25 @@ import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.august_shining
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getAffinity
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getAffinityOffline
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getTotalPoints
 
 @Preview
 @Composable
 fun ResultRangesDialogPV() {
-    ResultRangesDialog(listOf(2, 0, 0, 0), {}, {})
+    ResultRangesDialog(listOf(2, 0, 0, 0), true, {}, {})
 }
 
 @Composable
 fun ResultRangesDialog(
     points: List<Int?>,
+    isOnline: Boolean,
     exit: () -> Unit,
     replay: () -> Unit,
 ) {
 
     val totalPoints = getTotalPoints(points)
-    val affinity = getAffinity(totalPoints)
+    val affinity = getAffinityOffline(isOnline, totalPoints)
 
     Dialog(
         onDismissRequest = {},
@@ -82,8 +83,11 @@ fun ResultRangesDialog(
             ) {
                 SpacerLarge()
 
+                val pointsText = if (isOnline) R.string.endgame_ranges_max_points_online
+                else R.string.endgame_ranges_max_points_offline
+
                 MediumText(
-                    text = R.string.endgame_ranges_max_points,
+                    text = pointsText,
                     fontSize = 20.sp,
                 )
 
