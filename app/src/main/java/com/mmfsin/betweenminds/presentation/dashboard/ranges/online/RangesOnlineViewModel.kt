@@ -3,9 +3,13 @@ package com.mmfsin.betweenminds.presentation.dashboard.ranges.online
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.OnlineRangeRoundData
-import com.mmfsin.betweenminds.domain.models.RangePhaseType
+import com.mmfsin.betweenminds.domain.models.OnlineRangesData
+import com.mmfsin.betweenminds.domain.models.RangePhaseType.MOVE_ARROW
+import com.mmfsin.betweenminds.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenminds.domain.usecases.GetRangesUseCase
+import com.mmfsin.betweenminds.domain.usecases.SendMyORangesDataToRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerORangesUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,6 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RangesOnlineViewModel @Inject constructor(
     private val getRangesUseCase: GetRangesUseCase,
+    private val sendMyORangesDataToRoomUseCase: SendMyORangesDataToRoomUseCase,
+    private val waitOtherPlayerORangesUseCase: WaitOtherPlayerORangesUseCase,
 ) : BaseViewModel<RangesOnlineStates>(RangesOnlineStates()) {
 
     init {
@@ -101,6 +107,7 @@ class RangesOnlineViewModel @Inject constructor(
         closeCurtains()
 
         val states = uiState.value
+
         val data = OnlineRangeRoundData(
             round = states.roundCount,
             bullseyePosition = states.bullsEyeStart,
@@ -109,29 +116,37 @@ class RangesOnlineViewModel @Inject constructor(
             rightRange = states.actualRangeRight
         )
 
-        _uiState.update {
-            it.copy(
-                roundData = states.roundData.toMutableList().apply { this[states.roundCount] = data },
-                buttonEnabled = false,
-                roundCount = states.roundCount + 1,
-                rangesPos = states.rangesPos + 1
-            )
-        }
+        _uiState.update { it.copy(roundData = states.roundData.toMutableList().apply { this[states.roundCount] = data }) }
+
+
+        val dataresult = uiState.value
+        val a = dataresult.roundCount
+        val aa = dataresult.roundData
+        println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
+        println("roundCount: ${dataresult.roundCount}")
+        println("${dataresult.roundData}")
+        println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
 
         if ((states.roundCount) > 1) {
             readyBullseyePhase()
         } else {
-
             viewModelScope.launch {
-                delay(750)
-                _uiState.update { it.copy(showRoundView = true) }
-                setRange()
+                delay(1000)
+                _uiState.update {
+                    it.copy(
+                        roundCount = states.roundCount + 1,
+                        rangesPos = states.rangesPos + 1,
+                        showRoundView = true,
+                        buttonEnabled = false,
+                    )
+                }
                 delay(1500)
+                setRange()
                 _uiState.update {
                     it.copy(
                         hint = "",
                         bullsEyeStart = (0..94).random().toFloat(),
-                        showRoundView = false
+                        showRoundView = false,
                     )
                 }
                 delay(1000)
@@ -147,14 +162,24 @@ class RangesOnlineViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 showWaitingOtherPlayerDialog = true,
-                phase = RangePhaseType.MOVE_ARROW,
+                phase = MOVE_ARROW,
                 buttonEnabled = false
             )
         }
 
-        println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
-        println(states.roundData)
-        //
+        if (states.roundData.all { it != null }) {
+            val myData = OnlineRangesData(
+                roomId = states.roomCode,
+                isCreator = states.isCreator,
+                data = states.roundData.filterNotNull()
+            )
+            executeUseCase(
+                { sendMyORangesDataToRoomUseCase.execute(myData) },
+                { waitForOtherPlayerData() },
+                { sww() }
+            )
+        } else sww()
+
         //        viewModelScope.launch {
         //            delay(1500)
         //            _uiState.update {
@@ -171,6 +196,63 @@ class RangesOnlineViewModel @Inject constructor(
         //        }
     }
 
+    private fun waitForOtherPlayerData() {
+        val states = uiState.value
+        executeUseCase(
+            {
+                waitOtherPlayerORangesUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = states.isCreator
+                )
+            },
+            { data ->
+                _uiState.update {
+                    it.copy(
+                        otherPlayerData = data,
+                        showWaitingOtherPlayerDialog = false
+                    )
+                }
+                if (data.isEmpty()) sww() else startGuessingPhase()
+            },
+            { sww() }
+        )
+    }
+
+    private fun startGuessingPhase() {
+        viewModelScope.launch {
+            showOtherPlayerRangesDialog(true)
+            delay(1000)
+            _uiState.update {
+                it.copy(
+                    showOtherPlayerRangesDialog = false,
+                    roundCount = 0,
+                    buttonEnabled = false,
+                    sliderEnabled = false
+                )
+            }
+            setOtherPlayerData()
+        }
+    }
+
+    fun setOtherPlayerData() {
+        val states = uiState.value
+
+        val newRange = states.otherPlayerData[states.roundCount]
+
+        _uiState.update {
+            it.copy(
+                hint = newRange.hint,
+                actualRangeLeft = newRange.leftRange,
+                actualRangeRight = newRange.rightRange,
+                showSlider = true,
+                sliderEnabled = true,
+                buttonText = R.string.btn_check,
+                phase = if (states.roundCount != 2) MOVE_ARROW else RESULTS
+            )
+        }
+        openCurtains()
+    }
+
     fun updateHint(value: String) = _uiState.update { it.copy(hint = value) }
 
     fun updateSliderValue(value: Int) = _uiState.update { it.copy(sliderValue = value.toFloat()) }
@@ -178,6 +260,7 @@ class RangesOnlineViewModel @Inject constructor(
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
+    fun showOtherPlayerRangesDialog(value: Boolean) = _uiState.update { it.copy(showOtherPlayerRangesDialog = value) }
     fun showWaitingOtherPlayerDialog(value: Boolean) = _uiState.update { it.copy(showWaitingOtherPlayerDialog = value) }
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 

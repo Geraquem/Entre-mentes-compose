@@ -14,6 +14,7 @@ data class RangesOnlineStates(
 
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
+    val showOtherPlayerRangesDialog: Boolean = false,
     val showWaitingOtherPlayerDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
@@ -25,6 +26,7 @@ data class RangesOnlineStates(
     val phase: RangePhaseType = SHOW_BULLSEYE,
 
     val roundData: List<OnlineRangeRoundData?> = listOf(null, null, null),
+    val otherPlayerData: List<OnlineRangeRoundData> = emptyList(),
 
     val ranges: List<Range> = emptyList(),
     var rangesPos: Int = 0,

@@ -70,6 +70,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components.OtherPlayerRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.InitialOnlineRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
@@ -287,8 +288,10 @@ fun RangesOnlineContent(
                     }
 
                     RangeLimits(
-                        leftRange = uiStates.sliderValue.toString(),
-                        rightRange = uiStates.bullsEyeStart.toString()
+                        //                        leftRange = uiStates.sliderValue.toString(),
+                        //                        rightRange = uiStates.bullsEyeStart.toString()
+                        leftRange = uiStates.actualRangeLeft,
+                        rightRange = uiStates.actualRangeRight
                     )
 
                     if (uiStates.showSlider) {
@@ -340,6 +343,10 @@ fun RangesOnlineContent(
 
             if (uiStates.showWaitingOtherPlayerDialog) {
                 WaitingPartnerDialog(goBack = { showExitDialog(true) })
+            }
+
+            if (uiStates.showOtherPlayerRangesDialog) {
+                OtherPlayerRangesDialog()
             }
 
             if (uiStates.showResultDialog) {
