@@ -73,7 +73,8 @@ fun MenuContent(
     goToPacksScreen: () -> Unit,
 ) {
 
-//    goToChooseScreen(GameType.RANGES.id)
+    //    goToChooseScreen(GameType.RANGES.id)
+    goToPacksScreen()
 
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
 

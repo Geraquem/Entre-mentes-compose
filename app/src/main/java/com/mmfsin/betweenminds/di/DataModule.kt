@@ -1,10 +1,12 @@
 package com.mmfsin.betweenminds.di
 
 import com.mmfsin.betweenminds.data.repository.DataRepository
+import com.mmfsin.betweenminds.data.repository.PacksRepository
 import com.mmfsin.betweenminds.data.repository.QuestionsOnlineRepository
 import com.mmfsin.betweenminds.data.repository.RangesOnlineRepository
 import com.mmfsin.betweenminds.data.repository.RoomRepository
 import com.mmfsin.betweenminds.domain.interfaces.IDataRepository
+import com.mmfsin.betweenminds.domain.interfaces.IPacksRepository
 import com.mmfsin.betweenminds.domain.interfaces.IQuestionsOnlineRepository
 import com.mmfsin.betweenminds.domain.interfaces.IRangesOnlineRepository
 import com.mmfsin.betweenminds.domain.interfaces.IRoomRepository
@@ -16,6 +18,7 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 interface DataModule {
+
     @Binds
     fun bindDataRepository(repository: DataRepository): IDataRepository
 
@@ -27,4 +30,7 @@ interface DataModule {
 
     @Binds
     fun bindIRangesOnlineRepository(repository: RangesOnlineRepository): IRangesOnlineRepository
+
+    @Binds
+    fun bindIPacksRepository(repository: PacksRepository): IPacksRepository
 }

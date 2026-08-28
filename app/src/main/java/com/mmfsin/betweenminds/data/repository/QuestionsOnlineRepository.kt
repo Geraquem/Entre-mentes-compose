@@ -42,9 +42,6 @@ class QuestionsOnlineRepository @Inject constructor(
 
     override suspend fun getQuestionsAndNames(roomId: String): OnlineQuestionsAndNames =
         suspendCancellableCoroutine { cont ->
-
-            println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* roomId: $roomId")
-
             val db = Firebase.firestore
             val roomRef = db.collection(ROOMS).document(roomId)
 
