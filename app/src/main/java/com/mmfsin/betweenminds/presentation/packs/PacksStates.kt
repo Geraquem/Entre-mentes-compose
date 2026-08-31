@@ -10,4 +10,7 @@ data class PacksStates(
 
     val questionsPacks: List<QuestionsPack> = emptyList(),
     val rangesPacks: List<RangesPack> = emptyList(),
+
+    val selectedQuestionsPack: Int = -1,
+    val selectedRangesPack: Int = -1,
 )

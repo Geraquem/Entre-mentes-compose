@@ -4,6 +4,7 @@ import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.models.Packs
 import com.mmfsin.betweenminds.domain.models.QuestionsPack
 import com.mmfsin.betweenminds.domain.models.RangesPack
+import kotlinx.coroutines.flow.Flow
 
 interface IPacksRepository {
     suspend fun getPackById(packId: String): Pack?
@@ -12,10 +13,10 @@ interface IPacksRepository {
 
     suspend fun getSeparatedPacks(): Packs
 
-    fun getSelectedQPackId(): Int
+    fun getSelectedQPackId(): Flow<Int>
     fun editSelectedQPackId(packNumber: Int)
 
-    fun getSelectedRPackId(): Int
+    fun getSelectedRPackId(): Flow<Int>
     fun editSelectedRPackId(packNumber: Int)
 
     fun setFreePacks()

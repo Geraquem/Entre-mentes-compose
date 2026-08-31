@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,11 +33,17 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
+import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 
 @Composable
-fun PacksQuestions(packs: List<QuestionsPack>) {
+fun PacksQuestions(
+    packs: List<QuestionsPack>,
+    selected: Int,
+    seeMore: (Int) -> Unit,
+    updateQuestionsPack: (Int) -> Unit
+) {
     CompositionLocalProvider(
         LocalOverscrollFactory provides null
     ) {
@@ -47,7 +51,16 @@ fun PacksQuestions(packs: List<QuestionsPack>) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            packs.forEach { pack -> item { QuestionsPack(pack) } }
+            packs.forEach { pack ->
+                item {
+                    QuestionsPack(
+                        pack = pack,
+                        selected = selected,
+                        seeMore = { seeMore(it) },
+                        updateQuestionsPack = { updateQuestionsPack(it) }
+                    )
+                }
+            }
         }
     }
 }
@@ -62,18 +75,26 @@ fun QuestionsPackPV() {
                 packDescription = "Compra este pack blablablabla",
                 packPrice = "",
                 packIcon = "",
+                packNumber = 0
             ),
             questions = listOf(
                 Question("¿Question 1?", 0),
                 Question("¿Question 2?", 0),
                 Question("¿Question 3?", 0),
             )
-        )
+        ),
+        selected = 0,
+        {}, {}
     )
 }
 
 @Composable
-fun QuestionsPack(pack: QuestionsPack) {
+fun QuestionsPack(
+    pack: QuestionsPack,
+    selected: Int,
+    seeMore: (Int) -> Unit,
+    updateQuestionsPack: (Int) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
@@ -111,12 +132,16 @@ fun QuestionsPack(pack: QuestionsPack) {
 
         Column {
             pack.questions.take(4).forEach { question ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier.size(4.dp)
-                            .clip(RoundedCornerShape(50))
-                            .background(Black)
-                    )
+                Row() {
+                    Column {
+                        SpacerSmall()
+                        Box(
+                            modifier = Modifier.size(4.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(Black)
+                                .padding(top = 8.dp)
+                        )
+                    }
 
                     SpacerSmall(horizontal = true)
 
@@ -133,7 +158,7 @@ fun QuestionsPack(pack: QuestionsPack) {
 
         Row {
             ButtonCustom(
-                onClick = {},
+                onClick = { seeMore(pack.pack.packNumber) },
                 text = R.string.pack_see_more,
                 color = Black,
                 textColor = White,
@@ -142,9 +167,10 @@ fun QuestionsPack(pack: QuestionsPack) {
             SpacerSmall(horizontal = true)
 
             ButtonCustom(
-                onClick = {},
-                text = R.string.pack_selected_btn,
-                color = Black,
+                onClick = { updateQuestionsPack(pack.pack.packNumber) },
+                text = if (selected == pack.pack.packNumber) R.string.pack_selected
+                else R.string.pack_selected_btn,
+                color = if (selected == pack.pack.packNumber) BlueMedium else Black,
                 textColor = White,
                 modifier = Modifier.weight(1f)
             )

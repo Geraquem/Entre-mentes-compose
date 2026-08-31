@@ -15,6 +15,8 @@ import com.mmfsin.betweenminds.utils.PACKS
 import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
@@ -77,12 +79,13 @@ class PacksRepository @Inject constructor(
 
         return Packs(
             questionsPacks = questions,
-            rangesPacks = ranges
+            rangesPacks = ranges,
         )
     }
 
-    override fun getSelectedQPackId(): Int {
-        return -1
+    override fun getSelectedQPackId(): Flow<Int> {
+        val selected = prefs.getSelectedQuestionsPack()
+        return flowOf(selected)
     }
 
     override fun editSelectedQPackId(packNumber: Int) {
@@ -91,9 +94,9 @@ class PacksRepository @Inject constructor(
         //        editor.apply()
     }
 
-    override fun getSelectedRPackId(): Int {
-        return -1
-    }
+    override fun getSelectedRPackId(): Flow<Int> {
+        val selected = prefs.getSelectedRangesPack()
+        return flowOf(selected)    }
 
     override fun editSelectedRPackId(packNumber: Int) {
         //        val editor = getSharedPreferences().edit()

@@ -5,6 +5,8 @@ import androidx.core.content.edit
 import com.mmfsin.betweenminds.utils.SP_PACKS_SERVER
 import com.mmfsin.betweenminds.utils.SP_QUESTIONS_SERVER
 import com.mmfsin.betweenminds.utils.SP_RANGES_SERVER
+import com.mmfsin.betweenminds.utils.SP_SELECTED_QUESTIONS_PACK
+import com.mmfsin.betweenminds.utils.SP_SELECTED_RANGES_PACK
 import javax.inject.Inject
 
 class SharedPrefs @Inject constructor(
@@ -18,4 +20,9 @@ class SharedPrefs @Inject constructor(
 
     fun getPacksFromServer(): Boolean = prefs.getBoolean(SP_PACKS_SERVER, true)
     fun updatePacksFromServer(value: Boolean) = prefs.edit { putBoolean(SP_PACKS_SERVER, value) }
+
+    fun getSelectedQuestionsPack() = prefs.getInt(SP_SELECTED_QUESTIONS_PACK, 0)
+    fun updateSelectedQuestionsPack(value: Int) = prefs.edit { putInt(SP_SELECTED_QUESTIONS_PACK, value) }
+    fun getSelectedRangesPack() = prefs.getInt(SP_SELECTED_RANGES_PACK, 0)
+    fun updateSelectedRangesPack(value: Int) = prefs.edit { putInt(SP_SELECTED_RANGES_PACK, value) }
 }

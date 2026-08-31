@@ -27,7 +27,6 @@ import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.LoadingFullScreen
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
-import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
@@ -119,8 +118,19 @@ fun PacksContent(
                 modifier = Modifier.fillMaxWidth()
             ) { page ->
                 when (page) {
-                    0 -> PacksQuestions(uiStates.questionsPacks)
-                    else -> PacksRanges()
+                    0 -> PacksQuestions(
+                        packs = uiStates.questionsPacks,
+                        selected = uiStates.selectedQuestionsPack,
+                        seeMore = {},
+                        updateQuestionsPack = {}
+                    )
+
+                    else -> PacksRanges(
+                        packs = uiStates.rangesPacks,
+                        selected = uiStates.selectedRangesPack,
+                        seeMore = {},
+                        updateRangesPack = {}
+                    )
                 }
             }
         }
