@@ -1,5 +1,6 @@
 package com.mmfsin.betweenminds.presentation.packs.detail
 
+import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.models.Question
 import com.mmfsin.betweenminds.domain.models.Range
 
@@ -8,10 +9,10 @@ data class PackDetailStates(
 
     val showSwwDialog: Boolean = false,
 
-    val packIcon: String = "",
-    val packTitle: String = "",
-    val packDescription: String = "",
+    val pack: Pack? = null,
 
     val questions: List<Question> = emptyList(),
-    val ranges: List<Range> = emptyList()
+    val ranges: List<Range> = emptyList(),
+
+    val selected: Boolean = false,
 )

@@ -27,6 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.Pack
+import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.LoadingFullScreen
@@ -35,6 +38,8 @@ import com.mmfsin.betweenminds.presentation.core.components.SmallText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
+import com.mmfsin.betweenminds.presentation.core.theme.Black
+import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 
@@ -44,10 +49,13 @@ fun PackDetailPV() {
     PackDetailComponent(
         uiStates = PackDetailStates(
             isLoading = false,
-            packTitle = "Para parejas",
-            packDescription = "Si pensabas que ya os habíais exprimido al máximo, aquí hay otras 50 preguntas diferentes para que sigáis dándole al coco y descubriendo cómo de diferente pensáis sobre vosotros mismos."
+            selected = true,
+            pack = Pack(
+                packTitle = "Para parejas",
+                packDescription = "Si pensabas que ya os habíais exprimido al máximo, aquí hay otras 50 preguntas diferentes para que sigáis dándole al coco y descubriendo cómo de diferente pensáis sobre vosotros mismos."
+            )
         ),
-        {}
+        {}, {}
     )
 }
 
@@ -59,13 +67,16 @@ fun PackDetailScreen(
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     PackDetailComponent(
         uiStates = uiStates,
-        goBack = { goBack() })
+        goBack = { goBack() },
+        selectPack = { viewModel.selectPack() }
+    )
 }
 
 @Composable
 fun PackDetailComponent(
     uiStates: PackDetailStates,
-    goBack: () -> Unit
+    goBack: () -> Unit,
+    selectPack: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -79,57 +90,77 @@ fun PackDetailComponent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 12.dp)
         ) {
+            Column(modifier = Modifier.weight(1f)) {
+                uiStates.pack?.let { p ->
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AsyncImage(
-                    model = uiStates.packIcon,
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(White),
-                    modifier = Modifier.size(28.dp)
-                )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AsyncImage(
+                            model = p.packIcon,
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(White),
+                            modifier = Modifier.size(28.dp)
+                        )
 
-                SpacerMedium(horizontal = true)
+                        SpacerMedium(horizontal = true)
 
-                MediumText(
-                    text = uiStates.packTitle,
-                    color = White,
-                    fontFamily = alphazet,
-                    fontSize = 20.sp,
-                    modifier = Modifier.weight(1f)
-                )
+                        MediumText(
+                            text = p.packTitle,
+                            color = White,
+                            fontFamily = alphazet,
+                            fontSize = 20.sp,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    SpacerMedium()
+
+                    SmallText(
+                        text = p.packDescription,
+                        color = White,
+                        fontFamily = alphazet
+                    )
+                }
+
+                SpacerMedium()
+
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    CompositionLocalProvider(
+                        LocalOverscrollFactory provides null
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            uiStates.questions.forEach { q ->
+                                item { QuestionItem(q.question) }
+                            }
+                            uiStates.ranges.forEach { r ->
+                                item { RangeItem(r.leftRange, r.rightRange) }
+                            }
+                        }
+                    }
+                }
             }
 
             SpacerMedium()
 
-            SmallText(
-                text = uiStates.packDescription,
-                color = White,
-                fontFamily = alphazet
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                ButtonCustom(
+                    onClick = { if (!uiStates.selected) selectPack() },
+                    text = if (uiStates.selected) R.string.pack_selected
+                    else R.string.pack_selected_btn,
+                    color = if (uiStates.selected) BlueMedium else White,
+                    textColor = if (uiStates.selected) White else Black,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            SpacerMedium()
-
-            Box(modifier = Modifier.fillMaxWidth()) {
-                CompositionLocalProvider(
-                    LocalOverscrollFactory provides null
-                ) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        uiStates.questions.forEach { q ->
-                            item { QuestionItem(q.question) }
-                        }
-                        uiStates.ranges.forEach { r ->
-                            item { RangeItem(r.leftRange, r.rightRange) }
-                        }
-                    }
-                }
+                SpacerSmall()
             }
         }
 
