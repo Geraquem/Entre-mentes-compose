@@ -13,6 +13,8 @@ import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSinglePackUseCase
 import com.mmfsin.betweenminds.domain.usecases.JoinRoomUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
+import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,7 +46,31 @@ class ChooseViewModel @Inject constructor(
                     gameType = type
                 )
             }
+            setVariableTypes(type)
             getSelectedPack(type)
+        }
+    }
+
+    private fun setVariableTypes(type: GameType) {
+        when (type) {
+            QUESTIONS -> {
+                _uiState.update {
+                    it.copy(
+                        packsTab = 0,
+                        instructionsNavGraph = NAV_INSTR_QUESTIONS_ONLINE
+                    )
+                }
+            }
+
+            RANGES -> {
+                _uiState.update {
+                    NAV_INSTR_RANGES_ONLINE
+                    it.copy(
+                        packsTab = 1,
+                        instructionsNavGraph = NAV_INSTR_RANGES_ONLINE
+                    )
+                }
+            }
         }
     }
 

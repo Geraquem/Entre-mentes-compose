@@ -1,7 +1,6 @@
 package com.mmfsin.betweenminds.presentation.choose
 
 import com.mmfsin.betweenminds.domain.models.GameType
-import com.mmfsin.betweenminds.domain.models.Pack
 
 data class ChooseStates(
     val isLoading: Boolean = true,
@@ -24,5 +23,8 @@ data class ChooseStates(
     val joinToRangesOnline: Boolean = false,
 
     val startQuestionsOffline: Boolean = false,
-    val startRangesOffline: Boolean = false
+    val startRangesOffline: Boolean = false,
+
+    val packsTab: Int = 0,
+    val instructionsNavGraph: String = "",
 )

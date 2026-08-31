@@ -41,6 +41,7 @@ fun PacksScreenPV() {
         uiStates = PacksStates(
             isLoading = false,
         ),
+        initialTab = 1,
         {}, {}, {},
         {},
     )
@@ -49,11 +50,13 @@ fun PacksScreenPV() {
 @Composable
 fun PacksScreen(
     viewModel: PacksViewModel = hiltViewModel(),
-    goBack: () -> Unit
+    goBack: () -> Unit,
+    initialTab: Int = 0
 ) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     PacksContent(
         uiStates = uiStates,
+        initialTab = initialTab,
         goBack = { goBack() },
         seeMorePack = {},
         updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
@@ -64,6 +67,7 @@ fun PacksScreen(
 @Composable
 fun PacksContent(
     uiStates: PacksStates,
+    initialTab: Int,
     goBack: () -> Unit,
     seeMorePack: () -> Unit,
     updateSelectedQuestionsPack: (Int) -> Unit,
@@ -72,7 +76,7 @@ fun PacksContent(
 
     val pagerState = rememberPagerState(
         pageCount = { 2 },
-        initialPage = 0
+        initialPage = initialTab
     )
 
     val scope = rememberCoroutineScope()
