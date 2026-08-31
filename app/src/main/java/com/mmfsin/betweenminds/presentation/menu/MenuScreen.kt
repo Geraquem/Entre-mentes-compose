@@ -74,7 +74,7 @@ fun MenuContent(
 ) {
 
     //    goToChooseScreen(GameType.RANGES.id)
-    goToPacksScreen()
+//    goToPacksScreen()
 
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
 

@@ -86,7 +86,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    // Lottie
+    /** DataStore */
+    implementation(libs.androidx.datastore.preferences)
+
+    /** Lottie */
     implementation(libs.lottie.compose)
 
     //Animate BG

@@ -30,6 +30,7 @@ import com.mmfsin.betweenminds.domain.models.RangesPack
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SmallText
+import com.mmfsin.betweenminds.presentation.core.components.SpacerCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
@@ -61,6 +62,7 @@ fun PacksRanges(
                         updateRangesPack = { updateRangesPack(it) })
                 }
             }
+            item { SpacerCustom(64.dp) }
         }
     }
 }

@@ -40,7 +40,9 @@ fun PacksScreenPV() {
     PacksContent(
         uiStates = PacksStates(
             isLoading = false,
-        ), {}
+        ),
+        {}, {}, {},
+        {},
     )
 }
 
@@ -53,6 +55,9 @@ fun PacksScreen(
     PacksContent(
         uiStates = uiStates,
         goBack = { goBack() },
+        seeMorePack = {},
+        updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
+        updateSelectedRangesPack = { },
     )
 }
 
@@ -60,6 +65,9 @@ fun PacksScreen(
 fun PacksContent(
     uiStates: PacksStates,
     goBack: () -> Unit,
+    seeMorePack: () -> Unit,
+    updateSelectedQuestionsPack: (Int) -> Unit,
+    updateSelectedRangesPack: (Int) -> Unit,
 ) {
 
     val pagerState = rememberPagerState(
@@ -122,14 +130,14 @@ fun PacksContent(
                         packs = uiStates.questionsPacks,
                         selected = uiStates.selectedQuestionsPack,
                         seeMore = {},
-                        updateQuestionsPack = {}
+                        updateQuestionsPack = { updateSelectedQuestionsPack(it) }
                     )
 
                     else -> PacksRanges(
                         packs = uiStates.rangesPacks,
                         selected = uiStates.selectedRangesPack,
                         seeMore = {},
-                        updateRangesPack = {}
+                        updateRangesPack = { updateSelectedRangesPack(it) }
                     )
                 }
             }

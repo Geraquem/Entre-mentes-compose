@@ -3,6 +3,7 @@ package com.mmfsin.betweenminds.data.repository
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.mmfsin.betweenminds.data.ddbb.DataStorePrefs
 import com.mmfsin.betweenminds.data.ddbb.SharedPrefs
 import com.mmfsin.betweenminds.data.ddbb.daos.PacksDAO
 import com.mmfsin.betweenminds.data.mappers.getQuestionsPacks
@@ -16,7 +17,6 @@ import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
@@ -24,6 +24,7 @@ import javax.inject.Inject
 
 class PacksRepository @Inject constructor(
     val prefs: SharedPrefs,
+    val dataStore: DataStorePrefs,
     val packsDAO: PacksDAO,
 ) : IPacksRepository {
 
@@ -78,32 +79,26 @@ class PacksRepository @Inject constructor(
         val ranges = packs.filter { it.packType == RANGES }.getRangesPacks()
 
         return Packs(
-            questionsPacks = questions,
-            rangesPacks = ranges,
+            questionsPacks = questions.sortedBy { it.pack.packNumber },
+            rangesPacks = ranges.sortedBy { it.pack.packNumber },
         )
     }
 
     override fun getSelectedQPackId(): Flow<Int> {
-        val selected = prefs.getSelectedQuestionsPack()
-        return flowOf(selected)
+        return dataStore.getSelectedQuestionsPack()
     }
 
-    override fun editSelectedQPackId(packNumber: Int) {
-        //        val editor = getSharedPreferences().edit()
-        //        editor.putInt(QUESTIONS_PACK, packNumber)
-        //        editor.apply()
+    override suspend fun updateSelectedQPackId(packNumber: Int) {
+        dataStore.updateSelectedQuestionsPack(packNumber)
     }
 
     override fun getSelectedRPackId(): Flow<Int> {
-        val selected = prefs.getSelectedRangesPack()
-        return flowOf(selected)    }
-
-    override fun editSelectedRPackId(packNumber: Int) {
-        //        val editor = getSharedPreferences().edit()
-        //        editor.putInt(RANGES_PACK, packNumber)
-        //        editor.apply()
+        return dataStore.getSelectedRangesPack()
     }
 
+    override suspend fun updateSelectedRPackId(packNumber: Int) {
+        dataStore.updateSelectedRangesPack(packNumber)
+    }
 
     override fun setFreePacks() {
         //        val editor = getSharedPreferences().edit()

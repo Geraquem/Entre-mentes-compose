@@ -41,5 +41,8 @@ const val SHARED_PREFS_NAME = "betweenminds_shared_prefs"
 const val SP_QUESTIONS_SERVER = "sp_questions_server"
 const val SP_RANGES_SERVER = "sp_ranges_server"
 const val SP_PACKS_SERVER = "sp_packs_server"
-const val SP_SELECTED_QUESTIONS_PACK = "sp_selected_questions_pack"
-const val SP_SELECTED_RANGES_PACK = "sp_selected_ranges_pack"
+
+/** DATA STORE */
+const val DATA_STORE_NAME = "betweenminds_data_store"
+const val DS_SELECTED_QUESTIONS_PACK = "ds_selected_questions_pack"
+const val DS_SELECTED_RANGES_PACK = "ds_selected_ranges_pack"
