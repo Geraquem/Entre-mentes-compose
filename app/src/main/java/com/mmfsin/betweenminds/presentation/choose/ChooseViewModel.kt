@@ -1,14 +1,21 @@
 package com.mmfsin.betweenminds.presentation.choose
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.Companion.getGameTypeById
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.usecases.CreateRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetSinglePackUseCase
 import com.mmfsin.betweenminds.domain.usecases.JoinRoomUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +23,9 @@ class ChooseViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val createRoomUseCase: CreateRoomUseCase,
     private val joinRoomUseCase: JoinRoomUseCase,
+    private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
+    private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
+    private val getSinglePackUseCase: GetSinglePackUseCase,
 ) : BaseViewModel<ChooseStates>(ChooseStates()) {
 
     private val gameTypeId: String? = savedStateHandle["gameTypeId"]
@@ -34,6 +44,51 @@ class ChooseViewModel @Inject constructor(
                     gameType = type
                 )
             }
+            getSelectedPack(type)
+        }
+    }
+
+    fun getSelectedPack(gameType: GameType) {
+        when (gameType) {
+            QUESTIONS -> {
+                viewModelScope.launch {
+                    getSelectedQuestionsPackUseCase().collect { questionsPackNumber ->
+                        executeUseCase(
+                            { getSinglePackUseCase(QUESTIONS, questionsPackNumber) },
+                            { pack ->
+                                if (pack == null) sww()
+                                else updateSelectedPack(pack)
+                            },
+                            { sww() }
+                        )
+                    }
+                }
+            }
+
+            RANGES -> {
+                viewModelScope.launch {
+                    getSelectedRangesPackUseCase().collect { rangesPackNumber ->
+                        executeUseCase(
+                            { getSinglePackUseCase(RANGES, rangesPackNumber) },
+                            { pack ->
+                                if (pack == null) sww()
+                                else updateSelectedPack(pack)
+                            },
+                            { sww() }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateSelectedPack(pack: Pack) {
+        _uiState.update {
+            it.copy(
+                packIcon = pack.packIcon,
+                packTitle = pack.packTitle,
+                isLoading = false
+            )
         }
     }
 

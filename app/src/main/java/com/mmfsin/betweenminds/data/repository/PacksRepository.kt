@@ -8,8 +8,10 @@ import com.mmfsin.betweenminds.data.ddbb.SharedPrefs
 import com.mmfsin.betweenminds.data.ddbb.daos.PacksDAO
 import com.mmfsin.betweenminds.data.mappers.getQuestionsPacks
 import com.mmfsin.betweenminds.data.mappers.getRangesPacks
+import com.mmfsin.betweenminds.data.mappers.toPack
 import com.mmfsin.betweenminds.data.models.PackDTO
 import com.mmfsin.betweenminds.domain.interfaces.IPacksRepository
+import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.models.Packs
 import com.mmfsin.betweenminds.utils.PACKS
@@ -53,27 +55,16 @@ class PacksRepository @Inject constructor(
         } else packsDAO.getPacks()
     }
 
-    override suspend fun getDataSelectedPack(gameType: String): Pair<String?, String?> {
-        //        val packs = getPacks()
-        //        when (gameType) {
-        //            QUESTIONS_TYPE -> {
-        //                val selected = getSelectedQPackId()
-        //                val p = packs.find { it.packType == QUESTIONS && it.packNumber.toInt() == selected }
-        //                return Pair(p?.icon, p?.title)
-        //            }
-        //
-        //            RANGES_TYPE -> {
-        //                val selected = getSelectedRPackId()
-        //                val p = packs.find { it.packType == RANGES && it.packNumber.toInt() == selected }
-        //                return Pair(p?.icon, p?.title)
-        //            }
-        //
-        //            else -> return Pair(null, null)
-        //        }
-        return Pair(null, null)
+    override suspend fun getSelectedPackByType(gameType: GameType, packNumber: Int): Pack? {
+        val packs = getPacks()
+        val result = when (gameType) {
+            GameType.QUESTIONS -> packs.find { it.packType == QUESTIONS && it.packNumber.toInt() == packNumber }
+            GameType.RANGES -> packs.find { it.packType == RANGES && it.packNumber.toInt() == packNumber }
+        }
+        return result?.toPack()
     }
 
-    override suspend fun getSeparatedPacks(): Packs {
+    override suspend fun getAllPacks(): Packs {
         val packs = getPacks()
         val questions = packs.filter { it.packType == QUESTIONS }.getQuestionsPacks()
         val ranges = packs.filter { it.packType == RANGES }.getRangesPacks()

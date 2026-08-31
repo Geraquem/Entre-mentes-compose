@@ -26,9 +26,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.presentation.choose.components.ChooseTitle
 import com.mmfsin.betweenminds.presentation.choose.components.JoinedErrorDialog
 import com.mmfsin.betweenminds.presentation.choose.components.OnlineRoomTabs
+import com.mmfsin.betweenminds.presentation.choose.components.PackChosen
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
@@ -39,7 +41,6 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
-import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
@@ -59,6 +60,7 @@ fun ChoosePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
+        {},
     )
 }
 
@@ -66,7 +68,8 @@ fun ChoosePV() {
 fun ChooseScreen(
     viewModel: ChooseViewModel = hiltViewModel(),
     goBack: () -> Unit,
-    roomCreated: (String, String) -> Unit
+    roomCreated: (String, String) -> Unit,
+    goToPacks: () -> Unit
 ) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -82,6 +85,7 @@ fun ChooseScreen(
                 }
             }
         },
+        goToPacks = { goToPacks() },
         onRoomCodeChange = { value -> viewModel.onRoomCodeChanged(value) },
         joinRoom = { viewModel.joinRoom() },
         createRoom = { viewModel.createRoom() },
@@ -128,6 +132,7 @@ fun ChooseContent(
     uiStates: ChooseStates,
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
+    goToPacks: () -> Unit,
     onRoomCodeChange: (String) -> Unit,
     joinRoom: () -> Unit,
     createRoom: () -> Unit,
@@ -148,9 +153,17 @@ fun ChooseContent(
     { innerPadding ->
         Column(Modifier.padding(innerPadding).padding(horizontal = 16.dp)) {
             SpacerLarge()
+
             uiStates.gameType?.let { type -> ChooseTitle(type) }
+
             SpacerMedium()
-            Box(Modifier.fillMaxWidth().height(25.dp).background(RedHard))
+
+            PackChosen(
+                packIcon = uiStates.packIcon,
+                packTitle = uiStates.packTitle,
+                change = { goToPacks() },
+            )
+
             SpacerMedium()
 
             /*****************************************************************************************/

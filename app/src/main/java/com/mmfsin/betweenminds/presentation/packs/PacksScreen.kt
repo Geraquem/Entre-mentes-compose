@@ -57,7 +57,7 @@ fun PacksScreen(
         goBack = { goBack() },
         seeMorePack = {},
         updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
-        updateSelectedRangesPack = { },
+        updateSelectedRangesPack = { viewModel.updateSelectedRangesPack(it) },
     )
 }
 

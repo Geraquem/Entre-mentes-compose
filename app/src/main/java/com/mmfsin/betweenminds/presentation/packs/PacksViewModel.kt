@@ -61,8 +61,16 @@ class PacksViewModel @Inject constructor(
     fun updateSelectedQuestionsPack(newPack: Int) {
         executeUseCase(
             { updateSelectedQuestionsPackUseCase(newPack) },
-            {},
-            {}
+            { print("questions pack updated to pack: $newPack") },
+            { sww() }
+        )
+    }
+
+    fun updateSelectedRangesPack(newPack: Int) {
+        executeUseCase(
+            { updateSelectedRangesPackUseCase(newPack) },
+            { print("ranges pack updated to pack: $newPack") },
+            { sww() }
         )
     }
 }

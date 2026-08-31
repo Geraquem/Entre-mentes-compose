@@ -10,7 +10,7 @@ class GetPacksUseCase @Inject constructor(
     private val dataRepository: IDataRepository,
 ) {
     suspend operator fun invoke(): Packs {
-        val packs = packsRepository.getSeparatedPacks()
+        val packs = packsRepository.getAllPacks()
         val questions = dataRepository.getQuestions()
         val ranges = dataRepository.getRanges()
 

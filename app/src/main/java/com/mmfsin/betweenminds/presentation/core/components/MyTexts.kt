@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import com.mmfsin.betweenminds.R
@@ -34,6 +35,7 @@ fun SmallText(
     gravity: TextAlign = TextAlign.Start,
     fontSize: TextUnit = MaterialTheme.typography.bodySmall.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
+    textDecoration: TextDecoration = TextDecoration.None,
     allCaps: Boolean = false
 ) {
     Text(
@@ -42,6 +44,7 @@ fun SmallText(
         style = MaterialTheme.typography.bodySmall,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
         textAlign = gravity,
         fontSize = fontSize,
         fontFamily = fontFamily
@@ -57,6 +60,7 @@ fun SmallText(
     gravity: TextAlign = TextAlign.Start,
     fontSize: TextUnit = MaterialTheme.typography.bodySmall.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
+    textDecoration: TextDecoration = TextDecoration.None,
     allCaps: Boolean = false
 ) {
     val text = stringResource(text)
@@ -66,6 +70,7 @@ fun SmallText(
         style = MaterialTheme.typography.bodySmall,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
         textAlign = gravity,
         fontSize = fontSize,
         fontFamily = fontFamily
@@ -81,6 +86,7 @@ fun MediumText(
     gravity: TextAlign = TextAlign.Start,
     fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
+    textDecoration: TextDecoration = TextDecoration.None,
     allCaps: Boolean = false
 ) {
     Text(
@@ -89,6 +95,7 @@ fun MediumText(
         style = MaterialTheme.typography.bodyLarge,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
         textAlign = gravity,
         fontSize = fontSize,
         fontFamily = fontFamily
@@ -104,6 +111,7 @@ fun MediumText(
     gravity: TextAlign = TextAlign.Start,
     fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
+    textDecoration: TextDecoration = TextDecoration.None,
     allCaps: Boolean = false
 ) {
     val text = stringResource(text)
@@ -113,6 +121,7 @@ fun MediumText(
         style = MaterialTheme.typography.bodyLarge,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
         textAlign = gravity,
         fontSize = fontSize,
         fontFamily = fontFamily
@@ -128,6 +137,7 @@ fun BigText(
     gravity: TextAlign = TextAlign.Start,
     fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
+    textDecoration: TextDecoration = TextDecoration.None,
     allCaps: Boolean = false
 ) {
     Text(
@@ -136,6 +146,7 @@ fun BigText(
         style = MaterialTheme.typography.titleLarge,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
         textAlign = gravity,
         fontSize = fontSize,
         fontFamily = fontFamily
@@ -151,6 +162,7 @@ fun BigText(
     gravity: TextAlign = TextAlign.Start,
     fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
     fontFamily: FontFamily = FontFamily.SansSerif,
+    textDecoration: TextDecoration = TextDecoration.None,
     allCaps: Boolean = false
 ) {
     val text = stringResource(text)
@@ -160,6 +172,7 @@ fun BigText(
         style = MaterialTheme.typography.titleLarge,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
         textAlign = gravity,
         fontSize = fontSize,
         fontFamily = fontFamily

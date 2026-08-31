@@ -41,7 +41,8 @@ fun NavigationMain() {
                             gameTypeId = gameTypeId
                         )
                     )
-                }
+                },
+                goToPacks = { navController.navigate(Packs) }
             )
         }
 

@@ -1,12 +1,16 @@
 package com.mmfsin.betweenminds.presentation.choose
 
 import com.mmfsin.betweenminds.domain.models.GameType
+import com.mmfsin.betweenminds.domain.models.Pack
 
 data class ChooseStates(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
 
     val showSwwDialog: Boolean = false,
     val showErrorJoinedDialog: Boolean = false,
+
+    val packIcon: String = "",
+    val packTitle: String = "",
 
     val gameTypeId: String = "",
     val gameType: GameType? = null,
