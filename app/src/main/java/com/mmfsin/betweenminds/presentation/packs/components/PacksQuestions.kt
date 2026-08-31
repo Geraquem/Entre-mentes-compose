@@ -42,7 +42,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 fun PacksQuestions(
     packs: List<QuestionsPack>,
     selected: Int,
-    seeMore: (Int) -> Unit,
+    seeMore: (String) -> Unit,
     updateQuestionsPack: (Int) -> Unit
 ) {
     CompositionLocalProvider(
@@ -94,7 +94,7 @@ fun QuestionsPackPV() {
 fun QuestionsPack(
     pack: QuestionsPack,
     selected: Int,
-    seeMore: (Int) -> Unit,
+    seeMore: (String) -> Unit,
     updateQuestionsPack: (Int) -> Unit
 ) {
     Column(
@@ -134,7 +134,7 @@ fun QuestionsPack(
 
         Column {
             pack.questions.take(4).forEach { question ->
-                Row() {
+                Row {
                     Column {
                         SpacerSmall()
                         Box(
@@ -160,7 +160,7 @@ fun QuestionsPack(
 
         Row {
             ButtonCustom(
-                onClick = { seeMore(pack.pack.packNumber) },
+                onClick = { seeMore(pack.pack.packId) },
                 text = R.string.pack_see_more,
                 color = Black,
                 textColor = White,

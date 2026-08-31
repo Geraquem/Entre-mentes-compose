@@ -56,8 +56,6 @@ class PacksViewModel @Inject constructor(
         }
     }
 
-    private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }
-
     fun updateSelectedQuestionsPack(newPack: Int) {
         executeUseCase(
             { updateSelectedQuestionsPackUseCase(newPack) },
@@ -73,4 +71,6 @@ class PacksViewModel @Inject constructor(
             { sww() }
         )
     }
+
+    private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }
 }

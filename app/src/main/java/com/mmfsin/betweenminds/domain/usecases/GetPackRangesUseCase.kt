@@ -3,17 +3,14 @@ package com.mmfsin.betweenminds.domain.usecases
 import com.mmfsin.betweenminds.domain.interfaces.IDataRepository
 import com.mmfsin.betweenminds.domain.interfaces.IPacksRepository
 import com.mmfsin.betweenminds.domain.models.Range
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
-import kotlin.random.Random
 
-class GetRangesUseCase @Inject constructor(
+class GetPackRangesUseCase @Inject constructor(
     private val packRepository: IPacksRepository,
     private val dataRepository: IDataRepository
 ) {
-    suspend operator fun invoke(): List<Range> {
-        val selectedPack = packRepository.getSelectedQPackId()
+    suspend operator fun invoke(packNumber: Int): List<Range> {
         val ranges = dataRepository.getRanges()
-        return ranges.filter { it.pack == selectedPack.first() }.shuffled(Random(System.nanoTime()))
+        return ranges.filter { it.pack == packNumber }
     }
 }

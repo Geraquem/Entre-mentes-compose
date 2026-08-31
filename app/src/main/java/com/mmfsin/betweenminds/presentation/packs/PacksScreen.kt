@@ -43,21 +43,23 @@ fun PacksScreenPV() {
         ),
         initialTab = 1,
         {}, {}, {},
-        {},
+        {}, {},
     )
 }
 
 @Composable
 fun PacksScreen(
     viewModel: PacksViewModel = hiltViewModel(),
+    initialTab: Int = 0,
     goBack: () -> Unit,
-    initialTab: Int = 0
+    goToPackDetail: (String) -> Unit,
 ) {
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     PacksContent(
         uiStates = uiStates,
         initialTab = initialTab,
         goBack = { goBack() },
+        goToPackDetail = { goToPackDetail(it) },
         seeMorePack = {},
         updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
         updateSelectedRangesPack = { viewModel.updateSelectedRangesPack(it) },
@@ -69,6 +71,7 @@ fun PacksContent(
     uiStates: PacksStates,
     initialTab: Int,
     goBack: () -> Unit,
+    goToPackDetail: (String) -> Unit,
     seeMorePack: () -> Unit,
     updateSelectedQuestionsPack: (Int) -> Unit,
     updateSelectedRangesPack: (Int) -> Unit,
@@ -117,7 +120,12 @@ fun PacksContent(
                     Tab(
                         selected = pagerState.currentPage == i,
                         onClick = { scope.launch { pagerState.animateScrollToPage(i) } },
-                        text = { MediumText(txtTab.uppercase(), color = White) }
+                        text = {
+                            MediumText(
+                                text = txtTab.uppercase(),
+                                color = White
+                            )
+                        }
                     )
                 }
             }
@@ -133,14 +141,14 @@ fun PacksContent(
                     0 -> PacksQuestions(
                         packs = uiStates.questionsPacks,
                         selected = uiStates.selectedQuestionsPack,
-                        seeMore = {},
+                        seeMore = { goToPackDetail(it) },
                         updateQuestionsPack = { updateSelectedQuestionsPack(it) }
                     )
 
                     else -> PacksRanges(
                         packs = uiStates.rangesPacks,
                         selected = uiStates.selectedRangesPack,
-                        seeMore = {},
+                        seeMore = { goToPackDetail(it) },
                         updateRangesPack = { updateSelectedRangesPack(it) }
                     )
                 }

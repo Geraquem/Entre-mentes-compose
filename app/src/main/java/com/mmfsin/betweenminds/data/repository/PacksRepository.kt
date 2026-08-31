@@ -102,9 +102,7 @@ class PacksRepository @Inject constructor(
         return false
     }
 
-    override suspend fun getPackById(packId: String): Pack? {
-        return null
-    }
+    override suspend fun getPackById(packId: String): Pack? = packsDAO.getPackById(packId)?.toPack()
 
     /****************************************************************************************************/
     /****************************************************************************************************/

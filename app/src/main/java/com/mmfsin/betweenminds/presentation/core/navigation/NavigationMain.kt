@@ -11,6 +11,7 @@ import com.mmfsin.betweenminds.presentation.choose.ChooseScreen
 import com.mmfsin.betweenminds.presentation.choose.roomcode.RoomCodeScreen
 import com.mmfsin.betweenminds.presentation.menu.MenuScreen
 import com.mmfsin.betweenminds.presentation.packs.PacksScreen
+import com.mmfsin.betweenminds.presentation.packs.detail.PackDetailScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -57,7 +58,15 @@ fun NavigationMain() {
             val route = args.toRoute<Packs>()
             PacksScreen(
                 initialTab = route.tab,
-                goBack = { navController.popBackStack() })
+                goBack = { navController.popBackStack() },
+                goToPackDetail = { packId -> navController.navigate(PackDetail(packId)) }
+            )
+        }
+
+        composable<PackDetail> {
+            PackDetailScreen(
+                goBack = { navController.popBackStack() }
+            )
         }
     }
 }
@@ -74,3 +83,6 @@ data class RoomCode(val roomCode: String, val gameTypeId: String)
 
 @Serializable
 data class Packs(val tab: Int = 0)
+
+@Serializable
+data class PackDetail(val packId: String)

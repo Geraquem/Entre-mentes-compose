@@ -15,7 +15,7 @@ interface PacksDAO {
     suspend fun getPacks(): List<PackDTO>
 
     @Query("SELECT * FROM table_packs WHERE packId = :packId")
-    suspend fun getPackById(packId: String): PackDTO
+    suspend fun getPackById(packId: String): PackDTO?
 
     @Query("DELETE FROM table_packs")
     suspend fun deleteAllPacks()

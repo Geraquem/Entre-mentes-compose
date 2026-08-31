@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface IPacksRepository {
     suspend fun getAllPacks(): Packs
-    suspend fun getPackById(packId: String): Pack?
 
     suspend fun getSelectedPackByType(gameType: GameType, packNumber: Int): Pack?
+    suspend fun getPackById(packId: String): Pack?
 
     fun getSelectedQPackId(): Flow<Int>
     suspend fun updateSelectedQPackId(packNumber: Int)

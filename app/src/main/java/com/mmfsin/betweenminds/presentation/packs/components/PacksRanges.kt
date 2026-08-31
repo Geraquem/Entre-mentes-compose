@@ -43,7 +43,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 fun PacksRanges(
     packs: List<RangesPack>,
     selected: Int,
-    seeMore: (Int) -> Unit,
+    seeMore: (String) -> Unit,
     updateRangesPack: (Int) -> Unit
 ) {
     CompositionLocalProvider(
@@ -94,7 +94,7 @@ fun RangesPackPV() {
 fun RangesPack(
     pack: RangesPack,
     selected: Int,
-    seeMore: (Int) -> Unit,
+    seeMore: (String) -> Unit,
     updateRangesPack: (Int) -> Unit
 ) {
     Column(
@@ -188,7 +188,7 @@ fun RangesPack(
 
         Row {
             ButtonCustom(
-                onClick = { seeMore(pack.pack.packNumber) },
+                onClick = { seeMore(pack.pack.packId) },
                 text = R.string.pack_see_more,
                 color = Black,
                 textColor = White,
