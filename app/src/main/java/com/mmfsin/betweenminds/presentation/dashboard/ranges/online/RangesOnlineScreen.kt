@@ -69,9 +69,9 @@ import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialo
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.InitialOnlineRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.OtherPlayerRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.ResultOnlineRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
@@ -118,7 +118,7 @@ fun RangesOnlineScreen(
         checkBullseyePhase = { viewModel.checkBullseyePhase() },
         checkSliderPhase = { viewModel.checkSliderPhase() },
         nextRound = { viewModel.nextRound() },
-        showResultDialog = { viewModel.showResultDialog(it) },
+        sendMyResult = { viewModel.sendMyResult() },
         //        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
     )
@@ -135,7 +135,7 @@ fun RangesOnlineContent(
     checkBullseyePhase: () -> Unit,
     checkSliderPhase: () -> Unit,
     nextRound: () -> Unit,
-    showResultDialog: (Boolean) -> Unit,
+    sendMyResult: () -> Unit,
     //    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
@@ -323,7 +323,7 @@ fun RangesOnlineContent(
                                 SHOW_BULLSEYE -> checkBullseyePhase()
                                 MOVE_ARROW -> checkSliderPhase()
                                 NEXT_ROUND -> nextRound()
-                                RESULTS -> showResultDialog(true)
+                                RESULTS -> sendMyResult()
                             }
                         }
                     },
@@ -352,9 +352,9 @@ fun RangesOnlineContent(
             }
 
             if (uiStates.showResultDialog) {
-                ResultRangesDialog(
-                    points = uiStates.points,
-                    isOnline = true,
+                ResultOnlineRangesDialog(
+                    myPoints = uiStates.points,
+                    otherPlayerPoints = uiStates.otherPlayerPoints,
                     exit = { goBack() },
                     replay = { /*replay() */ },
                 )

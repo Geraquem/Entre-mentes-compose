@@ -41,20 +41,19 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getTotalPoin
 
 @Preview
 @Composable
-fun ResultRangesDialogPV() {
-    ResultRangesDialog(listOf(2, 0, 0, 0), true, {}, {})
+fun ResultOfflineRangesDialogPV() {
+    ResultOfflineRangesDialog(listOf(2, 0, 0, 0), {}, {})
 }
 
 @Composable
-fun ResultRangesDialog(
+fun ResultOfflineRangesDialog(
     points: List<Int?>,
-    isOnline: Boolean,
     exit: () -> Unit,
     replay: () -> Unit,
 ) {
 
     val totalPoints = getTotalPoints(points)
-    val affinity = getAffinityOffline(isOnline, totalPoints)
+    val affinity = getAffinityOffline(false, totalPoints)
 
     Dialog(
         onDismissRequest = {},
@@ -83,11 +82,8 @@ fun ResultRangesDialog(
             ) {
                 SpacerLarge()
 
-                val pointsText = if (isOnline) R.string.endgame_ranges_max_points_online
-                else R.string.endgame_ranges_max_points_offline
-
                 MediumText(
-                    text = pointsText,
+                    text = R.string.endgame_ranges_max_points_offline,
                     fontSize = 20.sp,
                 )
 

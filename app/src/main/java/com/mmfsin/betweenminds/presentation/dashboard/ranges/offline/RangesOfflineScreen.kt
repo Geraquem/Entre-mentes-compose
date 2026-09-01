@@ -68,7 +68,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.common.SwipeBox
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.ResultOfflineRangesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.offline.components.InitialOfflineRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
@@ -358,9 +358,8 @@ fun RangesOfflineContent(
             }
 
             if (uiState.showResultDialog) {
-                ResultRangesDialog(
+                ResultOfflineRangesDialog(
                     points = uiState.points,
-                    isOnline = false,
                     exit = { goBack() },
                     replay = { replay() },
                 )

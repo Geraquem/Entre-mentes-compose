@@ -10,9 +10,12 @@ import com.mmfsin.betweenminds.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenminds.domain.usecases.GetRangesUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendMyORangesDataToRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.SendMyRangesPointsUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerORangesUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerRangesPointsUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.calculateRangePoints
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getTotalPoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -24,6 +27,8 @@ class RangesOnlineViewModel @Inject constructor(
     private val getRangesUseCase: GetRangesUseCase,
     private val sendMyORangesDataToRoomUseCase: SendMyORangesDataToRoomUseCase,
     private val waitOtherPlayerORangesUseCase: WaitOtherPlayerORangesUseCase,
+    private val sendMyRangesPointsUseCase: SendMyRangesPointsUseCase,
+    private val waitOtherPlayerRangesPointsUseCase: WaitOtherPlayerRangesPointsUseCase
 ) : BaseViewModel<RangesOnlineStates>(RangesOnlineStates()) {
 
     init {
@@ -299,6 +304,46 @@ class RangesOnlineViewModel @Inject constructor(
             delay(1000)
             openCurtains()
         }
+    }
+
+    fun sendMyResult() {
+        _uiState.update { it.copy(showWaitingOtherPlayerDialog = true) }
+        val states = uiState.value
+        val points = getTotalPoints(states.points)
+
+        executeUseCase(
+            {
+                sendMyRangesPointsUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = states.isCreator,
+                    points = points
+                )
+            },
+            { waitToOtherPlayerResult() },
+            { sww() }
+        )
+    }
+
+    private fun waitToOtherPlayerResult() {
+        val states = uiState.value
+        executeUseCase(
+            {
+                waitOtherPlayerRangesPointsUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = states.isCreator
+                )
+            },
+            { otherPlayerPoints ->
+                _uiState.update {
+                    it.copy(
+                        otherPlayerPoints = otherPlayerPoints,
+                        showWaitingOtherPlayerDialog = false,
+                        showResultDialog = true
+                    )
+                }
+            },
+            { sww() }
+        )
     }
 
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }

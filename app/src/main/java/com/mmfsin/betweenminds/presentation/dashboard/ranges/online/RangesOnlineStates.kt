@@ -39,6 +39,7 @@ data class RangesOnlineStates(
     val bullsEyeStart: Float = 47f,
 
     val points: List<Int?> = listOf(null, null, null),
+    val otherPlayerPoints: Int = 0,
     val confettiTrigger: Int = 0,
 
     val curtainsOpen: Boolean = false,

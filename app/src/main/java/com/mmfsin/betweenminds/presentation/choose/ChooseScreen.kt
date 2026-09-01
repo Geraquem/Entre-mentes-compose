@@ -149,7 +149,8 @@ fun ChooseContent(
                 .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            SpacerLarge()
+
+            SpacerSmall()
 
             uiStates.gameType?.let { type -> ChooseTitle(type) }
 

@@ -124,7 +124,7 @@
     <string name="endgame_affinity">de afinidad</string>
 
     <string name="endgame_ranges_max_points_offline">De un máximo de 20 puntos</string>
-    <string name="endgame_ranges_max_points_online">De un máximo de 15 puntos</string>
+    <string name="endgame_ranges_max_points_online">De un máximo de 30 puntos</string>
     <string name="endgame_top_text">habéis conseguido</string>
     <string name="endgame_one_point">1 punto</string>
     <string name="endgame_pts">%s puntos</string>
@@ -139,8 +139,8 @@
     <string name="endgame_replay">Volver a jugar</string>
     <string name="endgame_replay_new_names">Cambiar nombres</string>
 
-    <string name="endgame_online_ranges_you">Tú has conseguido</string>
-    <string name="endgame_online_ranges_your_teammate">Tu compañero ha conseguido</string>
+    <string name="endgame_online_ranges_you">Tú</string>
+    <string name="endgame_online_ranges_your_teammate">Tu compañer@</string>
     <string name="endgame_online_ranges_total_points">Puntuación total</string>
 
     <!-- ONLINE -->

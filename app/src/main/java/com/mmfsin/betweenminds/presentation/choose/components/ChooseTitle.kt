@@ -13,8 +13,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType
+import com.mmfsin.betweenminds.domain.models.GameType.*
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
@@ -24,27 +26,32 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 @Preview
 @Composable
 fun ChooseTitlePV() {
-    ChooseTitle(GameType.RANGES)
+    ChooseTitle(RANGES)
 }
 
 @Composable
 fun ChooseTitle(type: GameType) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         when (type) {
-            GameType.QUESTIONS -> {
+            QUESTIONS -> {
                 BigText(
                     text = stringResource(R.string.selector_questions),
                     allCaps = true,
                     color = White,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
+
                 Spacer(Modifier.weight(1f))
+
                 Icon(
                     painterResource(R.drawable.ic_human_down), null,
                     tint = BlueMedium,
                     modifier = Modifier.size(36.dp)
                 )
+
                 SpacerMini(horizontal = true)
+
                 Icon(
                     painterResource(R.drawable.ic_human_down), null,
                     tint = OrangeMedium,
@@ -52,20 +59,25 @@ fun ChooseTitle(type: GameType) {
                 )
             }
 
-            else -> {
+            RANGES -> {
                 BigText(
                     text = stringResource(R.string.selector_ranges),
                     allCaps = true,
                     color = White,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
+
                 Spacer(Modifier.weight(1f))
+
                 Icon(
                     painterResource(R.drawable.ic_arrow), null,
                     tint = White,
                     modifier = Modifier.size(36.dp)
                 )
+
                 SpacerMini(horizontal = true)
+
                 Icon(
                     painterResource(R.drawable.ic_arrow), null,
                     tint = White,
