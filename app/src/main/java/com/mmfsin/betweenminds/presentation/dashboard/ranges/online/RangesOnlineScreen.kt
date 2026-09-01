@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -90,7 +91,7 @@ fun RangesOnlinePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
-        {}, {}, {},
+        {}, {}, {}, {},
     )
 }
 
@@ -118,6 +119,7 @@ fun RangesOnlineScreen(
         checkBullseyePhase = { viewModel.checkBullseyePhase() },
         checkSliderPhase = { viewModel.checkSliderPhase() },
         nextRound = { viewModel.nextRound() },
+        wantNewRange = { viewModel.wantNewRange() },
         sendMyResult = { viewModel.sendMyResult() },
         replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
@@ -135,6 +137,7 @@ fun RangesOnlineContent(
     checkBullseyePhase: () -> Unit,
     checkSliderPhase: () -> Unit,
     nextRound: () -> Unit,
+    wantNewRange: () -> Unit,
     sendMyResult: () -> Unit,
     replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
@@ -330,6 +333,25 @@ fun RangesOnlineContent(
                     text = uiStates.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
+
+                if (uiStates.isVisibleWantNewRange) {
+                    SpacerSmall()
+
+                    ShowAlpha(uiStates.showWantNewRange) {
+                        TextButton(
+                            onClick = { wantNewRange() },
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = uiStates.anotherButtonEnabled
+                        ) {
+                            MediumText(
+                                text = R.string.ranges_another_range,
+                                fontFamily = alphazet,
+                                color = White,
+                                allCaps = true
+                            )
+                        }
+                    }
+                }
             }
 
             ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }

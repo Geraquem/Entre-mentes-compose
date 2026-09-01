@@ -128,6 +128,32 @@ class RangesOfflineViewModel @Inject constructor(
         }
     }
 
+    fun wantNewRange() {
+        val states = uiState.value
+        _uiState.update {
+            it.copy(
+                showWantNewRange = false,
+                anotherButtonEnabled = false,
+                buttonEnabled = false,
+                actualRangeLeft = "",
+                actualRangeRight = ""
+            )
+        }
+        closeCurtains()
+        viewModelScope.launch {
+            delay(2000)
+            _uiState.update {
+                it.copy(
+                    bullsEyeStart = (0..94).random().toFloat(),
+                    rangesPos = states.rangesPos + 1,
+                    buttonEnabled = true
+                )
+            }
+            setRange()
+            openCurtains()
+        }
+    }
+
     fun readySliderPhase() {
         val states = uiState.value
 
@@ -221,32 +247,6 @@ class RangesOfflineViewModel @Inject constructor(
             setRange()
             delay(1000)
             showBullseye()
-        }
-    }
-
-    fun wantNewRange() {
-        val states = uiState.value
-        _uiState.update {
-            it.copy(
-                showWantNewRange = false,
-                anotherButtonEnabled = false,
-                buttonEnabled = false,
-                actualRangeLeft = "",
-                actualRangeRight = ""
-            )
-        }
-        closeCurtains()
-        viewModelScope.launch {
-            delay(2000)
-            _uiState.update {
-                it.copy(
-                    bullsEyeStart = (0..94).random().toFloat(),
-                    rangesPos = states.rangesPos + 1,
-                    buttonEnabled = true
-                )
-            }
-            setRange()
-            openCurtains()
         }
     }
 

@@ -12,6 +12,9 @@ data class RangesOnlineStates(
     val roomCode: String = "",
     val isCreator: Boolean = false,
 
+    val showWantNewRange: Boolean = true,
+    val isVisibleWantNewRange: Boolean = true,
+
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
     val showOtherPlayerRangesDialog: Boolean = false,
@@ -48,6 +51,7 @@ data class RangesOnlineStates(
     val sliderEnabled: Boolean = false,
     val showBullseye: Boolean = true,
 
+    val anotherButtonEnabled: Boolean = false,
     val buttonEnabled: Boolean = false,
     val buttonText: Int = R.string.online_btn_save_answer
 )

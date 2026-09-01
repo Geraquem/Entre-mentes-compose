@@ -105,11 +105,18 @@ class RangesOnlineViewModel @Inject constructor(
                 buttonText = R.string.online_btn_save_answer,
                 showSlider = false,
                 showEditTextHint = true,
+                isVisibleWantNewRange = true,
+                showWantNewRange = true,
             )
         }
         viewModelScope.launch {
             delay(500)
-            _uiState.update { it.copy(buttonEnabled = true) }
+            _uiState.update {
+                it.copy(
+                    anotherButtonEnabled = true,
+                    buttonEnabled = true
+                )
+            }
         }
         openCurtains()
     }
@@ -140,6 +147,7 @@ class RangesOnlineViewModel @Inject constructor(
                         rangesPos = states.rangesPos + 1,
                         showRoundView = true,
                         buttonEnabled = false,
+                        anotherButtonEnabled = false
                     )
                 }
                 delay(1500)
@@ -149,13 +157,46 @@ class RangesOnlineViewModel @Inject constructor(
                         hint = "",
                         bullsEyeStart = (0..94).random().toFloat(),
                         showRoundView = false,
+                        showWantNewRange = true,
+                        isVisibleWantNewRange = true
                     )
                 }
                 delay(1000)
                 openCurtains()
                 delay(750)
-                _uiState.update { it.copy(buttonEnabled = true) }
+                _uiState.update {
+                    it.copy(
+                        anotherButtonEnabled = true,
+                        buttonEnabled = true
+                    )
+                }
             }
+        }
+    }
+
+    fun wantNewRange() {
+        val states = uiState.value
+        _uiState.update {
+            it.copy(
+                showWantNewRange = false,
+                anotherButtonEnabled = false,
+                buttonEnabled = false,
+                actualRangeLeft = "",
+                actualRangeRight = ""
+            )
+        }
+        closeCurtains()
+        viewModelScope.launch {
+            delay(2000)
+            _uiState.update {
+                it.copy(
+                    bullsEyeStart = (0..94).random().toFloat(),
+                    rangesPos = states.rangesPos + 1,
+                    buttonEnabled = true
+                )
+            }
+            setRange()
+            openCurtains()
         }
     }
 
@@ -167,6 +208,9 @@ class RangesOnlineViewModel @Inject constructor(
                 showBullseye = false,
                 phase = MOVE_ARROW,
                 buttonEnabled = false,
+                anotherButtonEnabled = false,
+                showWantNewRange = false,
+                isVisibleWantNewRange = false,
                 showWaitingOtherPlayerDialog = true,
             )
         }
@@ -259,7 +303,7 @@ class RangesOnlineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 2) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = roundPoints,
                 showBullseye = true,
