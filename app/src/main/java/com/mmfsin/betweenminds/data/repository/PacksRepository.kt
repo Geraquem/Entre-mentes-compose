@@ -3,6 +3,7 @@ package com.mmfsin.betweenminds.data.repository
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.mmfsin.betweenminds.data.billing.BillingManager
 import com.mmfsin.betweenminds.data.ddbb.DataStorePrefs
 import com.mmfsin.betweenminds.data.ddbb.SharedPrefs
 import com.mmfsin.betweenminds.data.ddbb.daos.PacksDAO
@@ -19,15 +20,18 @@ import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 class PacksRepository @Inject constructor(
     val prefs: SharedPrefs,
     val dataStore: DataStorePrefs,
     val packsDAO: PacksDAO,
+    val billingManager: BillingManager
 ) : IPacksRepository {
 
     private suspend fun getPacks(): List<PackDTO> {
@@ -63,6 +67,8 @@ class PacksRepository @Inject constructor(
         }
         return result?.toPack()
     }
+
+    override suspend fun getPackById(packId: String): Pack? = packsDAO.getPackById(packId)?.toPack()
 
     override suspend fun getAllPacks(): Packs {
         val packs = getPacks()
@@ -102,7 +108,10 @@ class PacksRepository @Inject constructor(
         return false
     }
 
-    override suspend fun getPackById(packId: String): Pack? = packsDAO.getPackById(packId)?.toPack()
+    override suspend fun checkIfPurchasedPacks(): Boolean {
+        return billingManager.isAllPacksPurchased()
+    }
+
 
     /****************************************************************************************************/
     /****************************************************************************************************/

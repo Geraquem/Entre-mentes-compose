@@ -92,6 +92,9 @@ dependencies {
     /** Lottie */
     implementation(libs.lottie.compose)
 
+    /** Billing */
+    implementation(libs.billing.ktx)
+
     //Animate BG
     implementation("nl.dionsegijn:konfetti-compose:2.0.5")
     implementation("com.github.doctoror.particlesdrawable:library:2.0.2")

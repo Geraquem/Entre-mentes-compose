@@ -43,8 +43,9 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 fun PacksRanges(
     packs: List<RangesPack>,
     selected: Int,
+    purchased: Boolean,
     seeMore: (String) -> Unit,
-    updateRangesPack: (Int) -> Unit
+    updateRangesPack: (Int) -> Unit,
 ) {
     CompositionLocalProvider(
         LocalOverscrollFactory provides null
@@ -58,6 +59,7 @@ fun PacksRanges(
                     RangesPack(
                         pack = pack,
                         selected = selected,
+                        purchased = purchased,
                         seeMore = { seeMore(it) },
                         updateRangesPack = { updateRangesPack(it) })
                 }
@@ -85,7 +87,7 @@ fun RangesPackPV() {
                 Range(leftRange = "Rango izquierdo 3", rightRange = "Rango derecho 3", pack = 0),
             ),
         ),
-        selected = 0,
+        selected = 0, purchased = true,
         {}, {}
     )
 }
@@ -94,6 +96,7 @@ fun RangesPackPV() {
 fun RangesPack(
     pack: RangesPack,
     selected: Int,
+    purchased: Boolean,
     seeMore: (String) -> Unit,
     updateRangesPack: (Int) -> Unit
 ) {
@@ -196,13 +199,14 @@ fun RangesPack(
 
             SpacerSmall(horizontal = true)
 
+            val packSelected = (selected == pack.pack.packNumber)
             ButtonCustom(
-                onClick = { updateRangesPack(pack.pack.packNumber) },
-                text = if (selected == pack.pack.packNumber) R.string.pack_selected
-                else R.string.pack_selected_btn,
+                onClick = { if (!packSelected) updateRangesPack(pack.pack.packNumber) },
+                text = if (packSelected) R.string.pack_selected else R.string.pack_selected_btn,
                 color = if (selected == pack.pack.packNumber) BlueMedium else Black,
                 textColor = White,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                enabled = if (packSelected) true else purchased
             )
         }
     }

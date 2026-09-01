@@ -1,6 +1,7 @@
 package com.mmfsin.betweenminds.presentation.packs
 
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.domain.usecases.CheckIfPurchasedPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
@@ -19,11 +20,13 @@ class PacksViewModel @Inject constructor(
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
     private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
+    private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase
 ) : BaseViewModel<PacksStates>(PacksStates()) {
 
     init {
         getPacks()
         getSelectedPacks()
+        checkIfPurchasedPacks()
     }
 
     private fun getPacks() {
@@ -70,6 +73,18 @@ class PacksViewModel @Inject constructor(
             { print("ranges pack updated to pack: $newPack") },
             { sww() }
         )
+    }
+
+    private fun checkIfPurchasedPacks() {
+        executeUseCase(
+            { checkIfPurchasedPacksUseCase.execute() },
+            { purchased -> _uiState.update { it.copy(packsPurchased = purchased) } },
+            { sww() },
+        )
+    }
+
+    fun purchasePacks() {
+
     }
 
     private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }

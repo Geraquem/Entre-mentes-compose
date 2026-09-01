@@ -19,4 +19,6 @@ interface IPacksRepository {
 
     fun setFreePacks()
     fun checkIfPacksAreFree(): Boolean
+
+    suspend fun checkIfPurchasedPacks(): Boolean
 }

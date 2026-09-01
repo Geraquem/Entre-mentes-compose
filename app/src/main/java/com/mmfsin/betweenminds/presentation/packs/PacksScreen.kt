@@ -1,6 +1,7 @@
 package com.mmfsin.betweenminds.presentation.packs
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.LoadingFullScreen
@@ -42,8 +44,8 @@ fun PacksScreenPV() {
             isLoading = false,
         ),
         initialTab = 1,
-        {}, {}, {},
-        {}, {},
+        {}, {}, {}, {},
+        {},
     )
 }
 
@@ -60,9 +62,9 @@ fun PacksScreen(
         initialTab = initialTab,
         goBack = { goBack() },
         goToPackDetail = { goToPackDetail(it) },
-        seeMorePack = {},
         updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
         updateSelectedRangesPack = { viewModel.updateSelectedRangesPack(it) },
+        purchasePacks = { viewModel.purchasePacks() },
     )
 }
 
@@ -72,9 +74,9 @@ fun PacksContent(
     initialTab: Int,
     goBack: () -> Unit,
     goToPackDetail: (String) -> Unit,
-    seeMorePack: () -> Unit,
     updateSelectedQuestionsPack: (Int) -> Unit,
     updateSelectedRangesPack: (Int) -> Unit,
+    purchasePacks: () -> Unit,
 ) {
 
     val pagerState = rememberPagerState(
@@ -96,60 +98,78 @@ fun PacksContent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(12.dp)
         ) {
 
-            PrimaryTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                containerColor = BackgroundBlack,
-                indicator = {
-                    TabRowDefaults.PrimaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(pagerState.currentPage, matchContentSize = true),
-                        width = 120.dp,
-                        height = 6.dp,
-                        shape = RoundedCornerShape(0),
-                        color = BlueMedium
-                    )
-                },
-                divider = {}
-            ) {
-                listOf(
-                    stringResource(R.string.pack_questions),
-                    stringResource(R.string.pack_ranges)
-                ).forEachIndexed { i, txtTab ->
-                    Tab(
-                        selected = pagerState.currentPage == i,
-                        onClick = { scope.launch { pagerState.animateScrollToPage(i) } },
-                        text = {
-                            MediumText(
-                                text = txtTab.uppercase(),
-                                color = White
-                            )
-                        }
-                    )
+            Column(modifier = Modifier.weight(1f).padding(12.dp)) {
+                PrimaryTabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    containerColor = BackgroundBlack,
+                    indicator = {
+                        TabRowDefaults.PrimaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(pagerState.currentPage, matchContentSize = true),
+                            width = 120.dp,
+                            height = 6.dp,
+                            shape = RoundedCornerShape(0),
+                            color = BlueMedium
+                        )
+                    },
+                    divider = {}
+                ) {
+                    listOf(
+                        stringResource(R.string.pack_questions),
+                        stringResource(R.string.pack_ranges)
+                    ).forEachIndexed { i, txtTab ->
+                        Tab(
+                            selected = pagerState.currentPage == i,
+                            onClick = { scope.launch { pagerState.animateScrollToPage(i) } },
+                            text = {
+                                MediumText(
+                                    text = txtTab.uppercase(),
+                                    color = White
+                                )
+                            }
+                        )
+                    }
+                }
+
+                SpacerMedium()
+
+                HorizontalPager(
+                    state = pagerState,
+                    userScrollEnabled = false,
+                    modifier = Modifier.fillMaxWidth()
+                ) { page ->
+                    when (page) {
+                        0 -> PacksQuestions(
+                            packs = uiStates.questionsPacks,
+                            selected = uiStates.selectedQuestionsPack,
+                            purchased = uiStates.packsPurchased,
+                            seeMore = { goToPackDetail(it) },
+                            updateQuestionsPack = { updateSelectedQuestionsPack(it) }
+                        )
+
+                        else -> PacksRanges(
+                            packs = uiStates.rangesPacks,
+                            selected = uiStates.selectedRangesPack,
+                            purchased = uiStates.packsPurchased,
+                            seeMore = { goToPackDetail(it) },
+                            updateRangesPack = { updateSelectedRangesPack(it) }
+                        )
+                    }
                 }
             }
 
-            SpacerMedium()
-
-            HorizontalPager(
-                state = pagerState,
-                userScrollEnabled = false,
-                modifier = Modifier.fillMaxWidth()
-            ) { page ->
-                when (page) {
-                    0 -> PacksQuestions(
-                        packs = uiStates.questionsPacks,
-                        selected = uiStates.selectedQuestionsPack,
-                        seeMore = { goToPackDetail(it) },
-                        updateQuestionsPack = { updateSelectedQuestionsPack(it) }
-                    )
-
-                    else -> PacksRanges(
-                        packs = uiStates.rangesPacks,
-                        selected = uiStates.selectedRangesPack,
-                        seeMore = { goToPackDetail(it) },
-                        updateRangesPack = { updateSelectedRangesPack(it) }
+            if (!uiStates.packsPurchased) {
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                        .background(BackgroundBlack)
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp, top = 8.dp)
+                ) {
+                    ButtonCustom(
+                        onClick = { purchasePacks() },
+                        text = R.string.pack_purchase,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }

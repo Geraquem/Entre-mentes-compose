@@ -42,8 +42,9 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 fun PacksQuestions(
     packs: List<QuestionsPack>,
     selected: Int,
+    purchased: Boolean,
     seeMore: (String) -> Unit,
-    updateQuestionsPack: (Int) -> Unit
+    updateQuestionsPack: (Int) -> Unit,
 ) {
     CompositionLocalProvider(
         LocalOverscrollFactory provides null
@@ -57,6 +58,7 @@ fun PacksQuestions(
                     QuestionsPack(
                         pack = pack,
                         selected = selected,
+                        purchased = purchased,
                         seeMore = { seeMore(it) },
                         updateQuestionsPack = { updateQuestionsPack(it) }
                     )
@@ -85,7 +87,7 @@ fun QuestionsPackPV() {
                 Question("¿Question 3?", 0),
             )
         ),
-        selected = 0,
+        selected = 0, purchased = false,
         {}, {}
     )
 }
@@ -94,8 +96,9 @@ fun QuestionsPackPV() {
 fun QuestionsPack(
     pack: QuestionsPack,
     selected: Int,
+    purchased: Boolean,
     seeMore: (String) -> Unit,
-    updateQuestionsPack: (Int) -> Unit
+    updateQuestionsPack: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -168,13 +171,14 @@ fun QuestionsPack(
 
             SpacerSmall(horizontal = true)
 
+            val packSelected = (selected == pack.pack.packNumber)
             ButtonCustom(
-                onClick = { updateQuestionsPack(pack.pack.packNumber) },
-                text = if (selected == pack.pack.packNumber) R.string.pack_selected
-                else R.string.pack_selected_btn,
-                color = if (selected == pack.pack.packNumber) BlueMedium else Black,
+                onClick = { if (!packSelected) updateQuestionsPack(pack.pack.packNumber) },
+                text = if (packSelected) R.string.pack_selected else R.string.pack_selected_btn,
+                color = if (packSelected) BlueMedium else Black,
                 textColor = White,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                enabled = if (packSelected) true else purchased
             )
         }
     }

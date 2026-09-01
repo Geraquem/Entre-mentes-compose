@@ -6,6 +6,8 @@ import com.mmfsin.betweenminds.domain.models.RangesPack
 data class PacksStates(
     val isLoading: Boolean = true,
 
+    val packsPurchased: Boolean = false,
+
     val showSwwDialog: Boolean = false,
 
     val questionsPacks: List<QuestionsPack> = emptyList(),
