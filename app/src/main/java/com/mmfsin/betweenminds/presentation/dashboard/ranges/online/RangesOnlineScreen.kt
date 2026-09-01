@@ -90,7 +90,7 @@ fun RangesOnlinePV() {
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
-        {}, {},
+        {}, {}, {},
     )
 }
 
@@ -119,7 +119,7 @@ fun RangesOnlineScreen(
         checkSliderPhase = { viewModel.checkSliderPhase() },
         nextRound = { viewModel.nextRound() },
         sendMyResult = { viewModel.sendMyResult() },
-        //        replay = { viewModel.replay() },
+        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) },
     )
 }
@@ -136,7 +136,7 @@ fun RangesOnlineContent(
     checkSliderPhase: () -> Unit,
     nextRound: () -> Unit,
     sendMyResult: () -> Unit,
-    //    replay: () -> Unit,
+    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit
 ) {
 
@@ -356,7 +356,7 @@ fun RangesOnlineContent(
                     myPoints = uiStates.points,
                     otherPlayerPoints = uiStates.otherPlayerPoints,
                     exit = { goBack() },
-                    replay = { /*replay() */ },
+                    replay = { replay() },
                 )
             }
 

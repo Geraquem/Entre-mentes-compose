@@ -9,8 +9,10 @@ import com.mmfsin.betweenminds.domain.models.RangePhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.SHOW_BULLSEYE
 import com.mmfsin.betweenminds.domain.usecases.GetRangesUseCase
+import com.mmfsin.betweenminds.domain.usecases.RestartGameAndResetRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendMyORangesDataToRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.SendMyRangesPointsUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitCreatorToRestartORangesUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerORangesUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerRangesPointsUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
@@ -28,7 +30,9 @@ class RangesOnlineViewModel @Inject constructor(
     private val sendMyORangesDataToRoomUseCase: SendMyORangesDataToRoomUseCase,
     private val waitOtherPlayerORangesUseCase: WaitOtherPlayerORangesUseCase,
     private val sendMyRangesPointsUseCase: SendMyRangesPointsUseCase,
-    private val waitOtherPlayerRangesPointsUseCase: WaitOtherPlayerRangesPointsUseCase
+    private val waitOtherPlayerRangesPointsUseCase: WaitOtherPlayerRangesPointsUseCase,
+    private val waitCreatorToRestartORangesUseCase: WaitCreatorToRestartORangesUseCase,
+    private val restartGameAndResetRoomUseCase: RestartGameAndResetRoomUseCase
 ) : BaseViewModel<RangesOnlineStates>(RangesOnlineStates()) {
 
     init {
@@ -255,7 +259,7 @@ class RangesOnlineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                phase = if (states.roundCount != 2) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = roundPoints,
                 showBullseye = true,
@@ -344,6 +348,66 @@ class RangesOnlineViewModel @Inject constructor(
             },
             { sww() }
         )
+    }
+
+    fun replay() {
+        val states = uiState.value
+        if (states.isCreator) {
+            executeUseCase(
+                { restartGameAndResetRoomUseCase.execute(states.roomCode) },
+                { gameRestarted() },
+                { sww() }
+            )
+        } else {
+            _uiState.update {
+                it.copy(
+                    showResultDialog = false,
+                    showWaitingOtherPlayerDialog = true
+                )
+            }
+            executeUseCase(
+                { waitCreatorToRestartORangesUseCase.execute(states.roomCode) },
+                { gameRestarted() },
+                { sww() }
+            )
+        }
+    }
+
+    private fun gameRestarted() {
+        val states = uiState.value
+        _uiState.update {
+            it.copy(
+                showWaitingOtherPlayerDialog = false,
+                showResultDialog = false,
+                roundCount = 0,
+                showRoundView = true,
+                points = listOf(null, null, null),
+                otherPlayerPoints = 0,
+                showSlider = false,
+                sliderEnabled = false,
+                buttonEnabled = false,
+                rangesPos = states.rangesPos + 1,
+            )
+        }
+
+        closeCurtains()
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showRoundView = false,
+                    sliderValue = 50f,
+                    actualRangeLeft = "",
+                    actualRangeRight = "",
+                    hint = ""
+                )
+            }
+
+            setRange()
+            delay(1000)
+            showBullseye()
+        }
     }
 
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
