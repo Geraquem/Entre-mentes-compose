@@ -9,6 +9,7 @@ data class RangesOfflineStates(
     val isLoading: Boolean = true,
 
     val showInitialDialog: Boolean = true,
+    val showWantNewRange: Boolean = true,
     val showResultDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
@@ -38,6 +39,7 @@ data class RangesOfflineStates(
     val sliderEnabled: Boolean = false,
     val showBullseye: Boolean = true,
 
+    val anotherButtonEnabled: Boolean = false,
     val buttonEnabled: Boolean = false,
     val buttonText: Int = R.string.btn_ready
 )

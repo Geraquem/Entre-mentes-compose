@@ -78,11 +78,17 @@ class RangesOfflineViewModel @Inject constructor(
                 buttonText = R.string.btn_ready,
                 showSlider = false,
                 showEditTextHint = true,
+                showWantNewRange = true,
             )
         }
         viewModelScope.launch {
             delay(500)
-            _uiState.update { it.copy(buttonEnabled = true) }
+            _uiState.update {
+                it.copy(
+                    anotherButtonEnabled = true,
+                    buttonEnabled = true
+                )
+            }
         }
         openCurtains()
     }
@@ -99,7 +105,8 @@ class RangesOfflineViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 phase = MOVE_ARROW,
-                buttonEnabled = false
+                buttonEnabled = false,
+                anotherButtonEnabled = false
             )
         }
 
@@ -112,6 +119,8 @@ class RangesOfflineViewModel @Inject constructor(
                     showSlider = true,
                     sliderEnabled = true,
                     buttonEnabled = true,
+                    showWantNewRange = false,
+                    anotherButtonEnabled = false,
                     buttonText = R.string.btn_check
                 )
             }
@@ -129,7 +138,7 @@ class RangesOfflineViewModel @Inject constructor(
 
         _uiState.update {
             it.copy(
-                phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = roundPoints,
                 showBullseye = true,
@@ -170,6 +179,7 @@ class RangesOfflineViewModel @Inject constructor(
                     sliderValue = 50f,
                     confettiTrigger = 0,
                     showEditTextHint = true,
+                    showWantNewRange = true,
                     hint = ""
                 )
             }
@@ -211,6 +221,32 @@ class RangesOfflineViewModel @Inject constructor(
             setRange()
             delay(1000)
             showBullseye()
+        }
+    }
+
+    fun wantNewRange() {
+        val states = uiState.value
+        _uiState.update {
+            it.copy(
+                showWantNewRange = false,
+                anotherButtonEnabled = false,
+                buttonEnabled = false,
+                actualRangeLeft = "",
+                actualRangeRight = ""
+            )
+        }
+        closeCurtains()
+        viewModelScope.launch {
+            delay(2000)
+            _uiState.update {
+                it.copy(
+                    bullsEyeStart = (0..94).random().toFloat(),
+                    rangesPos = states.rangesPos + 1,
+                    buttonEnabled = true
+                )
+            }
+            setRange()
+            openCurtains()
         }
     }
 

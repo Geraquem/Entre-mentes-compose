@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -94,6 +95,7 @@ fun RangesOfflineScreenPV() {
         {}, {}, {}, {},
         {}, {}, {},
         {}, {}, {}, {},
+        {},
     )
 }
 
@@ -112,6 +114,7 @@ fun RangesOfflineScreen(viewModel: RangesOfflineViewModel = hiltViewModel()) {
         updateSliderValue = { viewModel.updateSliderValue(it) },
         readyBullseyePhase = { viewModel.readyBullseyePhase() },
         readySliderPhase = { viewModel.readySliderPhase() },
+        wantNewRange = { viewModel.wantNewRange() },
         nextRound = { viewModel.nextRound() },
         showResultDialog = { viewModel.showResultDialog(it) },
         replay = { viewModel.replay() },
@@ -129,6 +132,7 @@ fun RangesOfflineContent(
     updateSliderValue: (Int) -> Unit,
     readyBullseyePhase: () -> Unit,
     readySliderPhase: () -> Unit,
+    wantNewRange: () -> Unit,
     nextRound: () -> Unit,
     showResultDialog: (Boolean) -> Unit,
     replay: () -> Unit,
@@ -284,8 +288,8 @@ fun RangesOfflineContent(
                     }
 
                     RangeLimits(
-                        leftRange = uiState.sliderValue.toString(),
-                        rightRange = uiState.bullsEyeStart.toString()
+                        leftRange = uiState.actualRangeLeft,
+                        rightRange = uiState.actualRangeRight
                     )
 
                     if (uiState.showSlider) {
@@ -323,6 +327,23 @@ fun RangesOfflineContent(
                     text = uiState.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
+
+                SpacerSmall()
+
+                ShowAlpha(uiState.showWantNewRange) {
+                    TextButton(
+                        onClick = { wantNewRange() },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = uiState.anotherButtonEnabled
+                    ) {
+                        MediumText(
+                            text = R.string.ranges_another_range,
+                            fontFamily = alphazet,
+                            color = White,
+                            allCaps = true
+                        )
+                    }
+                }
             }
 
             ShowAlpha(uiState.showRoundView) { RoundCount(uiState.roundCount) }

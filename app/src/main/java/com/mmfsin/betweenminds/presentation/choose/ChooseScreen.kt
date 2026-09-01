@@ -115,7 +115,7 @@ fun ChooseScreen(
 
     if (uiStates.startRangesOffline) {
         context.openBedRockActivity(NAV_RANGES_OFFLINE)
-        viewModel.startQuestionsOffline(false)
+        viewModel.startRangesOffline(false)
     }
 }
 
