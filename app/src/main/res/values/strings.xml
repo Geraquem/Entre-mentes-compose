@@ -139,7 +139,7 @@
     <string name="endgame_replay">Volver a jugar</string>
     <string name="endgame_replay_new_names">Cambiar nombres</string>
 
-    <string name="endgame_online_ranges_you">Tú</string>
+    <string name="endgame_online_ranges_you">Has conseguido</string>
     <string name="endgame_online_ranges_your_teammate">Tu compañer@</string>
     <string name="endgame_online_ranges_total_points">Puntuación total</string>
 

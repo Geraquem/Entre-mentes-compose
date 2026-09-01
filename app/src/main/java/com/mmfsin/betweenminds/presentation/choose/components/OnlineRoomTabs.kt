@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +38,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlackSoft
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
+import com.mmfsin.betweenminds.presentation.core.theme.courier
 import kotlinx.coroutines.launch
 
 @Preview
@@ -123,7 +125,8 @@ fun JoinRoom(
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = White,
                 letterSpacing = 12.sp,
-                fontSize = 28.sp
+                fontSize = 28.sp,
+                fontFamily = courier,
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
@@ -138,7 +141,8 @@ fun JoinRoom(
                             color = White,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 letterSpacing = 12.sp,
-                                fontSize = 28.sp
+                                fontSize = 28.sp,
+                                fontFamily = courier
                             ),
                         )
                     }
