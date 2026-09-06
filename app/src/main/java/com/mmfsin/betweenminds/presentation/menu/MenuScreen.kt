@@ -32,6 +32,7 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
+import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.menu.components.ParticlesBackground
 import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
 import com.mmfsin.betweenminds.utils.AnimateY
@@ -83,7 +84,7 @@ fun MenuContent(
 
     var freeCount by remember { mutableIntStateOf(0) }
 
-    if (freeCount > 19) {
+    if (freeCount > 29) {
         freeCount = 0
         setFreePacks()
     }
@@ -102,7 +103,10 @@ fun MenuContent(
         ) {
             BigText(
                 text = R.string.app_name,
-                color = White, fontSize = 40.sp,
+                color = White,
+                allCaps = true,
+                fontFamily = courier,
+                fontSize = 42.sp,
                 modifier = Modifier.padding(bottom = 42.dp)
                     .clickable(
                         indication = null,

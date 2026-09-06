@@ -4,6 +4,8 @@ import com.mmfsin.betweenminds.domain.models.Question
 import com.mmfsin.betweenminds.domain.models.Range
 
 interface IDataRepository {
+    suspend fun checkVersion()
+
     suspend fun getQuestions(): List<Question>
     suspend fun getRanges(): List<Range>
 }
