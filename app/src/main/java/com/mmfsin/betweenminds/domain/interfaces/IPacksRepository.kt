@@ -18,7 +18,6 @@ interface IPacksRepository {
     suspend fun updateSelectedRPackId(packNumber: Int)
 
     fun setFreePacks()
-    fun checkIfPacksAreFree(): Boolean
 
     suspend fun checkIfPurchasedPacks(): Pair<Boolean, String?>
 }

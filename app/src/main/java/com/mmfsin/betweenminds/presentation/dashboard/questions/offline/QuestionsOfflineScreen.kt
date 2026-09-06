@@ -312,6 +312,7 @@ fun QuestionsOfflineContent(
                 }
 
                 SpacerLarge()
+
                 ButtonCustom(
                     onClick = {
                         if (uiStates.buttonEnabled) {
@@ -326,6 +327,7 @@ fun QuestionsOfflineContent(
                     text = uiStates.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
+
                 SpacerSmall()
             }
 

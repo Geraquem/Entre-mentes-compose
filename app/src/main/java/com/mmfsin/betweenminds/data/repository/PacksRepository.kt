@@ -20,12 +20,10 @@ import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
-import kotlin.coroutines.resume
 
 class PacksRepository @Inject constructor(
     val prefs: SharedPrefs,
@@ -97,21 +95,16 @@ class PacksRepository @Inject constructor(
         dataStore.updateSelectedRangesPack(packNumber)
     }
 
-    override fun setFreePacks() {
-        //        val editor = getSharedPreferences().edit()
-        //        editor.putBoolean(FREE_PACKS_VERSION, true)
-        //        editor.apply()
-    }
-
-    override fun checkIfPacksAreFree(): Boolean {
-        //        return getSharedPreferences().getBoolean(FREE_PACKS_VERSION, false)
-        return false
-    }
+    override fun setFreePacks() = prefs.updatePacksPurchased(true)
 
     override suspend fun checkIfPurchasedPacks(): Pair<Boolean, String?> {
-        return billingManager.getAllPacksInfo()
+        return if (prefs.arePacksPurchased()) Pair(true, null)
+        else {
+            val result = billingManager.getAllPacksInfo()
+            if (result.first) prefs.updatePacksPurchased(true)
+            result
+        }
     }
-
 
     /****************************************************************************************************/
     /****************************************************************************************************/

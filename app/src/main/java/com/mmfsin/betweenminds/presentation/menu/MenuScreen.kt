@@ -2,6 +2,8 @@ package com.mmfsin.betweenminds.presentation.menu
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +48,7 @@ fun MenuScreenPV() {
             positonButtons = 0f
         ),
         {}, {}, {}, {},
+        {},
     )
 }
 
@@ -50,7 +56,7 @@ fun MenuScreenPV() {
 fun MenuScreen(
     viewModel: MenuViewModel = hiltViewModel(),
     goToChooseScreen: (String) -> Unit,
-    goToPacksScreen: () -> Unit
+    goToPacksScreen: () -> Unit,
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -60,7 +66,8 @@ fun MenuScreen(
         showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
         openInstructions = { context.goToInstructions(it) },
         goToChooseScreen = { id -> goToChooseScreen(id) },
-        goToPacksScreen = { goToPacksScreen() }
+        goToPacksScreen = { goToPacksScreen() },
+        setFreePacks = { viewModel.setFreePacks() }
     )
 }
 
@@ -71,10 +78,15 @@ fun MenuContent(
     openInstructions: (String) -> Unit,
     goToChooseScreen: (String) -> Unit,
     goToPacksScreen: () -> Unit,
+    setFreePacks: () -> Unit,
 ) {
 
-    //    goToChooseScreen(GameType.RANGES.id)
-//    goToPacksScreen()
+    var freeCount by remember { mutableIntStateOf(0) }
+
+    if (freeCount > 19) {
+        freeCount = 0
+        setFreePacks()
+    }
 
     Box(Modifier.fillMaxSize().background(BackgroundBlack))
 
@@ -92,6 +104,11 @@ fun MenuContent(
                 text = R.string.app_name,
                 color = White, fontSize = 40.sp,
                 modifier = Modifier.padding(bottom = 42.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = { freeCount++ }
+                    )
             )
         }
     }

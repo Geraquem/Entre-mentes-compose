@@ -1,6 +1,7 @@
 package com.mmfsin.betweenminds.presentation.menu
 
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.domain.usecases.SetFreePacksUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
-
+    private val setFreePacksUseCase: SetFreePacksUseCase,
 ) : BaseViewModel<MenuStates>(MenuStates()) {
 
     init {
@@ -28,4 +29,12 @@ class MenuViewModel @Inject constructor(
     }
 
     fun showSelectorSheet(value: Boolean) = _uiState.update { it.copy(showSelectorSheet = value) }
+
+    fun setFreePacks() {
+        executeUseCase(
+            { setFreePacksUseCase.execute() },
+            { println("Free packs set") },
+            {},
+        )
+    }
 }

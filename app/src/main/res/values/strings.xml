@@ -83,6 +83,8 @@
     <string name="questions_welcome_you_move_red">Manejas la barra roja</string>
     <string name="questions_blue_player">Jugador azul</string>
     <string name="questions_orange_player">Jugador naranja</string>
+    <string name="questions_max">Max</string>
+    <string name="questions_one_more">+1</string>
 
     <!-- RANGES -->
     <string name="ranges_start_quick_resume">Resumen rápido</string>

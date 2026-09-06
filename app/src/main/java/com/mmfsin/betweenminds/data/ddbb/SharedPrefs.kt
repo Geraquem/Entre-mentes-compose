@@ -2,6 +2,7 @@ package com.mmfsin.betweenminds.data.ddbb
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.mmfsin.betweenminds.utils.SP_PACKS_PURCHASED
 import com.mmfsin.betweenminds.utils.SP_PACKS_SERVER
 import com.mmfsin.betweenminds.utils.SP_QUESTIONS_SERVER
 import com.mmfsin.betweenminds.utils.SP_RANGES_SERVER
@@ -18,4 +19,7 @@ class SharedPrefs @Inject constructor(
 
     fun getPacksFromServer(): Boolean = prefs.getBoolean(SP_PACKS_SERVER, true)
     fun updatePacksFromServer(value: Boolean) = prefs.edit { putBoolean(SP_PACKS_SERVER, value) }
+
+    fun arePacksPurchased(): Boolean = prefs.getBoolean(SP_PACKS_PURCHASED, false)
+    fun updatePacksPurchased(value: Boolean) = prefs.edit { putBoolean(SP_PACKS_PURCHASED, value) }
 }
