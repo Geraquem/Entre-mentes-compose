@@ -91,7 +91,7 @@ fun PackDetailComponent(
                 .background(BackgroundBlack)
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 12.dp)
+                .padding(bottom = 8.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 uiStates.pack?.let { p ->
