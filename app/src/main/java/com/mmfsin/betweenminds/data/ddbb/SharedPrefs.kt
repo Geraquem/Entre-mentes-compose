@@ -35,9 +35,9 @@ class SharedPrefs @Inject constructor(
 
     fun restartValues(){
         prefs.edit {
-            putBoolean(SP_QUESTIONS_SERVER, false)
-            putBoolean(SP_RANGES_SERVER, false)
-            putBoolean(SP_PACKS_SERVER, false)
+            putBoolean(SP_QUESTIONS_SERVER, true)
+            putBoolean(SP_RANGES_SERVER, true)
+            putBoolean(SP_PACKS_SERVER, true)
         }
     }
 }

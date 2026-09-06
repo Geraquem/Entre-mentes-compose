@@ -48,7 +48,9 @@ class DataRepository @Inject constructor(
         }
 
         try {
-            if (savedVersion == -1L) fetchBlock()
+            if (savedVersion == -1L){
+                fetchBlock()
+            }
             else {
                 withTimeout(5000) {
                     fetchBlock()
