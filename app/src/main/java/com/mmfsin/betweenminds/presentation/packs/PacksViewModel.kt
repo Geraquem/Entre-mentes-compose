@@ -7,6 +7,7 @@ import com.mmfsin.betweenminds.domain.usecases.CheckIfPurchasedPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.UpdatePacksPurchasedUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedRangesPackUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
@@ -17,16 +18,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PacksViewModel @Inject constructor(
+    private val billingManager: BillingManager,
     private val getPacksUseCase: GetPacksUseCase,
     private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
     private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
     private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase,
-    private val billingManager: BillingManager
+    private val updatedPacksPurchasedUseCase: UpdatePacksPurchasedUseCase,
 ) : BaseViewModel<PacksStates>(PacksStates()) {
 
     init {
+        viewModelScope.launch {
+            billingManager.purchaseResult.collect { success ->
+                if (success) updatedPacksPurchased()
+            }
+        }
+
         getPacks()
         getSelectedPacks()
         checkIfPurchasedPacks()
@@ -95,6 +103,14 @@ class PacksViewModel @Inject constructor(
 
     fun purchasePacks(activity: Activity) {
         billingManager.purchaseAllPacks(activity)
+    }
+
+    fun updatedPacksPurchased() {
+        executeUseCase(
+            { updatedPacksPurchasedUseCase() },
+            { _uiState.update { it.copy(packsPurchased = true) } },
+            {},
+        )
     }
 
     private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }
