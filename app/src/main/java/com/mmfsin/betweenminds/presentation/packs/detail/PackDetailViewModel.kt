@@ -2,6 +2,7 @@ package com.mmfsin.betweenminds.presentation.packs.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.domain.usecases.CheckIfPurchasedPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPackByIdUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPackQuestionsUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPackRangesUseCase
@@ -26,13 +27,15 @@ class PackDetailViewModel @Inject constructor(
     private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
-    private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase
+    private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
+    private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase,
 ) : BaseViewModel<PackDetailStates>(PackDetailStates()) {
 
     private val packId: String? = savedStateHandle["packId"]
 
     init {
         getPack()
+        checkIfPurchasedPacks()
     }
 
     private fun getPack() {
@@ -125,6 +128,14 @@ class PackDetailViewModel @Inject constructor(
                 else -> sww()
             }
         }
+    }
+
+    private fun checkIfPurchasedPacks() {
+        executeUseCase(
+            { checkIfPurchasedPacksUseCase.execute() },
+            { data -> _uiState.update { it.copy(purchased = data.first) } },
+            { sww() },
+        )
     }
 
     private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }

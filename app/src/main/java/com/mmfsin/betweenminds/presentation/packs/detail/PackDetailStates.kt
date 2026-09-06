@@ -14,5 +14,6 @@ data class PackDetailStates(
     val questions: List<Question> = emptyList(),
     val ranges: List<Range> = emptyList(),
 
+    val purchased: Boolean = false,
     val selected: Boolean = false,
 )

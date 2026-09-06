@@ -7,6 +7,7 @@ data class PacksStates(
     val isLoading: Boolean = true,
 
     val packsPurchased: Boolean = false,
+    val packsPrice: String? = null,
 
     val showSwwDialog: Boolean = false,
 

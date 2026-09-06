@@ -108,8 +108,8 @@ class PacksRepository @Inject constructor(
         return false
     }
 
-    override suspend fun checkIfPurchasedPacks(): Boolean {
-        return billingManager.isAllPacksPurchased()
+    override suspend fun checkIfPurchasedPacks(): Pair<Boolean, String?> {
+        return billingManager.getAllPacksInfo()
     }
 
 

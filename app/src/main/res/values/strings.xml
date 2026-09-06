@@ -70,6 +70,7 @@
     <string name="pack_loading">Un momentito…</string>
     <string name="pack_free_set">de nada ;)</string>
     <string name="pack_purchase">Comprar packs</string>
+    <string name="pack_purchase_price">Comprar todo  %s</string>
 
     <!-- QUESTIONS -->
     <string name="questions_welcome">Dos personas juegan para ver si opinan igual sobre ellos mismos o sobre otras personas.</string>

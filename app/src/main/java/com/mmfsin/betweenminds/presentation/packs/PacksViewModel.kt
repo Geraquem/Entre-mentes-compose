@@ -1,6 +1,8 @@
 package com.mmfsin.betweenminds.presentation.packs
 
+import android.app.Activity
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.data.billing.BillingManager
 import com.mmfsin.betweenminds.domain.usecases.CheckIfPurchasedPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
@@ -20,7 +22,8 @@ class PacksViewModel @Inject constructor(
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
     private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
-    private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase
+    private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase,
+    private val billingManager: BillingManager
 ) : BaseViewModel<PacksStates>(PacksStates()) {
 
     init {
@@ -78,13 +81,20 @@ class PacksViewModel @Inject constructor(
     private fun checkIfPurchasedPacks() {
         executeUseCase(
             { checkIfPurchasedPacksUseCase.execute() },
-            { purchased -> _uiState.update { it.copy(packsPurchased = purchased) } },
+            { data ->
+                _uiState.update {
+                    it.copy(
+                        packsPurchased = data.first,
+                        packsPrice = data.second
+                    )
+                }
+            },
             { sww() },
         )
     }
 
-    fun purchasePacks() {
-
+    fun purchasePacks(activity: Activity) {
+        billingManager.purchaseAllPacks(activity)
     }
 
     private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }

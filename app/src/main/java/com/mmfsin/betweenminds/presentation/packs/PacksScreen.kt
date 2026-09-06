@@ -1,5 +1,6 @@
 package com.mmfsin.betweenminds.presentation.packs
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -18,18 +21,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.LoadingFullScreen
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
+import com.mmfsin.betweenminds.presentation.core.components.alphazetFont
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
+import com.mmfsin.betweenminds.presentation.core.theme.Black
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.packs.components.PacksQuestions
@@ -56,6 +61,7 @@ fun PacksScreen(
     goBack: () -> Unit,
     goToPackDetail: (String) -> Unit,
 ) {
+    val activity = LocalActivity.current
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     PacksContent(
         uiStates = uiStates,
@@ -64,7 +70,7 @@ fun PacksScreen(
         goToPackDetail = { goToPackDetail(it) },
         updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
         updateSelectedRangesPack = { viewModel.updateSelectedRangesPack(it) },
-        purchasePacks = { viewModel.purchasePacks() },
+        purchasePacks = { activity?.let { viewModel.purchasePacks(activity) } },
     )
 }
 
@@ -166,10 +172,9 @@ fun PacksContent(
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 16.dp, top = 8.dp)
                 ) {
-                    ButtonCustom(
-                        onClick = { purchasePacks() },
-                        text = R.string.pack_purchase,
-                        modifier = Modifier.fillMaxWidth()
+                    PurchaseButton(
+                        price = uiStates.packsPrice,
+                        onClick = { purchasePacks() }
                     )
                 }
             }
@@ -178,5 +183,27 @@ fun PacksContent(
         if (uiStates.showSwwDialog) ErrorDialog(accept = { goBack() })
 
         if (uiStates.isLoading) LoadingFullScreen()
+    }
+}
+
+@Composable
+fun PurchaseButton(price: String?, onClick: () -> Unit) {
+    Button(
+        onClick = { onClick() },
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(containerColor = White),
+        shape = RoundedCornerShape(50)
+    ) {
+        val text = if (price == null) stringResource(R.string.pack_purchase)
+        else stringResource(R.string.pack_purchase_price, price)
+
+        MediumText(
+            text = text,
+            color = Black,
+            modifier = Modifier.padding(vertical = 4.dp),
+            fontFamily = alphazetFont,
+            allCaps = true,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }

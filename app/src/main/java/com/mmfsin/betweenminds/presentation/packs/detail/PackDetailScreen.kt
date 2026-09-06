@@ -150,17 +150,20 @@ fun PackDetailComponent(
 
             SpacerMedium()
 
-            Column(modifier = Modifier.fillMaxWidth()) {
-                ButtonCustom(
-                    onClick = { if (!uiStates.selected) selectPack() },
-                    text = if (uiStates.selected) R.string.pack_selected
-                    else R.string.pack_selected_btn,
-                    color = if (uiStates.selected) BlueMedium else White,
-                    textColor = if (uiStates.selected) White else Black,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            val showButton = if (uiStates.selected) true else uiStates.purchased
+            if (showButton) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    ButtonCustom(
+                        onClick = { if (!uiStates.selected) selectPack() },
+                        text = if (uiStates.selected) R.string.pack_selected
+                        else R.string.pack_selected_btn,
+                        color = if (uiStates.selected) BlueMedium else White,
+                        textColor = if (uiStates.selected) White else Black,
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-                SpacerSmall()
+                    SpacerSmall()
+                }
             }
         }
 
