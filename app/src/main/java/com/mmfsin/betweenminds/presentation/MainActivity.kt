@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationMain
 import com.mmfsin.betweenminds.presentation.core.theme.BMCTheme
+import com.mmfsin.betweenminds.utils.NAV_ORDER_OFFLINE
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_OFFLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         immersiveMode()
+
+        /********************************************/
+        /********************************************/
+        this.openBedRockActivity(NAV_ORDER_OFFLINE)
+        /********************************************/
+        /********************************************/
 
         setContent { BMCTheme { NavigationMain() } }
     }

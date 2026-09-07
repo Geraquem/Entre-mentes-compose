@@ -10,6 +10,8 @@ const val NAV_QUESTIONS_ONLINE_JOINED = "nav_questions_online_joined"
 const val NAV_QUESTIONS_OFFLINE = "nav_questions_offline"
 const val NAV_RANGES_ONLINE = "nav_ranges_online"
 const val NAV_RANGES_OFFLINE = "nav_ranges_offline"
+const val NAV_ORDER_ONLINE = "nav_order_online"
+const val NAV_ORDER_OFFLINE = "nav_order_offline"
 
 const val NAV_INSTR_QUESTIONS_ONLINE = "nav_instr_questions_online"
 const val NAV_INSTR_QUESTIONS_OFFLINE = "nav_instr_questions_offline"
