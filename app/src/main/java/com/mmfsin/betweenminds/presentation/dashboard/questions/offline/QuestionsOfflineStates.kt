@@ -24,6 +24,7 @@ data class QuestionsOfflineStates(
 
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
+    val shakeTrigger: Boolean = false,
 
     val blueName: String = "",
     val firstSlider: Float = 50f,

@@ -44,6 +44,7 @@ data class RangesOnlineStates(
     val points: List<Int?> = listOf(null, null, null),
     val otherPlayerPoints: Int = 0,
     val confettiTrigger: Int = 0,
+    val shakeTrigger: Boolean = false,
 
     val curtainsOpen: Boolean = false,
 

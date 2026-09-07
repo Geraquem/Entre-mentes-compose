@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.GameType
+import com.mmfsin.betweenminds.domain.models.GameType.*
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.MOVE_ARROW
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.RESULTS
@@ -75,6 +77,7 @@ import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
+import com.mmfsin.betweenminds.utils.shakeItem
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import kotlin.math.roundToInt
 
@@ -160,7 +163,7 @@ fun RangesOfflineContent(
                 key(uiStates.confettiTrigger) {
                     KonfettiView(
                         modifier = Modifier.fillMaxSize(),
-                        parties = listOf(getKonfettiParty(uiStates.confettiTrigger))
+                        parties = listOf(getKonfettiParty(RANGES,uiStates.confettiTrigger))
                     )
                 }
             }
@@ -220,7 +223,9 @@ fun RangesOfflineContent(
                 SpacerLarge()
 
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .shakeItem(uiStates.shakeTrigger)
+                        .fillMaxWidth()
                         .height(50.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(GrayHard)

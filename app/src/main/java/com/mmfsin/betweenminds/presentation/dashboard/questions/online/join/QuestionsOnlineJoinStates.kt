@@ -26,6 +26,7 @@ data class QuestionsOnlineJoinStates(
 
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
+    val shakeTrigger: Boolean = false,
 
     val blueName: String = "",
     val whiteSlider: Float = 50f,

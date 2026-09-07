@@ -175,7 +175,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                 whiteSlider = otherPlayerOpinion.toFloat(),
                 firstOpinionBlue = firstOpBlue,
                 firstOpinionOrange = otherPlayerOpinion,
-                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
                 questionPos = states.questionPos + 1,
                 roundCount = states.roundCount + 1
             )
@@ -187,7 +187,8 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
-                    confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else 0,
+                    confettiTrigger = roundPoints,
+                    shakeTrigger = roundPoints == 0,
                     showFirstOpinionPercents = true,
                     showWhiteIndicator = true,
                     buttonEnabled = true,
@@ -218,6 +219,7 @@ class QuestionsOnlineJoinViewModel @Inject constructor(
                     showWhiteIndicator = false,
                     showRedIndicator = false,
                     showRoundView = false,
+                    confettiTrigger = 0,
                     whiteSlider = 50f,
                     firstOpinionBlue = 50,
                     secondOpinionBlue = 50,

@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mmfsin.betweenminds.domain.models.GameType
+import com.mmfsin.betweenminds.domain.models.GameType.*
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.FIRST_OPINION
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.QuestionPhaseType.RESULTS
@@ -70,6 +72,7 @@ import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
+import com.mmfsin.betweenminds.utils.shakeItem
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import kotlin.math.roundToInt
 
@@ -158,7 +161,7 @@ fun QuestionsOfflineContent(
                 key(uiStates.confettiTrigger) {
                     KonfettiView(
                         modifier = Modifier.fillMaxSize(),
-                        parties = listOf(getKonfettiParty())
+                        parties = listOf(getKonfettiParty(QUESTIONS, uiStates.confettiTrigger))
                     )
                 }
             }
@@ -204,7 +207,9 @@ fun QuestionsOfflineContent(
 
                 /********************************** Slider **********************************/
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .shakeItem(uiStates.shakeTrigger)
+                        .fillMaxWidth()
                         .height(50.dp)
                         .padding(horizontal = 8.dp)
                         .clip(RoundedCornerShape(8.dp))

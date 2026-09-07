@@ -306,6 +306,7 @@ class RangesOnlineViewModel @Inject constructor(
                 phase = if (states.roundCount != 2) NEXT_ROUND else RESULTS,
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                 confettiTrigger = roundPoints,
+                shakeTrigger = roundPoints == 0,
                 showBullseye = true,
                 sliderEnabled = false,
                 buttonEnabled = false,

@@ -32,6 +32,7 @@ data class RangesOfflineStates(
 
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
+    val shakeTrigger: Boolean = false,
 
     val curtainsOpen: Boolean = false,
 

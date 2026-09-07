@@ -157,9 +157,10 @@ class QuestionsOfflineViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
-                confettiTrigger = if (roundPoints > 9) states.confettiTrigger + 1 else 0,
+                confettiTrigger = roundPoints,
+                shakeTrigger = roundPoints == 0,
                 controllerEnabled = false,
-                phase = if (states.roundCount != 1) NEXT_ROUND else RESULTS,
+                phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
                 buttonEnabled = false,
                 showFirstOpinionPercents = true,
                 showWhiteIndicator = true,
@@ -200,6 +201,7 @@ class QuestionsOfflineViewModel @Inject constructor(
                     showWhiteIndicator = false,
                     showRedIndicator = false,
                     showRoundView = false,
+                    confettiTrigger = 0,
                     firstSlider = 50f,
                     firstOpinionBlue = 50,
                     secondOpinionBlue = 50,

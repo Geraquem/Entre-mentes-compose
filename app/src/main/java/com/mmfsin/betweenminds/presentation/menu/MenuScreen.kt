@@ -45,7 +45,7 @@ import com.mmfsin.betweenminds.utils.openBedRockActivity
 @Composable
 fun MenuScreenPV() {
     MenuContent(
-        uiState = MenuStates(
+        uiStates = MenuStates(
             positonButtons = 0f
         ),
         {}, {}, {}, {},
@@ -63,7 +63,7 @@ fun MenuScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MenuContent(
-        uiState = uiState,
+        uiStates = uiState,
         showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
         openInstructions = { context.goToInstructions(it) },
         goToChooseScreen = { id -> goToChooseScreen(id) },
@@ -74,7 +74,7 @@ fun MenuScreen(
 
 @Composable
 fun MenuContent(
-    uiState: MenuStates,
+    uiStates: MenuStates,
     showSelectorSheet: (value: Boolean) -> Unit,
     openInstructions: (String) -> Unit,
     goToChooseScreen: (String) -> Unit,
@@ -98,7 +98,7 @@ fun MenuContent(
         contentAlignment = Alignment.Center
     ) {
         ShowAlpha(
-            visibleTrigger = !uiState.isLoading,
+            visibleTrigger = !uiStates.isLoading,
             duration = 2000
         ) {
             BigText(
@@ -123,7 +123,7 @@ fun MenuContent(
         Spacer(Modifier.weight(1f))
 
         AnimateY(
-            targetY = uiState.positonButtons,
+            targetY = uiStates.positonButtons,
             duration = 1500
         ) {
             Column {
@@ -145,7 +145,7 @@ fun MenuContent(
         SpacerCustom(space = 30.dp)
     }
 
-    if (uiState.showSelectorSheet) {
+    if (uiStates.showSelectorSheet) {
         SelectorSheet(
             onDismiss = { showSelectorSheet(false) },
             questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
@@ -156,7 +156,7 @@ fun MenuContent(
     }
 
     ShowAlpha(
-        visibleTrigger = uiState.isLoading,
+        visibleTrigger = uiStates.isLoading,
         duration = 200
     ) {
         LoadingLottie()
