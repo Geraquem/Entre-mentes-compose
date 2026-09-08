@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -181,7 +182,7 @@ fun OrderOfflineContent(
                 Spacer(Modifier.weight(1f))
 
                 Column(Modifier.fillMaxWidth()) {
-                    Row() {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
                             DraggableOption(
                                 text = optionTexts[0],
@@ -195,10 +196,7 @@ fun OrderOfflineContent(
                                 dragOffset = dragOffset,
                                 updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
                                 updateTargetIndex = { targetIndex = it },
-                                swapTexts = {
-                                    rankingTexts[targetIndex] = optionTexts[0]
-                                    optionTexts[0] = ""
-                                }
+                                swapTexts = { swap(rankingTexts, optionTexts, targetIndex, 0) }
                             )
                         }
                         Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -214,25 +212,59 @@ fun OrderOfflineContent(
                                 dragOffset = dragOffset,
                                 updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
                                 updateTargetIndex = { targetIndex = it },
-                                swapTexts = {
-                                    rankingTexts[targetIndex] = optionTexts[1]
-                                    optionTexts[1] = ""
-                                }
+                                swapTexts = { swap(rankingTexts, optionTexts, targetIndex, 1) }
                             )
                         }
                     }
-                    Row() {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(Modifier.weight(1f).height(50.dp), contentAlignment = Alignment.Center) {
-                            BigText("Hola 3", color = White)
+                            DraggableOption(
+                                text = optionTexts[2],
+                                index = 2,
+                                sourceBounds = sourceBounds,
+                                sourceBoundsIndex = 2,
+                                updateBounds = { bounds -> sourceBounds[2] = bounds },
+                                boxBounds = boxBounds,
+                                draggedIndex = dragOptionIndex,
+                                updateDraggedIndex = { dragOptionIndex = it },
+                                dragOffset = dragOffset,
+                                updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
+                                updateTargetIndex = { targetIndex = it },
+                                swapTexts = { swap(rankingTexts, optionTexts, targetIndex, 2) }
+                            )
                         }
                         Box(Modifier.weight(1f).height(50.dp), contentAlignment = Alignment.Center) {
-                            BigText("Hola 4", color = White)
+                            DraggableOption(
+                                text = optionTexts[3],
+                                index = 3,
+                                sourceBounds = sourceBounds,
+                                sourceBoundsIndex = 3,
+                                updateBounds = { bounds -> sourceBounds[3] = bounds },
+                                boxBounds = boxBounds,
+                                draggedIndex = dragOptionIndex,
+                                updateDraggedIndex = { dragOptionIndex = it },
+                                dragOffset = dragOffset,
+                                updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
+                                updateTargetIndex = { targetIndex = it },
+                                swapTexts = { swap(rankingTexts, optionTexts, targetIndex, 3) }
+                            )
                         }
                     }
                 }
             }
         }
     }
+}
+
+fun swap(
+    rankingTexts: MutableList<String>,
+    optionTexts: MutableList<String>,
+    targetIndex: Int,
+    optionIndex: Int
+) {
+    val temp = rankingTexts[targetIndex]
+    rankingTexts[targetIndex] = optionTexts[optionIndex]
+    optionTexts[optionIndex] = temp
 }
 
 @Composable
@@ -259,7 +291,9 @@ fun DraggableOption(
     MediumText(
         text,
         color = White,
+        gravity = TextAlign.Center,
         modifier = Modifier
+            .fillMaxWidth()
             .onGloballyPositioned { coordinates ->
                 updateBounds(coordinates.boundsInRoot())
             }.graphicsLayer {
