@@ -69,6 +69,9 @@ fun RankingOfflineScreenPV() {
     RankingOfflineContent(
         uiStates = RankingOfflineStates(
             isLoading = true,
+            showInitialDialog = false,
+            showRoundView = false,
+            actualRankingText = "El mejor superpoder"
 
             ),
         {}, {}, {}, {},
@@ -301,32 +304,31 @@ fun RankingOfflineContent(
                 ButtonCustom(
                     onClick = {},
                     text = uiStates.buttonText,
-                    enabled = uiStates.buttonEnabled,
                     modifier = Modifier.fillMaxWidth()
                 )
                 SpacerLarge()
             }
+
+            ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }
+
+            if (uiStates.showInitialDialog) {
+                InitialOfflineRankingDialog(
+                    startGame = { hideInitialDialog() },
+                    howToPlay = { goToInstructions() },
+                    exit = { goBack() },
+                    isLoading = uiStates.isLoading
+                )
+            }
+            if (uiStates.showExitDialog) {
+                ExitGameDialog(
+                    exit = { goBack() },
+                    cancel = { showExitDialog(false) },
+                )
+            }
+
+            if (uiStates.showSwwDialog) ErrorDialog(accept = { goBack() })
+
+            BackHandler { showExitDialog(true) }
         }
-
-        ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }
-
-        if (uiStates.showInitialDialog) {
-            InitialOfflineRankingDialog(
-                startGame = { hideInitialDialog() },
-                howToPlay = { goToInstructions() },
-                exit = { goBack() },
-                isLoading = uiStates.isLoading
-            )
-        }
-        if (uiStates.showExitDialog) {
-            ExitGameDialog(
-                exit = { goBack() },
-                cancel = { showExitDialog(false) },
-            )
-        }
-
-        if (uiStates.showSwwDialog) ErrorDialog(accept = { goBack() })
-
-        BackHandler { showExitDialog(true) }
     }
 }

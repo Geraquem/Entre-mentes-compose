@@ -24,6 +24,5 @@ data class RankingOfflineStates(
 
     val rankingBoxList: MutableList<RankingBox> = emptyList(),
 
-    val buttonEnabled: Boolean = false,
     val buttonText: Int = R.string.btn_ready
 )
