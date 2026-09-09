@@ -116,7 +116,7 @@ class DataRepository @Inject constructor(
                 text = "AAAA",
                 topText = "top text A",
                 bottomText = "bottom text A",
-                option1 = "Desayuno",
+                option1 = "Desayuno con diamantes de zafiro a las 3 en punto del medio dia",
                 option2 = "Comida",
                 option3 = "Merienda",
                 option4 = "Cena",

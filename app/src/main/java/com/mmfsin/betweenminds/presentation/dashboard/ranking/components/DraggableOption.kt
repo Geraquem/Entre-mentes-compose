@@ -1,10 +1,11 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranking.components
 
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -14,7 +15,6 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.theme.White
@@ -43,19 +43,13 @@ fun DraggableOption(
 
     swapTexts: () -> Unit,
 ) {
-    MediumText(
-        text,
-        color = White,
-        gravity = TextAlign.Center,
-        fontFamily = alphazet,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold,
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp)
+            .fillMaxSize()
             .onGloballyPositioned { coordinates ->
                 updateBounds(coordinates.boundsInRoot())
-            }.graphicsLayer {
+            }
+            .graphicsLayer {
                 translationX = if (draggedIndex == index) dragOffset.x else 0f
                 translationY = if (draggedIndex == index) dragOffset.y else 0f
             }
@@ -76,6 +70,7 @@ fun DraggableOption(
                     onDrag = { change, amount ->
                         if (dragEnabled) {
                             change.consume()
+
                             currentOffset += amount
                             updateDragOffset(amount)
 
@@ -87,7 +82,6 @@ fun DraggableOption(
                                     position != null && bounds.contains(position)
                                 }?.key ?: -1
 
-                            println("----> target: $currentTargetIndex")
                             updateTargetIndex(currentTargetIndex)
                         }
                     },
@@ -96,11 +90,22 @@ fun DraggableOption(
                             if (currentTargetIndex != -1) {
                                 swapTexts()
                             }
+
                             updateDraggedIndex(-1)
                             updateDragOffset(Offset.Zero)
                         }
                     }
                 )
-            }
-    )
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        MediumText(
+            text = text,
+            color = White,
+            gravity = TextAlign.Center,
+            fontFamily = alphazet,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
 }

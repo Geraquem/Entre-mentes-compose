@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -84,16 +83,16 @@ fun RankingOfflineScreenPV() {
             showInitialDialog = false,
             showRoundView = false,
             actualRankingText = "El mejor superpoder",
-            rankingBoxList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
-            actualRankings = mutableListOf("Desayuno", "Comida", "Merienda", "Cena"),
+            rankingBoxList = mutableListOf(RankingBox(0, "Item 1 adsf sd sdf gszñldf glfklñgkl ´k"), RankingBox(1, "Item 2")),
+            actualRankings = mutableListOf("Desayuno asd as das df", "Comida asdas sa das ddfsdf sd  ds a da s a ad", "Merienda", "Cena"),
             actualRankingTopText = "Mejor",
             actualRankingBottomText = "Peor",
 
+            showComparativeList = true,
             secondSortedList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
-            //            sortedListSecond = emptyList(),
         ),
         {}, {}, {}, { _, _ -> },
-        {}, {}, {},{},
+        {}, {}, {}, {},
     )
 }
 
@@ -227,7 +226,7 @@ fun RankingOfflineContent(
                                     .padding(16.dp)
                                     .draggableHandle(enabled = uiStates.dragEnabled)
                             ) {
-                                Row() {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
                                     MediumText(
                                         text = item.text,
                                         color = White,
@@ -237,6 +236,7 @@ fun RankingOfflineContent(
                                     )
 
                                     if (uiStates.showComparativeList) {
+                                        SpacerSmall(horizontal = true)
                                         MediumText(
                                             text = "${originalPosition + 1}º",
                                             color = White,
@@ -269,11 +269,14 @@ fun RankingOfflineContent(
                     )
                 }
 
-                Spacer(Modifier.weight(1f))
+                SpacerLarge()
 
-                Column(Modifier.fillMaxWidth()) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                Column(Modifier.fillMaxWidth().weight(1f)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.Center) {
                             DraggableOption(
                                 text = uiStates.actualRankings[0],
                                 index = 0,
@@ -308,8 +311,14 @@ fun RankingOfflineContent(
                             )
                         }
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.weight(1f).height(50.dp), contentAlignment = Alignment.Center) {
+
+                    SpacerSmall()
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.Center) {
                             DraggableOption(
                                 text = uiStates.actualRankings[2],
                                 index = 2,
@@ -326,7 +335,7 @@ fun RankingOfflineContent(
                                 swapTexts = { swapTexts(targetIndex, 2) }
                             )
                         }
-                        Box(Modifier.weight(1f).height(50.dp), contentAlignment = Alignment.Center) {
+                        Box(Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.Center) {
                             DraggableOption(
                                 text = uiStates.actualRankings[3],
                                 index = 3,
@@ -346,7 +355,7 @@ fun RankingOfflineContent(
                     }
                 }
 
-                Spacer(Modifier.weight(1f))
+                SpacerLarge()
 
                 ButtonCustom(
                     onClick = {
