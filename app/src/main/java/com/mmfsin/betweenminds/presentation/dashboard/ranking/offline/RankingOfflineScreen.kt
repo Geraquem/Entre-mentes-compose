@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_FIRST
@@ -67,6 +69,9 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.Ranking
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
 import com.mmfsin.betweenminds.utils.ShowAlpha
+import com.mmfsin.betweenminds.utils.getKonfettiParty
+import com.mmfsin.betweenminds.utils.shakeItem
+import nl.dionsegijn.konfetti.compose.KonfettiView
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -152,8 +157,17 @@ fun RankingOfflineContent(
                 .padding(innerPadding)
                 .padding(vertical = 12.dp, horizontal = 18.dp)
         ) {
-            Column {
 
+            if (uiStates.confettiTrigger > 0) {
+                key(uiStates.confettiTrigger) {
+                    KonfettiView(
+                        modifier = Modifier.fillMaxSize(),
+                        parties = listOf(getKonfettiParty(RANKING, uiStates.confettiTrigger))
+                    )
+                }
+            }
+
+            Column {
                 RankingRounds(uiStates.points)
 
                 SpacerLarge()
@@ -189,6 +203,7 @@ fun RankingOfflineContent(
                 SpacerSmall()
 
                 LazyColumn(
+                    modifier = Modifier.shakeItem(uiStates.shakeTrigger),
                     state = lazyListState,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {

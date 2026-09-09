@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
-import com.mmfsin.betweenminds.domain.models.RankingBox
+import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.presentation.bedrock.BedRockActivity
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -92,6 +92,15 @@ fun getKonfettiParty(gameType: GameType, points: Int): Party {
                 1 -> 10
                 2 -> 20
                 5 -> 100
+                else -> 0
+            }
+        }
+
+        RANKING -> {
+            when (points) {
+                1 -> 10
+                2 -> 20
+                4 -> 100
                 else -> 0
             }
         }

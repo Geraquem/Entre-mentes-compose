@@ -1,18 +1,22 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranking.helper
 
 import androidx.compose.ui.graphics.Color
-import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
 import com.mmfsin.betweenminds.presentation.core.theme.GreenMedium
+import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.RedMedium
 
-fun calculatePoints(firstList: List<RankingBox>, secondList: List<RankingBox>): Int {
-    return 0
+fun calculatePoints(firstList: List<String>, secondList: List<String>): Int {
+    return firstList.zip(secondList).count { (correct, user) -> correct == user }
 }
 
 fun getPointsColor(dif: Int): Color {
-    return if (dif != 0) GreenMedium else RedHard
+    return when (dif) {
+        1,2 -> OrangeHard
+        4 -> GreenMedium
+        else -> RedHard
+    }
 }
 
 fun getTotalPoints(points: List<Int?>): Int {

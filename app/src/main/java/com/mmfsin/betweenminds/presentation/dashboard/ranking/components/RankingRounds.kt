@@ -24,12 +24,12 @@ import com.mmfsin.betweenminds.presentation.core.theme.Background
 import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
-import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.getPointsColor
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.getPointsColor
 
 @Preview
 @Composable
 fun RankingRoundsPV() {
-    RankingRounds(listOf(12, 5, null, null))
+    RankingRounds(listOf(4, 2, 1, null))
 }
 
 @Composable

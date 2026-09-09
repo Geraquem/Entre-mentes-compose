@@ -21,6 +21,7 @@ const val NAV_INSTR_RANGES_OFFLINE = "nav_instr_ranges_offline"
 /** FIREBASE */
 const val QUESTIONS = "questions"
 const val RANGES = "ranges"
+const val RANKING = "ranking"
 const val PACKS = "packs"
 const val VERSION = "version"
 

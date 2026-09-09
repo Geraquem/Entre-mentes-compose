@@ -115,8 +115,10 @@ class RankingOfflineViewModel @Inject constructor(
         val states = uiState.value
         if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
 
-            /** calculate points */
-            val roundPoints = calculatePoints(states.firstSortedList, states.rankingBoxList)
+            val roundPoints = calculatePoints(
+                firstList = states.firstSortedList.map { it.text },
+                secondList = states.rankingBoxList.map { it.text }
+            )
 
             _uiState.update {
                 it.copy(

@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType
-import com.mmfsin.betweenminds.domain.models.GameType.*
+import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
+import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
@@ -26,7 +28,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 @Preview
 @Composable
 fun ChooseTitlePV() {
-    ChooseTitle(RANGES)
+    ChooseTitle(GameType.RANKING)
 }
 
 @Composable
@@ -83,6 +85,25 @@ fun ChooseTitle(type: GameType) {
                     tint = White,
                     modifier = Modifier.size(36.dp).graphicsLayer { scaleX = -1f }
                 )
+            }
+
+            RANKING -> {
+                BigText(
+                    text = stringResource(R.string.selector_ranking),
+                    allCaps = true,
+                    color = White,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(Modifier.weight(1f))
+
+                Icon(
+                    painterResource(R.drawable.ic_ranking), null,
+                    tint = White,
+                    modifier = Modifier.size(36.dp)
+                )
+
             }
         }
     }

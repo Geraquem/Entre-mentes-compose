@@ -18,6 +18,7 @@ import com.mmfsin.betweenminds.domain.models.Packs
 import com.mmfsin.betweenminds.utils.PACKS
 import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
+import com.mmfsin.betweenminds.utils.RANKING
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
@@ -62,6 +63,7 @@ class PacksRepository @Inject constructor(
         val result = when (gameType) {
             GameType.QUESTIONS -> packs.find { it.packType == QUESTIONS && it.packNumber.toInt() == packNumber }
             GameType.RANGES -> packs.find { it.packType == RANGES && it.packNumber.toInt() == packNumber }
+            GameType.RANKING -> packs.find { it.packType == RANKING && it.packNumber.toInt() == packNumber }
         }
         return result?.toPack()
     }

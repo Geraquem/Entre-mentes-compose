@@ -6,6 +6,7 @@ import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.Companion.getGameTypeById
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.usecases.CreateRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
@@ -71,6 +72,16 @@ class ChooseViewModel @Inject constructor(
                     )
                 }
             }
+
+            RANKING -> {
+//                _uiState.update {
+//                    NAV_INSTR_RANGES_ONLINE
+//                    it.copy(
+//                        packsTab = 1,
+//                        instructionsNavGraph = NAV_INSTR_RANGES_ONLINE
+//                    )
+//                }
+            }
         }
     }
 
@@ -105,6 +116,8 @@ class ChooseViewModel @Inject constructor(
                     }
                 }
             }
+
+            RANKING -> {}
         }
     }
 
@@ -171,6 +184,7 @@ class ChooseViewModel @Inject constructor(
             when (type) {
                 QUESTIONS -> startQuestionsOffline(true)
                 RANGES -> startRangesOffline(true)
+                RANKING -> {}
             }
         }
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.mmfsin.betweenminds.domain.models.GameType.Companion.getGameTypeById
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.domain.usecases.WaitToJoinOtherPlayerUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,7 @@ class RoomCodeViewModel @Inject constructor(
                 when (type) {
                     QUESTIONS -> goToQuestionsCreator()
                     RANGES -> goToRangesOnline()
+                    RANKING -> {}
                 }
             },
             { sww() }
