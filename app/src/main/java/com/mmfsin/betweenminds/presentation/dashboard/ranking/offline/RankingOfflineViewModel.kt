@@ -1,12 +1,11 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.RESULTS
+import com.mmfsin.betweenminds.domain.models.emptyRankingBoxList
 import com.mmfsin.betweenminds.domain.usecases.GetRankingDataUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.calculatePoints
@@ -35,21 +34,16 @@ class RankingOfflineViewModel @Inject constructor(
                         rankings = rankings
                     )
                 }
-                initializeRankingBoxList()
+
                 setRanking()
+
+                /** */
+                hideInitialDialog()
+                /** */
+
             },
             { sww() }
         )
-    }
-
-    fun initializeRankingBoxList() {
-        val initialList = mutableStateListOf(
-            RankingBox(id = 0, text = ""),
-            RankingBox(id = 1, text = ""),
-            RankingBox(id = 2, text = ""),
-            RankingBox(id = 3, text = ""),
-        )
-        _uiState.update { it.copy(rankingBoxList = initialList) }
     }
 
     private fun setRanking() {
@@ -78,19 +72,21 @@ class RankingOfflineViewModel @Inject constructor(
     fun hideInitialDialog() {
         _uiState.update { it.copy(showInitialDialog = false) }
         viewModelScope.launch {
-            delay(1000)
+            delay(1)
             _uiState.update { it.copy(showRoundView = false) }
-            delay(1000)
         }
     }
 
     fun swapTexts(targetIndex: Int, sourceIndex: Int) {
         val states = uiState.value
-        val oldItem = states.rankingBoxList[targetIndex]
-        val option = states.actualRankings[sourceIndex]
+        val boxItem = states.rankingBoxList[targetIndex]
+        val optionItem = states.actualRankings[sourceIndex]
 
-        states.rankingBoxList[targetIndex] = oldItem.copy(text = option)
-        states.actualRankings[sourceIndex] = oldItem.text
+        states.rankingBoxList[targetIndex] = boxItem.copy(text = optionItem)
+        states.actualRankings[sourceIndex] = boxItem.text
+
+        val states2 = uiState.value
+        val a = 2
     }
 
     fun readyOrderOne() {
@@ -101,11 +97,11 @@ class RankingOfflineViewModel @Inject constructor(
                     phase = ORDER_SECOND,
                     buttonEnabled = false,
                     buttonText = R.string.btn_check,
+                    firstSortedList = states.rankingBoxList,
                     actualRankings = states.actualRankingsAux,
-                    sortedListOne = states.rankingBoxList
+                    rankingBoxList = emptyRankingBoxList()
                 )
             }
-            initializeRankingBoxList()
 
             viewModelScope.launch {
                 delay(1000)
@@ -123,15 +119,20 @@ class RankingOfflineViewModel @Inject constructor(
         if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
 
             /** calculate points */
-            val roundPoints = calculatePoints(states.sortedListOne, states.rankingBoxList)
+            val roundPoints = calculatePoints(states.firstSortedList, states.rankingBoxList)
 
             _uiState.update {
                 it.copy(
                     buttonEnabled = false,
+                    dragEnabled = false,
+
+                    secondSortedList = states.rankingBoxList,
 
                     points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
                     confettiTrigger = roundPoints,
                     shakeTrigger = roundPoints == 0,
+
+                    showComparativeList = true,
 
                     phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
 

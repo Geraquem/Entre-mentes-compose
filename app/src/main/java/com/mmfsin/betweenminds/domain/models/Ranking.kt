@@ -1,5 +1,7 @@
 package com.mmfsin.betweenminds.domain.models
 
+import androidx.compose.runtime.mutableStateListOf
+
 data class Ranking(
     var id: String,
     var pack: Int,
@@ -11,7 +13,14 @@ data class Ranking(
 
 data class RankingBox(
     val id: Int,
-    var text: String,
+    var text: String
+)
+
+fun emptyRankingBoxList(): MutableList<RankingBox> = mutableStateListOf(
+    RankingBox(0, ""),
+    RankingBox(1, ""),
+    RankingBox(2, ""),
+    RankingBox(3, ""),
 )
 
 enum class RankingPhaseType {

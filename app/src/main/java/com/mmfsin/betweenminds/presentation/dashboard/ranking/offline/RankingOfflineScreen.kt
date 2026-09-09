@@ -84,7 +84,9 @@ fun RankingOfflineScreenPV() {
             actualRankingTopText = "Mejor",
             actualRankingBottomText = "Peor",
 
-            ),
+            secondSortedList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
+            //            sortedListSecond = emptyList(),
+        ),
         {}, {}, {}, { _, _ -> },
         {}, {}, {},
     )
@@ -121,7 +123,6 @@ fun RankingOfflineContent(
 
     showExitDialog: (Boolean) -> Unit,
 ) {
-
     val lazyListState = rememberLazyListState()
 
     val reorderableState = rememberReorderableLazyListState(
@@ -195,12 +196,10 @@ fun RankingOfflineContent(
                         items = uiStates.rankingBoxList,
                         key = { _, item -> item.id }
                     ) { index, item ->
-
                         ReorderableItem(
                             state = reorderableState,
                             key = item.id
-                        ) { isDragging ->
-
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -212,15 +211,26 @@ fun RankingOfflineContent(
                                         shape = RoundedCornerShape(12.dp)
                                     )
                                     .padding(16.dp)
-                                    .draggableHandle()
+                                    .draggableHandle(enabled = uiStates.dragEnabled)
                             ) {
-                                MediumText(
-                                    text = item.text,
-                                    color = White,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
+                                Row() {
+                                    MediumText(
+                                        text = item.text,
+                                        color = White,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        modifier = Modifier.weight(1f)
+                                    )
+
+                                    if (uiStates.showComparativeList) {
+                                        MediumText(
+                                            text = uiStates.firstSortedList[index].text,
+                                            color = White,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -253,6 +263,7 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[0],
                                 index = 0,
+                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 0,
                                 updateBounds = { bounds -> sourceBounds[0] = bounds },
@@ -269,6 +280,7 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[1],
                                 index = 1,
+                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 1,
                                 updateBounds = { bounds -> sourceBounds[1] = bounds },
@@ -287,6 +299,7 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[2],
                                 index = 2,
+                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 2,
                                 updateBounds = { bounds -> sourceBounds[2] = bounds },
@@ -303,6 +316,7 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[3],
                                 index = 3,
+                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 3,
                                 updateBounds = { bounds -> sourceBounds[3] = bounds },

@@ -5,6 +5,7 @@ import com.mmfsin.betweenminds.domain.models.Ranking
 import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_FIRST
+import com.mmfsin.betweenminds.domain.models.emptyRankingBoxList
 import java.util.Collections.emptyList
 
 data class RankingOfflineStates(
@@ -26,15 +27,17 @@ data class RankingOfflineStates(
     val actualRankings: MutableList<String> = mutableListOf("", "", "", ""),
     val actualRankingsAux: MutableList<String> = mutableListOf("", "", "", ""),
 
-    val rankingBoxList: MutableList<RankingBox> = emptyList(),
+    val rankingBoxList: MutableList<RankingBox> = emptyRankingBoxList(),
 
-    val sortedListOne: MutableList<RankingBox> = emptyList(),
-    val sortedListSecond: MutableList<RankingBox> = emptyList(),
+    val firstSortedList: MutableList<RankingBox> =  emptyRankingBoxList(),
+    val secondSortedList: MutableList<RankingBox> = emptyRankingBoxList(),
+    val showComparativeList: Boolean = false,
 
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
     val shakeTrigger: Boolean = false,
 
+    val dragEnabled: Boolean = true,
     val buttonEnabled: Boolean = true,
     val buttonText: Int = R.string.btn_ready
 )

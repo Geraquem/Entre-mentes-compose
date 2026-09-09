@@ -25,6 +25,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 fun DraggableOption(
     text: String,
     index: Int,
+    dragEnabled: Boolean,
 
     sourceBounds: SnapshotStateMap<Int, Rect>,
     sourceBoundsIndex: Int,
@@ -64,33 +65,40 @@ fun DraggableOption(
 
                 detectDragGestures(
                     onDragStart = {
-                        currentOffset = Offset.Zero
-                        currentTargetIndex = -1
+                        if (dragEnabled) {
+                            currentOffset = Offset.Zero
+                            currentTargetIndex = -1
 
-                        updateDraggedIndex(index)
-                        updateDragOffset(Offset.Zero)
+                            updateDraggedIndex(index)
+                            updateDragOffset(Offset.Zero)
+                        }
                     },
                     onDrag = { change, amount ->
-                        change.consume()
-                        currentOffset += amount
-                        updateDragOffset(amount)
+                        if (dragEnabled) {
+                            change.consume()
+                            currentOffset += amount
+                            updateDragOffset(amount)
 
-                        val source = sourceBounds[sourceBoundsIndex]
-                        val position = source?.center?.plus(currentOffset)
+                            val source = sourceBounds[sourceBoundsIndex]
+                            val position = source?.center?.plus(currentOffset)
 
-                        currentTargetIndex = boxBounds.entries
-                            .firstOrNull { (_, bounds) ->
-                                position != null && bounds.contains(position)
-                            }?.key ?: -1
+                            currentTargetIndex = boxBounds.entries
+                                .firstOrNull { (_, bounds) ->
+                                    position != null && bounds.contains(position)
+                                }?.key ?: -1
 
-                        updateTargetIndex(currentTargetIndex)
+                            println("----> target: $currentTargetIndex")
+                            updateTargetIndex(currentTargetIndex)
+                        }
                     },
                     onDragEnd = {
-                        if (currentTargetIndex != -1) {
-                            swapTexts()
+                        if (dragEnabled) {
+                            if (currentTargetIndex != -1) {
+                                swapTexts()
+                            }
+                            updateDraggedIndex(-1)
+                            updateDragOffset(Offset.Zero)
                         }
-                        updateDraggedIndex(-1)
-                        updateDragOffset(Offset.Zero)
                     }
                 )
             }
