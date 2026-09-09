@@ -116,10 +116,10 @@ class DataRepository @Inject constructor(
                 text = "AAAA",
                 topText = "top text A",
                 bottomText = "bottom text A",
-                option1 = "opcion 1 A",
-                option2 = "opcion 2 A",
-                option3 = "opcion 3 A",
-                option4 = "opcion 4 A",
+                option1 = "Desayuno",
+                option2 = "Comida",
+                option3 = "Merienda",
+                option4 = "Cena",
             ),
         ).toRankingList()
     }

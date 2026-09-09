@@ -57,7 +57,6 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
-import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.courier
@@ -65,6 +64,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.DraggableOption
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import sh.calvin.reorderable.ReorderableItem
@@ -196,6 +196,9 @@ fun RankingOfflineContent(
                         items = uiStates.rankingBoxList,
                         key = { _, item -> item.id }
                     ) { index, item ->
+
+                        val originalPosition = uiStates.firstSortedList.indexOfFirst { it.text == item.text }
+
                         ReorderableItem(
                             state = reorderableState,
                             key = item.id
@@ -207,7 +210,11 @@ fun RankingOfflineContent(
                                         boxBounds[index] = coordinates.boundsInRoot()
                                     }
                                     .background(
-                                        GrayHard,
+                                        color = checkBoxColor(
+                                            isEnabled = uiStates.showComparativeList,
+                                            firstText = uiStates.firstSortedList[index].text,
+                                            secondText = uiStates.secondSortedList[index].text
+                                        ),
                                         shape = RoundedCornerShape(12.dp)
                                     )
                                     .padding(16.dp)
@@ -224,10 +231,10 @@ fun RankingOfflineContent(
 
                                     if (uiStates.showComparativeList) {
                                         MediumText(
-                                            text = uiStates.firstSortedList[index].text,
+                                            text = "${originalPosition + 1}º",
                                             color = White,
                                             fontSize = 18.sp,
-                                            fontWeight = FontWeight.SemiBold,
+                                            fontWeight = FontWeight.Bold,
                                         )
                                     }
                                 }
