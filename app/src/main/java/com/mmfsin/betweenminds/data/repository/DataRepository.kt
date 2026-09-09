@@ -9,13 +9,13 @@ import com.mmfsin.betweenminds.data.ddbb.daos.RangesDAO
 import com.mmfsin.betweenminds.data.mappers.toQuestionList
 import com.mmfsin.betweenminds.data.mappers.toRangeList
 import com.mmfsin.betweenminds.data.mappers.toRankingList
-import com.mmfsin.betweenminds.data.models.RankingDTO
 import com.mmfsin.betweenminds.data.models.QuestionDTO
 import com.mmfsin.betweenminds.data.models.RangeDTO
+import com.mmfsin.betweenminds.data.models.RankingDTO
 import com.mmfsin.betweenminds.domain.interfaces.IDataRepository
-import com.mmfsin.betweenminds.domain.models.Ranking
 import com.mmfsin.betweenminds.domain.models.Question
 import com.mmfsin.betweenminds.domain.models.Range
+import com.mmfsin.betweenminds.domain.models.Ranking
 import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
 import com.mmfsin.betweenminds.utils.VERSION
@@ -120,6 +120,16 @@ class DataRepository @Inject constructor(
                 option2 = "Comida",
                 option3 = "Merienda",
                 option4 = "Cena",
+            ),
+            RankingDTO(
+                pack = 0,
+                text = "BBB",
+                topText = "top text B",
+                bottomText = "bottom text B",
+                option1 = "BBBBB 1",
+                option2 = "BBBBB 2",
+                option3 = "BBBBB 3",
+                option4 = "BBBBB 4",
             ),
         ).toRankingList()
     }

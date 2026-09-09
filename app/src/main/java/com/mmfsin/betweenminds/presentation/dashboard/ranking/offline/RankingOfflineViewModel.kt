@@ -3,6 +3,7 @@ package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_FIRST
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.models.emptyRankingBoxList
@@ -148,6 +149,40 @@ class RankingOfflineViewModel @Inject constructor(
                         buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
                     )
                 }
+            }
+        }
+    }
+
+    fun handleNextRound() {
+        _uiState.update {
+            it.copy(
+                showRoundView = true,
+                buttonEnabled = false,
+                dragEnabled = false,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showComparativeList = false,
+                    confettiTrigger = 0,
+                    rankingBoxList = emptyRankingBoxList(),
+                    phase = ORDER_FIRST,
+                    buttonText = R.string.btn_ready,
+                    showRoundView = false,
+                )
+            }
+            setRanking()
+
+            delay(250)
+
+            _uiState.update {
+                it.copy(
+                    buttonEnabled = true,
+                    dragEnabled = true
+                )
             }
         }
     }

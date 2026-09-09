@@ -93,7 +93,7 @@ fun RankingOfflineScreenPV() {
             //            sortedListSecond = emptyList(),
         ),
         {}, {}, {}, { _, _ -> },
-        {}, {}, {},
+        {}, {}, {},{},
     )
 }
 
@@ -111,6 +111,7 @@ fun RankingOfflineScreen(viewModel: RankingOfflineViewModel = hiltViewModel()) {
         swapTexts = { targetIndex, sourceIndex -> viewModel.swapTexts(targetIndex, sourceIndex) },
         readyOrderOne = { viewModel.readyOrderOne() },
         readyOrderTwo = { viewModel.readyOrderTwo() },
+        handleNextRound = { viewModel.handleNextRound() },
 
         showExitDialog = { viewModel.showExitDialog(it) }
     )
@@ -125,6 +126,7 @@ fun RankingOfflineContent(
     swapTexts: (Int, Int) -> Unit,
     readyOrderOne: () -> Unit,
     readyOrderTwo: () -> Unit,
+    handleNextRound: () -> Unit,
 
     showExitDialog: (Boolean) -> Unit,
 ) {
@@ -155,18 +157,8 @@ fun RankingOfflineContent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(vertical = 12.dp, horizontal = 18.dp)
+                .padding(horizontal = 18.dp)
         ) {
-
-            if (uiStates.confettiTrigger > 0) {
-                key(uiStates.confettiTrigger) {
-                    KonfettiView(
-                        modifier = Modifier.fillMaxSize(),
-                        parties = listOf(getKonfettiParty(RANKING, uiStates.confettiTrigger))
-                    )
-                }
-            }
-
             Column {
                 RankingRounds(uiStates.points)
 
@@ -362,7 +354,7 @@ fun RankingOfflineContent(
                             when (uiStates.phase) {
                                 ORDER_FIRST -> readyOrderOne()
                                 ORDER_SECOND -> readyOrderTwo()
-                                NEXT_ROUND -> {} //handleNextRound()
+                                NEXT_ROUND -> handleNextRound()
                                 RESULTS -> {} //showResultDialog(true)
                             }
                         }
@@ -371,6 +363,15 @@ fun RankingOfflineContent(
                     modifier = Modifier.fillMaxWidth()
                 )
                 SpacerLarge()
+            }
+
+            if (uiStates.confettiTrigger > 0) {
+                key(uiStates.confettiTrigger) {
+                    KonfettiView(
+                        modifier = Modifier.fillMaxSize(),
+                        parties = listOf(getKonfettiParty(RANKING, uiStates.confettiTrigger))
+                    )
+                }
             }
 
             ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }
