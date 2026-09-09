@@ -143,16 +143,3 @@ fun Modifier.shakeItem(shake: Boolean): Modifier {
         IntOffset(offsetX.value.roundToInt(), 0)
     }
 }
-
-fun swap(
-    rankingTexts: MutableList<RankingBox>,
-    optionTexts: MutableList<String>,
-    targetIndex: Int,
-    optionIndex: Int
-) {
-    val oldItem = rankingTexts[targetIndex]
-    val option = optionTexts[optionIndex]
-
-    rankingTexts[targetIndex] = oldItem.copy(text = option)
-    optionTexts[optionIndex] = oldItem.text
-}

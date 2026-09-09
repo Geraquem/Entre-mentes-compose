@@ -13,3 +13,10 @@ data class RankingBox(
     val id: Int,
     var text: String,
 )
+
+enum class RankingPhaseType {
+    ORDER_FIRST,
+    ORDER_SECOND,
+    NEXT_ROUND,
+    RESULTS
+}

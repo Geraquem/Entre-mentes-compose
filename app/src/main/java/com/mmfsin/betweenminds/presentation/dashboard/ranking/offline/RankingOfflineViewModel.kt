@@ -3,6 +3,7 @@ package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.domain.models.RankingBox
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
 import com.mmfsin.betweenminds.domain.usecases.GetRankingDataUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,7 +64,8 @@ class RankingOfflineViewModel @Inject constructor(
                     actualRankingText = newRanking.text,
                     actualRankingTopText = newRanking.topText,
                     actualRankingBottomText = newRanking.bottomText,
-                    actualRankings = newRanking.rankings as MutableList<String>
+                    actualRankings = newRanking.rankings.toMutableList(),
+                    actualRankingsAux = newRanking.rankings.toMutableList()
                 )
             }
         }
@@ -75,7 +77,46 @@ class RankingOfflineViewModel @Inject constructor(
             delay(1000)
             _uiState.update { it.copy(showRoundView = false) }
             delay(1000)
-            //            startOpinions()
+        }
+    }
+
+    fun swapTexts(targetIndex: Int, sourceIndex: Int) {
+        val states = uiState.value
+        val oldItem = states.rankingBoxList[targetIndex]
+        val option = states.actualRankings[sourceIndex]
+
+        states.rankingBoxList[targetIndex] = oldItem.copy(text = option)
+        states.actualRankings[sourceIndex] = oldItem.text
+    }
+
+    fun readyOrderOne() {
+        val states = uiState.value
+        if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
+            _uiState.update {
+                it.copy(
+                    phase = ORDER_SECOND,
+                    buttonEnabled = false,
+                    actualRankings = states.actualRankingsAux,
+                    sortedListOne = states.rankingBoxList
+                )
+            }
+            initializeRankingBoxList()
+
+            viewModelScope.launch {
+                delay(1000)
+                _uiState.update {
+                    it.copy(
+                        buttonEnabled = true,
+                    )
+                }
+            }
+        }
+    }
+
+    fun readyOrderTwo() {
+        val states = uiState.value
+        if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
+            val a = 2
         }
     }
 

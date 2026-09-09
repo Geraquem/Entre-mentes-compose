@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -42,10 +43,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.RankingBox
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_FIRST
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.RESULTS
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
+import com.mmfsin.betweenminds.presentation.core.components.SmallText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
@@ -57,9 +64,9 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.DraggableOption
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
 import com.mmfsin.betweenminds.utils.ShowAlpha
-import com.mmfsin.betweenminds.utils.swap
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -71,10 +78,15 @@ fun RankingOfflineScreenPV() {
             isLoading = true,
             showInitialDialog = false,
             showRoundView = false,
-            actualRankingText = "El mejor superpoder"
+            actualRankingText = "El mejor superpoder",
+            rankingBoxList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
+            actualRankings = mutableListOf("Desayuno", "Comida", "Merienda", "Cena"),
+            actualRankingTopText = "Mejor",
+            actualRankingBottomText = "Peor",
 
             ),
-        {}, {}, {}, {},
+        {}, {}, {}, { _, _ -> },
+        {}, {}, {},
     )
 }
 
@@ -89,6 +101,9 @@ fun RankingOfflineScreen(viewModel: RankingOfflineViewModel = hiltViewModel()) {
         goBack = { activity?.finish() },
         goToInstructions = { /*context.goToInstructions()*/ },
         hideInitialDialog = { viewModel.hideInitialDialog() },
+        swapTexts = { targetIndex, sourceIndex -> viewModel.swapTexts(targetIndex, sourceIndex) },
+        readyOrderOne = { viewModel.readyOrderOne() },
+        readyOrderTwo = { viewModel.readyOrderTwo() },
 
         showExitDialog = { viewModel.showExitDialog(it) }
     )
@@ -100,7 +115,9 @@ fun RankingOfflineContent(
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
-
+    swapTexts: (Int, Int) -> Unit,
+    readyOrderOne: () -> Unit,
+    readyOrderTwo: () -> Unit,
 
     showExitDialog: (Boolean) -> Unit,
 ) {
@@ -134,19 +151,20 @@ fun RankingOfflineContent(
                 .padding(innerPadding)
                 .padding(vertical = 12.dp, horizontal = 18.dp)
         ) {
-            Column() {
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(100.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MediumText(
-                        text = uiStates.actualRankingText,
-                        color = White,
-                        fontFamily = courier,
-                        gravity = TextAlign.Center,
-                        fontSize = 18.sp
-                    )
-                }
+            Column {
+
+                RankingRounds(uiStates.points)
+
+                SpacerLarge()
+
+                MediumText(
+                    text = uiStates.actualRankingText,
+                    color = White,
+                    fontFamily = courier,
+                    gravity = TextAlign.Center,
+                    fontSize = 18.sp,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
 
                 SpacerLarge()
 
@@ -154,12 +172,13 @@ fun RankingOfflineContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_vertical),
                         contentDescription = null,
+                        modifier = Modifier.size(16.dp),
                         tint = White
                     )
 
                     SpacerMini(horizontal = true)
 
-                    MediumText(
+                    SmallText(
                         text = uiStates.actualRankingTopText,
                         color = White,
                         fontFamily = alphazet,
@@ -213,13 +232,13 @@ fun RankingOfflineContent(
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_vertical),
                         contentDescription = null,
-                        modifier = Modifier.graphicsLayer { scaleY = -1f },
+                        modifier = Modifier.size(16.dp).graphicsLayer { scaleY = -1f },
                         tint = White
                     )
 
                     SpacerMini(horizontal = true)
 
-                    MediumText(
+                    SmallText(
                         text = uiStates.actualRankingBottomText,
                         color = White,
                         fontFamily = alphazet,
@@ -243,7 +262,7 @@ fun RankingOfflineContent(
                                 dragOffset = dragOffset,
                                 updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
                                 updateTargetIndex = { targetIndex = it },
-                                swapTexts = { swap(uiStates.rankingBoxList, uiStates.actualRankings, targetIndex, 0) }
+                                swapTexts = { swapTexts(targetIndex, 0) }
                             )
                         }
                         Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -259,7 +278,7 @@ fun RankingOfflineContent(
                                 dragOffset = dragOffset,
                                 updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
                                 updateTargetIndex = { targetIndex = it },
-                                swapTexts = { swap(uiStates.rankingBoxList, uiStates.actualRankings, targetIndex, 1) }
+                                swapTexts = { swapTexts(targetIndex, 1) }
                             )
                         }
                     }
@@ -277,7 +296,7 @@ fun RankingOfflineContent(
                                 dragOffset = dragOffset,
                                 updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
                                 updateTargetIndex = { targetIndex = it },
-                                swapTexts = { swap(uiStates.rankingBoxList, uiStates.actualRankings, targetIndex, 2) }
+                                swapTexts = { swapTexts(targetIndex, 2) }
                             )
                         }
                         Box(Modifier.weight(1f).height(50.dp), contentAlignment = Alignment.Center) {
@@ -293,7 +312,7 @@ fun RankingOfflineContent(
                                 dragOffset = dragOffset,
                                 updateDragOffset = { if (it == Offset.Zero) dragOffset = it else dragOffset += it },
                                 updateTargetIndex = { targetIndex = it },
-                                swapTexts = { swap(uiStates.rankingBoxList, uiStates.actualRankings, targetIndex, 3) }
+                                swapTexts = { swapTexts(targetIndex, 3) }
                             )
                         }
                     }
@@ -302,7 +321,16 @@ fun RankingOfflineContent(
                 Spacer(Modifier.weight(1f))
 
                 ButtonCustom(
-                    onClick = {},
+                    onClick = {
+                        if (uiStates.buttonEnabled) {
+                            when (uiStates.phase) {
+                                ORDER_FIRST -> readyOrderOne()
+                                ORDER_SECOND -> readyOrderTwo()
+                                NEXT_ROUND -> {} //handleNextRound()
+                                RESULTS -> {} //showResultDialog(true)
+                            }
+                        }
+                    },
                     text = uiStates.buttonText,
                     modifier = Modifier.fillMaxWidth()
                 )
