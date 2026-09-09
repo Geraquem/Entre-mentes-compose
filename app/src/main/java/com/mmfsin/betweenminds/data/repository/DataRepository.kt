@@ -8,9 +8,12 @@ import com.mmfsin.betweenminds.data.ddbb.daos.QuestionsDAO
 import com.mmfsin.betweenminds.data.ddbb.daos.RangesDAO
 import com.mmfsin.betweenminds.data.mappers.toQuestionList
 import com.mmfsin.betweenminds.data.mappers.toRangeList
+import com.mmfsin.betweenminds.data.mappers.toRankingList
+import com.mmfsin.betweenminds.data.models.RankingDTO
 import com.mmfsin.betweenminds.data.models.QuestionDTO
 import com.mmfsin.betweenminds.data.models.RangeDTO
 import com.mmfsin.betweenminds.domain.interfaces.IDataRepository
+import com.mmfsin.betweenminds.domain.models.Ranking
 import com.mmfsin.betweenminds.domain.models.Question
 import com.mmfsin.betweenminds.domain.models.Range
 import com.mmfsin.betweenminds.utils.QUESTIONS
@@ -48,10 +51,9 @@ class DataRepository @Inject constructor(
         }
 
         try {
-            if (savedVersion == -1L){
+            if (savedVersion == -1L) {
                 fetchBlock()
-            }
-            else {
+            } else {
                 withTimeout(5000) {
                     fetchBlock()
                 }
@@ -105,5 +107,20 @@ class DataRepository @Inject constructor(
         } else {
             return rangesDAO.getRanges().toRangeList()
         }
+    }
+
+    override suspend fun getRanking(): List<Ranking> {
+        return listOf(
+            RankingDTO(
+                pack = 0,
+                text = "AAAA",
+                topText = "top text A",
+                bottomText = "bottom text A",
+                option1 = "opcion 1 A",
+                option2 = "opcion 2 A",
+                option3 = "opcion 3 A",
+                option4 = "opcion 4 A",
+            ),
+        ).toRankingList()
     }
 }

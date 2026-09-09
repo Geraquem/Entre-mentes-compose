@@ -3,11 +3,13 @@ package com.mmfsin.betweenminds.data.mappers
 import com.mmfsin.betweenminds.data.models.PackDTO
 import com.mmfsin.betweenminds.data.models.QuestionDTO
 import com.mmfsin.betweenminds.data.models.RangeDTO
+import com.mmfsin.betweenminds.data.models.RankingDTO
 import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.models.Question
 import com.mmfsin.betweenminds.domain.models.QuestionsPack
 import com.mmfsin.betweenminds.domain.models.Range
 import com.mmfsin.betweenminds.domain.models.RangesPack
+import com.mmfsin.betweenminds.domain.models.Ranking
 
 fun QuestionDTO.toQuestion() = Question(
     question = question,
@@ -23,6 +25,17 @@ fun RangeDTO.toRange() = Range(
 )
 
 fun List<RangeDTO>.toRangeList() = this.map { it.toRange() }
+
+fun RankingDTO.toRanking() = Ranking(
+    id = id,
+    pack = pack,
+    text = text,
+    topText = topText,
+    bottomText = bottomText,
+    rankings = listOf(option1, option2, option3, option4),
+)
+
+fun List<RankingDTO>.toRankingList() = this.map { it.toRanking() }
 
 fun PackDTO.toPack() = Pack(
     packId = packId,

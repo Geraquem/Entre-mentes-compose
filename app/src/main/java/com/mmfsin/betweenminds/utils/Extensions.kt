@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.presentation.bedrock.BedRockActivity
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -84,7 +85,6 @@ fun ShowAlpha(
 }
 
 fun getKonfettiParty(gameType: GameType, points: Int): Party {
-
     val size = when (gameType) {
         QUESTIONS -> 100
         RANGES -> {
@@ -142,4 +142,17 @@ fun Modifier.shakeItem(shake: Boolean): Modifier {
     return this.offset {
         IntOffset(offsetX.value.roundToInt(), 0)
     }
+}
+
+fun swap(
+    rankingTexts: MutableList<RankingBox>,
+    optionTexts: MutableList<String>,
+    targetIndex: Int,
+    optionIndex: Int
+) {
+    val oldItem = rankingTexts[targetIndex]
+    val option = optionTexts[optionIndex]
+
+    rankingTexts[targetIndex] = oldItem.copy(text = option)
+    optionTexts[optionIndex] = oldItem.text
 }

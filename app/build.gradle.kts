@@ -95,6 +95,9 @@ dependencies {
     /** Billing */
     implementation(libs.billing.ktx)
 
+    /** Reoderable Recyclers */
+    implementation("sh.calvin.reorderable:reorderable:2.4.0")
+
     //Animate BG
     implementation("nl.dionsegijn:konfetti-compose:2.0.5")
     implementation("com.github.doctoror.particlesdrawable:library:2.0.2")

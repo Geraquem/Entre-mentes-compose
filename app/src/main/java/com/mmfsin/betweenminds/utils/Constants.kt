@@ -10,8 +10,8 @@ const val NAV_QUESTIONS_ONLINE_JOINED = "nav_questions_online_joined"
 const val NAV_QUESTIONS_OFFLINE = "nav_questions_offline"
 const val NAV_RANGES_ONLINE = "nav_ranges_online"
 const val NAV_RANGES_OFFLINE = "nav_ranges_offline"
-const val NAV_ORDER_ONLINE = "nav_order_online"
-const val NAV_ORDER_OFFLINE = "nav_order_offline"
+const val NAV_RANKING_ONLINE = "nav_ranking_online"
+const val NAV_RANKING_OFFLINE = "nav_ranking_offline"
 
 const val NAV_INSTR_QUESTIONS_ONLINE = "nav_instr_questions_online"
 const val NAV_INSTR_QUESTIONS_OFFLINE = "nav_instr_questions_offline"
@@ -37,6 +37,7 @@ const val DDBB_NAME = "betweenminds_room_ddbb"
 const val TABLE_QUESTIONS = "table_questions"
 const val TABLE_RANGES = "table_ranges"
 const val TABLE_PACKS = "table_packs"
+const val TABLE_RANKING = "table_ranking"
 
 /** SHARED PREFS */
 const val SHARED_PREFS_NAME = "betweenminds_shared_prefs"
