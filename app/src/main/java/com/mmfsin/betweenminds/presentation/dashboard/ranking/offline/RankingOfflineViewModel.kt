@@ -2,10 +2,14 @@ package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
+import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.RankingBox
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
+import com.mmfsin.betweenminds.domain.models.RankingPhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.usecases.GetRankingDataUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.calculatePoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -96,6 +100,7 @@ class RankingOfflineViewModel @Inject constructor(
                 it.copy(
                     phase = ORDER_SECOND,
                     buttonEnabled = false,
+                    buttonText = R.string.btn_check,
                     actualRankings = states.actualRankingsAux,
                     sortedListOne = states.rankingBoxList
                 )
@@ -116,7 +121,34 @@ class RankingOfflineViewModel @Inject constructor(
     fun readyOrderTwo() {
         val states = uiState.value
         if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
-            val a = 2
+
+            /** calculate points */
+            val roundPoints = calculatePoints(states.sortedListOne, states.rankingBoxList)
+
+            _uiState.update {
+                it.copy(
+                    buttonEnabled = false,
+
+                    points = states.points.toMutableList().apply { this[states.roundCount] = roundPoints },
+                    confettiTrigger = roundPoints,
+                    shakeTrigger = roundPoints == 0,
+
+                    phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+
+                    rankingPos = states.rankingPos + 1,
+                    roundCount = states.roundCount + 1
+                )
+            }
+
+            viewModelScope.launch {
+                delay(1500)
+                _uiState.update {
+                    it.copy(
+                        buttonEnabled = true,
+                        buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
+                    )
+                }
+            }
         }
     }
 

@@ -1,17 +1,12 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranking.helper
 
 import androidx.compose.ui.graphics.Color
+import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.presentation.core.theme.GreenMedium
 import com.mmfsin.betweenminds.presentation.core.theme.RedHard
-import kotlin.math.abs
 
-fun calculatePoints(firstOpinion: Int, secondOpinion: Int): Int {
-    val diff = abs(firstOpinion - secondOpinion)
-    return when {
-        diff > 15 -> 0
-        diff == 0 -> 15
-        else -> 15 - diff
-    }
+fun calculatePoints(firstList: List<RankingBox>, secondList: List<RankingBox>): Int {
+    return 0
 }
 
 fun getPointsColor(dif: Int): Color {
