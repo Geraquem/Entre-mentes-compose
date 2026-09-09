@@ -30,8 +30,6 @@ fun RankingDTO.toRanking() = Ranking(
     id = id,
     pack = pack,
     text = text,
-    topText = topText,
-    bottomText = bottomText,
     rankings = listOf(option1, option2, option3, option4),
 )
 

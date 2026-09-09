@@ -61,8 +61,6 @@ class RankingOfflineViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     actualRankingText = newRanking.text,
-                    actualRankingTopText = newRanking.topText,
-                    actualRankingBottomText = newRanking.bottomText,
                     actualRankings = newRanking.rankings.toMutableList(),
                     actualRankingsAux = newRanking.rankings.toMutableList()
                 )

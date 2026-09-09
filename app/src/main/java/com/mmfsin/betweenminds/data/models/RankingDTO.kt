@@ -11,8 +11,6 @@ data class RankingDTO(
     var id: String = UUID.randomUUID().toString(),
     var pack: Int = 0,
     var text: String = "",
-    var topText: String = "",
-    var bottomText: String = "",
     var option1: String = "",
     var option2: String = "",
     var option3: String = "",

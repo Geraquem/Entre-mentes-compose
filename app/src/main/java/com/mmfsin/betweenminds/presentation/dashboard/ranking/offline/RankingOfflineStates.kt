@@ -22,8 +22,6 @@ data class RankingOfflineStates(
     val rankings: List<Ranking> = emptyList(),
     var rankingPos: Int = 0,
     val actualRankingText: String = "",
-    val actualRankingTopText: String = "",
-    val actualRankingBottomText: String = "",
     val actualRankings: MutableList<String> = mutableListOf("", "", "", ""),
     val actualRankingsAux: MutableList<String> = mutableListOf("", "", "", ""),
 

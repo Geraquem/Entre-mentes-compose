@@ -11,12 +11,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,11 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,20 +39,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_FIRST
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.RESULTS
+import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.ErrorDialog
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
-import com.mmfsin.betweenminds.presentation.core.components.SmallText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
-import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
+import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
@@ -85,8 +81,6 @@ fun RankingOfflineScreenPV() {
             actualRankingText = "El mejor superpoder",
             rankingBoxList = mutableListOf(RankingBox(0, "Item 1 adsf sd sdf gszñldf glfklñgkl ´k"), RankingBox(1, "Item 2")),
             actualRankings = mutableListOf("Desayuno asd as das df", "Comida asdas sa das ddfsdf sd  ds a da s a ad", "Merienda", "Cena"),
-            actualRankingTopText = "Mejor",
-            actualRankingBottomText = "Peor",
 
             showComparativeList = true,
             secondSortedList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
@@ -172,26 +166,7 @@ fun RankingOfflineContent(
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
-                SpacerLarge()
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_arrow_vertical),
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = White
-                    )
-
-                    SpacerMini(horizontal = true)
-
-                    SmallText(
-                        text = uiStates.actualRankingTopText,
-                        color = White,
-                        fontFamily = alphazet,
-                    )
-                }
-
-                SpacerSmall()
+                SpacerMedium()
 
                 LazyColumn(
                     modifier = Modifier.shakeItem(uiStates.shakeTrigger),
@@ -209,64 +184,59 @@ fun RankingOfflineContent(
                             state = reorderableState,
                             key = item.id
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .onGloballyPositioned { coordinates ->
-                                        boxBounds[index] = coordinates.boundsInRoot()
-                                    }
-                                    .background(
-                                        color = checkBoxColor(
-                                            isEnabled = uiStates.showComparativeList,
-                                            firstText = uiStates.firstSortedList[index].text,
-                                            secondText = uiStates.secondSortedList[index].text
-                                        ),
-                                        shape = RoundedCornerShape(12.dp)
-                                    )
-                                    .padding(16.dp)
-                                    .draggableHandle(enabled = uiStates.dragEnabled)
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    MediumText(
-                                        text = item.text,
-                                        color = White,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier.weight(1f)
-                                    )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                BigText(
+                                    text = "${index + 1}º",
+                                    modifier = Modifier.width(26.dp),
+                                    gravity = TextAlign.End,
+                                    color = White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = alphazet
+                                )
 
-                                    if (uiStates.showComparativeList) {
-                                        SpacerSmall(horizontal = true)
+                                SpacerSmall(horizontal = true)
+
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .onGloballyPositioned { coordinates ->
+                                            boxBounds[index] = coordinates.boundsInRoot()
+                                        }
+                                        .background(
+                                            color = checkBoxColor(
+                                                isEnabled = uiStates.showComparativeList,
+                                                firstText = uiStates.firstSortedList[index].text,
+                                                secondText = uiStates.secondSortedList[index].text
+                                            ),
+                                            shape = RoundedCornerShape(12.dp)
+                                        )
+                                        .padding(16.dp)
+                                        .draggableHandle(enabled = uiStates.dragEnabled)
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
                                         MediumText(
-                                            text = "${originalPosition + 1}º",
+                                            text = item.text,
                                             color = White,
                                             fontSize = 18.sp,
-                                            fontWeight = FontWeight.Bold,
+                                            fontWeight = FontWeight.SemiBold,
+                                            modifier = Modifier.weight(1f)
                                         )
+
+                                        if (uiStates.showComparativeList) {
+                                            SpacerSmall(horizontal = true)
+                                            MediumText(
+                                                text = "${originalPosition + 1}º",
+                                                color = White,
+                                                fontSize = 18.sp,
+                                                fontFamily = alphazet,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-
-                SpacerSmall()
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_arrow_vertical),
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp).graphicsLayer { scaleY = -1f },
-                        tint = White
-                    )
-
-                    SpacerMini(horizontal = true)
-
-                    SmallText(
-                        text = uiStates.actualRankingBottomText,
-                        color = White,
-                        fontFamily = alphazet,
-                    )
                 }
 
                 SpacerLarge()
@@ -293,6 +263,9 @@ fun RankingOfflineContent(
                                 swapTexts = { swapTexts(targetIndex, 0) }
                             )
                         }
+
+                        SpacerSmall(horizontal = true)
+
                         Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
                             DraggableOption(
                                 text = uiStates.actualRankings[1],
@@ -335,6 +308,9 @@ fun RankingOfflineContent(
                                 swapTexts = { swapTexts(targetIndex, 2) }
                             )
                         }
+
+                        SpacerSmall(horizontal = true)
+
                         Box(Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.Center) {
                             DraggableOption(
                                 text = uiStates.actualRankings[3],
