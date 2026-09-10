@@ -114,7 +114,7 @@ class DataRepository @Inject constructor(
             RankingDTO(
                 pack = 0,
                 text = "AAAA",
-                option1 = "Desayuno con diamantes de zafiro a las 3 en punto del medio dia",
+                option1 = "Desayuno",
                 option2 = "Comida",
                 option3 = "Merienda",
                 option4 = "Cena",

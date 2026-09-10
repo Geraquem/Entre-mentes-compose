@@ -12,6 +12,7 @@ data class RankingOfflineStates(
     val isLoading: Boolean = true,
 
     val showInitialDialog: Boolean = true,
+    val showDialogBetweenPhases: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
 
@@ -34,6 +35,7 @@ data class RankingOfflineStates(
     val points: List<Int?> = listOf(null, null, null, null),
     val confettiTrigger: Int = 0,
     val shakeTrigger: Boolean = false,
+    val shakeVerticalTrigger: Boolean = false,
 
     val dragEnabled: Boolean = true,
     val buttonEnabled: Boolean = true,

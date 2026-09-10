@@ -95,7 +95,8 @@ class RankingOfflineViewModel @Inject constructor(
                     buttonText = R.string.btn_check,
                     firstSortedList = states.rankingBoxList,
                     actualRankings = states.actualRankingsAux,
-                    rankingBoxList = emptyRankingBoxList()
+                    rankingBoxList = emptyRankingBoxList(),
+                    shakeVerticalTrigger = true
                 )
             }
 
@@ -132,6 +133,7 @@ class RankingOfflineViewModel @Inject constructor(
 
                     showComparativeList = true,
 
+                    shakeVerticalTrigger = false,
                     phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
 
                     rankingPos = states.rankingPos + 1,

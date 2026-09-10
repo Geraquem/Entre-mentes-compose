@@ -66,6 +66,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.shakeItem
+import com.mmfsin.betweenminds.utils.shakeItemVertical
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -79,8 +80,8 @@ fun RankingOfflineScreenPV() {
             showInitialDialog = false,
             showRoundView = false,
             actualRankingText = "El mejor superpoder",
-            rankingBoxList = mutableListOf(RankingBox(0, "Item 1 adsf sd sdf gszñldf glfklñgkl ´k"), RankingBox(1, "Item 2")),
-            actualRankings = mutableListOf("Desayuno asd as das df", "Comida asdas sa das ddfsdf sd  ds a da s a ad", "Merienda", "Cena"),
+            rankingBoxList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
+            actualRankings = mutableListOf("Desayuno", "Comida ", "Merienda", "Cena"),
 
             showComparativeList = true,
             secondSortedList = mutableListOf(RankingBox(0, "Item 1"), RankingBox(1, "Item 2")),
@@ -153,6 +154,7 @@ fun RankingOfflineContent(
                 .padding(horizontal = 18.dp)
         ) {
             Column {
+
                 RankingRounds(uiStates.points)
 
                 SpacerLarge()
@@ -169,7 +171,9 @@ fun RankingOfflineContent(
                 SpacerMedium()
 
                 LazyColumn(
-                    modifier = Modifier.shakeItem(uiStates.shakeTrigger),
+                    modifier = Modifier
+                        .shakeItem(uiStates.shakeTrigger)
+                        .shakeItemVertical(uiStates.shakeVerticalTrigger),
                     state = lazyListState,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -241,7 +245,12 @@ fun RankingOfflineContent(
 
                 SpacerLarge()
 
-                Column(Modifier.fillMaxWidth().weight(1f)) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .shakeItemVertical(uiStates.shakeVerticalTrigger),
+                ) {
                     Row(
                         modifier = Modifier.fillMaxWidth().weight(1f),
                         verticalAlignment = Alignment.CenterVertically
