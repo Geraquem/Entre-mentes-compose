@@ -45,7 +45,10 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun SelectorSheetPV() {
-    SelectorSheet({}, {}, {}, {}, {})
+    SelectorSheet(
+        {}, {}, {}, {},
+        {}, {}, {},
+    )
 }
 
 @Composable
@@ -55,6 +58,8 @@ fun SelectorSheet(
     questions: () -> Unit,
     ranges: () -> Unit,
     rangesInstructions: () -> Unit,
+    rankings: () -> Unit,
+    rankingsInstructions: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -104,9 +109,7 @@ fun SelectorSheet(
 
             SpacerSmall()
 
-            MediumText(text = stringResource(R.string.questions_welcome), color = White)
-            SpacerMini()
-            MediumText(text = stringResource(R.string.questions_welcome_three), color = White)
+            MediumText(text = stringResource(R.string.questions_sheet_description), color = White)
 
             SpacerMedium()
 
@@ -152,9 +155,7 @@ fun SelectorSheet(
 
             SpacerSmall()
 
-            MediumText(text = stringResource(R.string.ranges_start_resume_other), color = White)
-            SpacerMini()
-            MediumText(text = stringResource(R.string.ranges_start_resume_two), color = White)
+            MediumText(text = stringResource(R.string.ranges_sheet_description), color = White)
 
             SpacerMedium()
 
@@ -176,21 +177,48 @@ fun SelectorSheet(
                 )
             }
 
+            SpacerLarge()
+
+            Box(Modifier.fillMaxWidth().padding(horizontal = 24.dp).height(1.dp).background(White))
+
+            SpacerLarge()
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_ranking), null,
+                    tint = White
+                )
+                SpacerSmall(horizontal = true)
+                BigText(text = stringResource(R.string.selector_ranking), allCaps = true, color = White)
+            }
+
+            SpacerSmall()
+
+            MediumText(text = stringResource(R.string.raking_sheet_description), color = White)
+
+            SpacerMedium()
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SelectorButton(
+                    icon = R.drawable.ic_book,
+                    text = R.string.selector_how_to_play,
+                    modifier = Modifier.weight(1f),
+                    onClick = { rankingsInstructions() }
+                )
+                SelectorButton(
+                    icon = null,
+                    text = R.string.menu_play,
+                    modifier = Modifier.weight(1f),
+                    onClick = { closeDialog { rankings() } }
+                )
+            }
+
             SpacerCustom(space = 40.dp)
         }
     }
-}
-
-
-@Preview
-@Composable
-fun SelectorButtonPV() {
-    SelectorButton(
-        icon = R.drawable.ic_book,
-        text = R.string.selector_how_to_play,
-        modifier = Modifier,
-        {}
-    )
 }
 
 @Composable

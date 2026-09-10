@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
         /********************************************/
         /********************************************/
-        this.openBedRockActivity(NAV_RANKING_OFFLINE)
+//        this.openBedRockActivity(NAV_RANKING_OFFLINE)
         /********************************************/
         /********************************************/
 

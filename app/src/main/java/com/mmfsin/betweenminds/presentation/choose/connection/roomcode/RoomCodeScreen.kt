@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.choose.roomcode
+package com.mmfsin.betweenminds.presentation.choose.connection.roomcode
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -28,8 +28,8 @@ import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.instructions.common.InstructionsText
 import com.mmfsin.betweenminds.presentation.instructions.common.PhaseSeparator
-import com.mmfsin.betweenminds.presentation.instructions.ranges.component.EditTextInst
-import com.mmfsin.betweenminds.presentation.instructions.ranges.component.RangesSliderInstr
+import com.mmfsin.betweenminds.presentation.instructions.ranges.components.EditTextInst
+import com.mmfsin.betweenminds.presentation.instructions.ranges.components.RangesSliderInstr
 
 @Preview
 @Composable

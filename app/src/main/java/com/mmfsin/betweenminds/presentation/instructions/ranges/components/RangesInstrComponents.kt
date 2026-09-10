@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.mmfsin.betweenminds.presentation.instructions.ranges.component
+package com.mmfsin.betweenminds.presentation.instructions.ranges.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

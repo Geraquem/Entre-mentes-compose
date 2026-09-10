@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.choose.components
+package com.mmfsin.betweenminds.presentation.choose.connection.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,12 +27,12 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 
 @Preview
 @Composable
-fun ChooseTitlePV() {
-    ChooseTitle(GameType.RANKING)
+fun ConnectionTitlePV() {
+    ConnectionTitle(GameType.RANKING)
 }
 
 @Composable
-fun ChooseTitle(type: GameType) {
+fun ConnectionTitle(type: GameType) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         when (type) {
             QUESTIONS -> {

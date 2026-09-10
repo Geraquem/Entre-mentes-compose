@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.choose.components
+package com.mmfsin.betweenminds.presentation.choose.connection.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

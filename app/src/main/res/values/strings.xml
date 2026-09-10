@@ -35,6 +35,9 @@
     <string name="selector_ranges">Escalas</string>
     <string name="selector_ranking">Ranking</string>
 
+    <!-- GAME TYPE -->
+    <string name="game_type_title">¿A qué quieres jugar?</string>
+
     <!-- DASHBOARD -->
     <string name="zero">0</string>
     <string name="fifty">50</string>
@@ -78,6 +81,7 @@
     <string name="questions_welcome_two">Se lee una pregunta, primero opina una persona, se oculta su respuesta y después opina la otra persona.</string>
     <string name="questions_welcome_three">El objetivo es <b>coincidir</b> para obtener la mayor puntuación.</string>
     <string name="questions_welcome_three_extra">El objetivo es <b>coincidir</b> para obtener la mayor puntuación en las <b>4 rondas</b> que dura la partida.</string>
+    <string name="questions_sheet_description">Dos personas opinan si mismas para ver cuánto se parece lo que piensan.</string>
     <string name="questions_welcome_four">¿Qué dos personas van a ser juzgadas?</string>
     <string name="questions_welcome_you_are">Eres el jugador</string>
     <string name="questions_welcome_you_move_white">Manejas la barra blanca.</string>
@@ -93,6 +97,7 @@
     <string name="ranges_start_resume_other">Un jugador da una pista para ayudar a conseguir puntos.</string>
     <string name="ranges_start_resume_two">Usando esa pista, hay que mover una barra para intentar acertar la posición.</string>
     <string name="ranges_start_resume_three">Entre todos hay que tratar de obtener la mayor puntuación posible en <b>4 rondas</b>.</string>
+    <string name="ranges_sheet_description">Dos extremos, una diana. Un jugador da una pista y el resto trata de acertar.</string>
     <string name="ranges_start_play">Empezar</string>
     <string name="ranges_start_instructions">Cómo se juega</string>
     <string name="ranges_another_range">Quiero uno nuevo</string>
@@ -114,6 +119,12 @@
     <string name="ranges_rounds_done">Rondas:</string>
     <string name="ranges_one">1</string>
     <string name="ranges_slash_three">/3</string>
+
+    <!-- RANKING -->
+    <string name="raking_initial_dialog_1">Una persona ordena las opciones y hace un ranking según sus propias preferencias.</string>
+    <string name="raking_initial_dialog_2">Después, el resto de jugadores tiene que intentar adivinar y colocar en el mismo orden las mismas opciones.</string>
+    <string name="raking_initial_dialog_3">Cuantas más opciones correctas, más puntos conseguís</string>
+    <string name="raking_sheet_description">Una persona ordena opciones y el resto tiene que intentar adivinar ese orden.</string>
 
     <!-- SCOREBOARD -->
     <string name="scoreboard_rounds">Rondas</string>
@@ -167,6 +178,10 @@
     <string name="online_room_code_waiting">Esperando a que se una el otro jugador</string>
 
     <!-- INSTRUCTIONS -->
+    <string name="instr_online_first">Primero es necesario que un jugador cree una sala y que otro jugador se una a la sala creada.</string>
+    <string name="instr_online_second">Para unirse a una sala, basta con introducir el código que aparece tras crearla.</string>
+    <string name="instr_offline_first">Aquí no es necesario ninguna conexión a internet, sólo dos personas jugando con el mismo móvil pasándoselo mano a mano entre fases.</string>
+
     <string name="instr_mode_questions">Modo preguntas</string>
     <string name="instr_questions_1">Dos personas juegan para ver si tienen la misma opinión sobre ellas mismas (o sobre otras personas)</string>
     <string name="instr_questions_2">Lo primero de todo es dar nombre a las dos personas principales, puedes introducir los nombres al principio o cambiarlos durante cualquier momento de la partida pulsando sobre ellos.</string>
@@ -217,10 +232,6 @@
     <string name="instr_ranges_example_right">Héroe</string>
     <string name="instr_ranges_example_clue">Gollum</string>
 
-    <string name="instr_online_first">Primero es necesario que un jugador cree una sala y que otro jugador se una a la sala creada.</string>
-    <string name="instr_online_second">Para unirse a una sala, basta con introducir el código que aparece tras crearla.</string>
-    <string name="instr_offline_first">Aquí no es necesario ninguna conexión a internet, sólo dos personas jugando con el mismo móvil pasándoselo mano a mano entre fases.</string>
-
     <string name="instr_online_ranges_1">Este modo cuenta con dos fases: la fase de <b>dar pistas</b> y la fase de <b>adivinar</b>.</string>
     <string name="instr_online_ranges_2">Fase de pistas</string>
     <string name="instr_online_ranges_3">A cada jugador le aparecerá una zona para ganar puntos, situada aleatoriamente dentro de un rectángulo con dos conceptos opuestos en los extremos.\n<i>(Ejemplo: frío – caliente, sucio – limpio)</i></string>
@@ -233,5 +244,23 @@
     <string name="instr_online_ranges_10">El jugador 2 hará exactamente lo mismo con la pista enviada por el jugador 1.</string>
     <string name="instr_online_ranges_11">Cuando creáis que la barra está correctamente colocada, pulsad el botón <b><i>Comprobar</i></b> para ver cuántos puntos ha obtenido cada uno.</string>
     <string name="instr_online_ranges_12">Cuanta mayor sea la puntuación obtenida, <b>mejor</b>.</string>
+
+    <string name="instr_mode_ranking">Modo rankings</string>
+    <string name="instr_ranking_1">Fase 1</string>
+    <string name="instr_ranking_2">Dada una premisa, un jugador deberá ordenar bajo su propio criterio las opciones que aparecen en pantalla. Para ello arrastra con el dedo el texto hacia la caja que quiera.</string>
+    <string name="instr_ranking_3">Las cajas también pueden reordenarse.</string>
+    <string name="instr_ranking_4">Cuando todas las cajas tengan una opción asignada, pulsa al botón Listo.</string>
+    <string name="instr_ranking_5">Fase 2</string>
+    <string name="instr_ranking_6">Ahora las cajas y los textos vuelven a la posición inicial y es el turno del resto de jugadores, donde tratarán de adivinar el orden correcto que colocó el primer jugador.</string>
+    <string name="instr_ranking_7">Para ello hacen exactamente lo mismo, arrastran cada texto a la caja que consideren.</string>
+    <string name="instr_ranking_8">Cuando crean que tienen la asignación correcta, pulsan el botón Comprobar y se revelará la solución.</string>
+    <string name="instr_ranking_9">A la derecha de cada caja aparece la posición que el primer jugador asignó, si la caja se pone de color verde, está bien, si se pone roja, está mal.</string>
+    <string name="instr_ranking_10">Por cada caja colocada en la posición correcta, ganaréis 1 punto.</string>
+    <string name="instr_ranking_11">El objetivo es obtener el mayor número de puntos en 4 rondas que dura la partida.</string>
+    <string name="instr_ranking_example_top_text">Ordena de más a menos importante</string>
+    <string name="instr_ranking_example_1">Dinero</string>
+    <string name="instr_ranking_example_2">Amigos</string>
+    <string name="instr_ranking_example_3">Salud</string>
+    <string name="instr_ranking_example_4">Pareja</string>
 
 </resources>

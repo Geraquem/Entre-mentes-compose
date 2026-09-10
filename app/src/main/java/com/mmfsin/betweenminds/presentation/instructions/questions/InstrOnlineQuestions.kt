@@ -38,9 +38,9 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.dashboard.questions.components.People
 import com.mmfsin.betweenminds.presentation.dashboard.questions.offline.components.SetPlayerName
-import com.mmfsin.betweenminds.presentation.instructions.common.InstrSlider
-import com.mmfsin.betweenminds.presentation.instructions.common.InstrSlider2
 import com.mmfsin.betweenminds.presentation.instructions.common.InstructionsText
+import com.mmfsin.betweenminds.presentation.instructions.questions.components.InstrSlider
+import com.mmfsin.betweenminds.presentation.instructions.questions.components.InstrSlider2
 
 @Preview
 @Composable

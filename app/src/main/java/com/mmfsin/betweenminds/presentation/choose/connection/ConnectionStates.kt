@@ -1,8 +1,8 @@
-package com.mmfsin.betweenminds.presentation.choose
+package com.mmfsin.betweenminds.presentation.choose.connection
 
 import com.mmfsin.betweenminds.domain.models.GameType
 
-data class ChooseStates(
+data class ConnectionStates(
     val isLoading: Boolean = true,
 
     val showSwwDialog: Boolean = false,

@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.choose
+package com.mmfsin.betweenminds.presentation.choose.connection
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -22,14 +22,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChooseViewModel @Inject constructor(
+class ConnectionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val createRoomUseCase: CreateRoomUseCase,
     private val joinRoomUseCase: JoinRoomUseCase,
     private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
     private val getSinglePackUseCase: GetSinglePackUseCase,
-) : BaseViewModel<ChooseStates>(ChooseStates()) {
+) : BaseViewModel<ConnectionStates>(ConnectionStates()) {
 
     private val gameTypeId: String? = savedStateHandle["gameTypeId"]
 

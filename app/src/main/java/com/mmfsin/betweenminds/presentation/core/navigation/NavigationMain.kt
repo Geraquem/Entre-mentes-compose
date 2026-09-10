@@ -7,8 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.mmfsin.betweenminds.presentation.choose.ChooseScreen
-import com.mmfsin.betweenminds.presentation.choose.roomcode.RoomCodeScreen
+import com.mmfsin.betweenminds.presentation.choose.connection.ConnectionScreen
+import com.mmfsin.betweenminds.presentation.choose.connection.roomcode.RoomCodeScreen
+import com.mmfsin.betweenminds.presentation.choose.gamemode.GameTypeScreen
 import com.mmfsin.betweenminds.presentation.menu.MenuScreen
 import com.mmfsin.betweenminds.presentation.packs.PacksScreen
 import com.mmfsin.betweenminds.presentation.packs.detail.PackDetailScreen
@@ -28,13 +29,21 @@ fun NavigationMain() {
     ) {
         composable<Menu> {
             MenuScreen(
-                goToChooseScreen = { gameTypeId -> navController.navigate(Choose(gameTypeId = gameTypeId)) },
+                goToGameTypeScreen = { navController.navigate(GameType) },
+                goToConnectionScreen = { gameTypeId -> navController.navigate(Connection(gameTypeId = gameTypeId)) },
                 goToPacksScreen = { navController.navigate(Packs()) }
             )
         }
 
-        composable<Choose> {
-            ChooseScreen(
+        composable<GameType> {
+            GameTypeScreen(
+                goBack = { navController.popBackStack() },
+                goToConnectionScreen = { gameTypeId -> navController.navigate(Connection(gameTypeId = gameTypeId)) },
+            )
+        }
+
+        composable<Connection> {
+            ConnectionScreen(
                 goBack = { navController.popBackStack() },
                 roomCreated = { roomCode, gameTypeId ->
                     navController.navigate(
@@ -76,7 +85,10 @@ fun NavigationMain() {
 object Menu
 
 @Serializable
-data class Choose(val gameTypeId: String)
+object GameType
+
+@Serializable
+data class Connection(val gameTypeId: String)
 
 @Serializable
 data class RoomCode(val roomCode: String, val gameTypeId: String)

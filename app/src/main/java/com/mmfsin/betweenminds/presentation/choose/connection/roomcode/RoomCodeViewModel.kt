@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.choose.roomcode
+package com.mmfsin.betweenminds.presentation.choose.connection.roomcode
 
 import androidx.lifecycle.SavedStateHandle
 import com.mmfsin.betweenminds.domain.models.GameType.Companion.getGameTypeById

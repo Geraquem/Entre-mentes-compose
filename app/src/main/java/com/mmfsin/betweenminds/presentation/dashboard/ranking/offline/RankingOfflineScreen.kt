@@ -1,5 +1,6 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline
 
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
@@ -63,8 +64,10 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.Draggab
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
+import com.mmfsin.betweenminds.utils.openBedRockActivity
 import com.mmfsin.betweenminds.utils.shakeItem
 import com.mmfsin.betweenminds.utils.shakeItemVertical
 import nl.dionsegijn.konfetti.compose.KonfettiView
@@ -100,7 +103,7 @@ fun RankingOfflineScreen(viewModel: RankingOfflineViewModel = hiltViewModel()) {
     RankingOfflineContent(
         uiStates = uiStates,
         goBack = { activity?.finish() },
-        goToInstructions = { /*context.goToInstructions()*/ },
+        goToInstructions = { context.goToInstructions() },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         swapTexts = { targetIndex, sourceIndex -> viewModel.swapTexts(targetIndex, sourceIndex) },
         readyOrderOne = { viewModel.readyOrderOne() },
@@ -143,7 +146,7 @@ fun RankingOfflineContent(
         topBar = {
             CustomToolbar(
                 goBack = { goBack() },
-                goToInstructions = { /*goToInstructions()*/ }
+                goToInstructions = { goToInstructions() }
             )
         }
     ) { innerPadding ->
@@ -391,3 +394,5 @@ fun RankingOfflineContent(
         }
     }
 }
+
+private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANGES_OFFLINE)

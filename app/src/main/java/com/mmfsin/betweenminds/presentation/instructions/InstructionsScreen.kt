@@ -27,6 +27,7 @@ import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
+import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
 import com.mmfsin.betweenminds.presentation.core.components.SmallText
@@ -37,13 +38,14 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.instructions.questions.InstrOfflineQuestions
 import com.mmfsin.betweenminds.presentation.instructions.questions.InstrOnlineQuestions
 import com.mmfsin.betweenminds.presentation.instructions.ranges.InstrOfflineRanges
-import com.mmfsin.betweenminds.presentation.instructions.ranges.InstrOnlineRanges
+import com.mmfsin.betweenminds.presentation.instructions.ranking.InstrOfflineRanking
+import com.mmfsin.betweenminds.presentation.instructions.ranking.InstrOnlineRanking
 import kotlinx.coroutines.launch
 
 @Preview
 @Composable
 fun InstructionsScreenPV() {
-    InstructionsScreen(RANGES, false)
+    InstructionsScreen(GameType.RANKING, false)
 }
 
 @Composable
@@ -72,8 +74,13 @@ fun InstructionsScreen(gameType: GameType, onlineMode: Boolean) {
                 .padding(innerPadding)
         ) {
 
+            val titleText = when (gameType) {
+                QUESTIONS -> R.string.instr_mode_questions
+                RANGES -> R.string.instr_mode_ranges
+                RANKING -> R.string.instr_mode_ranking
+            }
             BigText(
-                text = if (gameType == QUESTIONS) R.string.instr_mode_questions else R.string.instr_mode_ranges,
+                text = titleText,
                 allCaps = true,
                 color = White,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -116,8 +123,21 @@ fun InstructionsScreen(gameType: GameType, onlineMode: Boolean) {
                 modifier = Modifier.fillMaxWidth()
             ) { page ->
                 when (page) {
-                    0 -> if(gameType == QUESTIONS) InstrOnlineQuestions() else InstrOnlineRanges()
-                    1 -> if(gameType == QUESTIONS) InstrOfflineQuestions() else InstrOfflineRanges()
+                    0 -> {
+                        when (gameType) {
+                            QUESTIONS -> InstrOnlineQuestions()
+                            RANGES -> InstrOnlineQuestions()
+                            RANKING -> InstrOnlineRanking()
+                        }
+                    }
+
+                    1 -> {
+                        when (gameType) {
+                            QUESTIONS -> InstrOfflineQuestions()
+                            RANGES -> InstrOfflineRanges()
+                            RANKING -> InstrOfflineRanking()
+                        }
+                    }
                 }
             }
         }

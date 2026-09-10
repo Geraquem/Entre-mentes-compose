@@ -17,6 +17,8 @@ const val NAV_INSTR_QUESTIONS_ONLINE = "nav_instr_questions_online"
 const val NAV_INSTR_QUESTIONS_OFFLINE = "nav_instr_questions_offline"
 const val NAV_INSTR_RANGES_ONLINE = "nav_instr_ranges_online"
 const val NAV_INSTR_RANGES_OFFLINE = "nav_instr_ranges_offline"
+const val NAV_INSTR_RANKING_ONLINE = "nav_instr_ranking_online"
+const val NAV_INSTR_RANKING_OFFLINE = "nav_instr_ranking_offline"
 
 /** FIREBASE */
 const val QUESTIONS = "questions"

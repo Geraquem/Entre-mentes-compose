@@ -38,6 +38,7 @@ import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
 import com.mmfsin.betweenminds.utils.AnimateY
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
@@ -46,17 +47,19 @@ import com.mmfsin.betweenminds.utils.openBedRockActivity
 fun MenuScreenPV() {
     MenuContent(
         uiStates = MenuStates(
-            positonButtons = 0f
+            positonButtons = 0f,
+            showSelectorSheet = true
         ),
         {}, {}, {}, {},
-        {},
+        {}, {}
     )
 }
 
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel = hiltViewModel(),
-    goToChooseScreen: (String) -> Unit,
+    goToGameTypeScreen: () -> Unit,
+    goToConnectionScreen: (String) -> Unit,
     goToPacksScreen: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -66,7 +69,8 @@ fun MenuScreen(
         uiStates = uiState,
         showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
         openInstructions = { context.goToInstructions(it) },
-        goToChooseScreen = { id -> goToChooseScreen(id) },
+        goToGameTypeScreen = { goToGameTypeScreen() },
+        goToConnectionScreen = { goToConnectionScreen(it) },
         goToPacksScreen = { goToPacksScreen() },
         setFreePacks = { viewModel.setFreePacks() }
     )
@@ -77,7 +81,8 @@ fun MenuContent(
     uiStates: MenuStates,
     showSelectorSheet: (value: Boolean) -> Unit,
     openInstructions: (String) -> Unit,
-    goToChooseScreen: (String) -> Unit,
+    goToGameTypeScreen: () -> Unit,
+    goToConnectionScreen: (String) -> Unit,
     goToPacksScreen: () -> Unit,
     setFreePacks: () -> Unit,
 ) {
@@ -129,6 +134,7 @@ fun MenuContent(
             Column {
                 ButtonCustom(
                     onClick = { showSelectorSheet(true) },
+                    //                    onClick = { goToGameTypeScreen() },
                     text = R.string.menu_play,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -149,9 +155,11 @@ fun MenuContent(
         SelectorSheet(
             onDismiss = { showSelectorSheet(false) },
             questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
-            questions = { goToChooseScreen(GameType.QUESTIONS.id) },
+            questions = { goToConnectionScreen(GameType.QUESTIONS.id) },
             rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
-            ranges = { goToChooseScreen(GameType.RANGES.id) },
+            ranges = { goToConnectionScreen(GameType.RANGES.id) },
+            rankingsInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
+            rankings = { goToConnectionScreen(GameType.RANKING.id) }
         )
     }
 

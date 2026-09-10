@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.choose
+package com.mmfsin.betweenminds.presentation.choose.connection
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
@@ -28,10 +28,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
-import com.mmfsin.betweenminds.presentation.choose.components.ChooseTitle
-import com.mmfsin.betweenminds.presentation.choose.components.JoinedErrorDialog
-import com.mmfsin.betweenminds.presentation.choose.components.OnlineRoomTabs
-import com.mmfsin.betweenminds.presentation.choose.components.PackChosen
+import com.mmfsin.betweenminds.presentation.choose.connection.components.ConnectionTitle
+import com.mmfsin.betweenminds.presentation.choose.connection.components.JoinedErrorDialog
+import com.mmfsin.betweenminds.presentation.choose.connection.components.OnlineRoomTabs
+import com.mmfsin.betweenminds.presentation.choose.connection.components.PackChosen
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.CustomToolbar
@@ -51,9 +51,9 @@ import com.mmfsin.betweenminds.utils.openBedRockActivity
 
 @Preview
 @Composable
-fun ChoosePV() {
-    ChooseContent(
-        uiStates = ChooseStates(
+fun ConnectionScreenPV() {
+    ConnectionContent(
+        uiStates = ConnectionStates(
             gameType = RANGES,
             isLoading = false,
         ),
@@ -64,8 +64,8 @@ fun ChoosePV() {
 }
 
 @Composable
-fun ChooseScreen(
-    viewModel: ChooseViewModel = hiltViewModel(),
+fun ConnectionScreen(
+    viewModel: ConnectionViewModel = hiltViewModel(),
     goBack: () -> Unit,
     roomCreated: (String, String) -> Unit,
     goToPacks: (Int) -> Unit
@@ -73,7 +73,7 @@ fun ChooseScreen(
     val uiStates by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    ChooseContent(
+    ConnectionContent(
         uiStates = uiStates,
         goBack = { goBack() },
         goToInstructions = { context.goToInstructions(uiStates.instructionsNavGraph) },
@@ -120,8 +120,8 @@ fun ChooseScreen(
 }
 
 @Composable
-fun ChooseContent(
-    uiStates: ChooseStates,
+fun ConnectionContent(
+    uiStates: ConnectionStates,
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
     goToPacks: () -> Unit,
@@ -152,7 +152,7 @@ fun ChooseContent(
 
             SpacerSmall()
 
-            uiStates.gameType?.let { type -> ChooseTitle(type) }
+            uiStates.gameType?.let { type -> ConnectionTitle(type) }
 
             SpacerMedium()
 

@@ -80,7 +80,7 @@ fun InitialOfflineRankingDialog(
                     .padding(12.dp)
             ) {
                 Text(
-                    text = "bla bla blu bli bla bla bla",
+                    text = stringResource(R.string.raking_initial_dialog_1),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         lineHeight = 18.sp
                     ),
@@ -89,7 +89,16 @@ fun InitialOfflineRankingDialog(
                 SpacerSmall()
 
                 Text(
-                    text = "bla bla blu bli bla bla bla",
+                    text = stringResource(R.string.raking_initial_dialog_2),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineHeight = 18.sp
+                    ),
+                )
+
+                SpacerSmall()
+
+                Text(
+                    text = stringResource(R.string.raking_initial_dialog_3),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         lineHeight = 18.sp
                     ),
