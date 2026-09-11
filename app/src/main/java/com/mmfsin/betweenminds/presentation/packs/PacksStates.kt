@@ -2,6 +2,7 @@ package com.mmfsin.betweenminds.presentation.packs
 
 import com.mmfsin.betweenminds.domain.models.QuestionsPack
 import com.mmfsin.betweenminds.domain.models.RangesPack
+import com.mmfsin.betweenminds.domain.models.RankingsPack
 
 data class PacksStates(
     val isLoading: Boolean = true,
@@ -13,7 +14,9 @@ data class PacksStates(
 
     val questionsPacks: List<QuestionsPack> = emptyList(),
     val rangesPacks: List<RangesPack> = emptyList(),
+    val rankingsPacks: List<RankingsPack> = emptyList(),
 
     val selectedQuestionsPack: Int = -1,
     val selectedRangesPack: Int = -1,
+    val selectedRankingPack: Int = -1,
 )

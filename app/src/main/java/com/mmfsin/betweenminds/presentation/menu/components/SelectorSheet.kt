@@ -103,8 +103,14 @@ fun SelectorSheet(
                     painter = painterResource(R.drawable.ic_human_down), null,
                     tint = OrangeHard
                 )
+
                 SpacerSmall(horizontal = true)
-                BigText(text = stringResource(R.string.selector_questions), allCaps = true, color = White)
+
+                BigText(
+                    text = stringResource(R.string.selector_questions),
+                    allCaps = true,
+                    color = White
+                )
             }
 
             SpacerSmall()
@@ -120,11 +126,9 @@ fun SelectorSheet(
                 SelectorButton(
                     icon = R.drawable.ic_book,
                     text = R.string.selector_how_to_play,
-                    modifier = Modifier.weight(1f),
-                    onClick = {
-                        questionsInstructions()
-                    }
+                    onClick = { questionsInstructions() }
                 )
+
                 SelectorButton(
                     icon = null,
                     text = R.string.menu_play,
@@ -149,8 +153,14 @@ fun SelectorSheet(
                     tint = White,
                     modifier = Modifier.graphicsLayer { scaleX = -1f }
                 )
+
                 SpacerSmall(horizontal = true)
-                BigText(text = stringResource(R.string.selector_ranges), allCaps = true, color = White)
+
+                BigText(
+                    text = stringResource(R.string.selector_ranges),
+                    allCaps = true,
+                    color = White
+                )
             }
 
             SpacerSmall()
@@ -166,9 +176,9 @@ fun SelectorSheet(
                 SelectorButton(
                     icon = R.drawable.ic_book,
                     text = R.string.selector_how_to_play,
-                    modifier = Modifier.weight(1f),
                     onClick = { rangesInstructions() }
                 )
+
                 SelectorButton(
                     icon = null,
                     text = R.string.menu_play,
@@ -189,7 +199,11 @@ fun SelectorSheet(
                     tint = White
                 )
                 SpacerSmall(horizontal = true)
-                BigText(text = stringResource(R.string.selector_ranking), allCaps = true, color = White)
+                BigText(
+                    text = stringResource(R.string.selector_ranking),
+                    allCaps = true,
+                    color = White
+                )
             }
 
             SpacerSmall()
@@ -205,7 +219,6 @@ fun SelectorSheet(
                 SelectorButton(
                     icon = R.drawable.ic_book,
                     text = R.string.selector_how_to_play,
-                    modifier = Modifier.weight(1f),
                     onClick = { rankingsInstructions() }
                 )
                 SelectorButton(
@@ -222,7 +235,12 @@ fun SelectorSheet(
 }
 
 @Composable
-fun SelectorButton(icon: Int?, text: Int, modifier: Modifier, onClick: () -> Unit) {
+fun SelectorButton(
+    icon: Int?,
+    text: Int,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Row(
         modifier = modifier
             .height(40.dp)

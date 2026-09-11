@@ -10,6 +10,7 @@ import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdatePacksPurchasedUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedRankingsPackUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -24,6 +25,7 @@ class PacksViewModel @Inject constructor(
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
     private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
+    private val updateSelectedRankingsPackUseCase: UpdateSelectedRankingsPackUseCase,
     private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase,
     private val updatedPacksPurchasedUseCase: UpdatePacksPurchasedUseCase,
 ) : BaseViewModel<PacksStates>(PacksStates()) {
@@ -82,6 +84,14 @@ class PacksViewModel @Inject constructor(
         executeUseCase(
             { updateSelectedRangesPackUseCase(newPack) },
             { print("ranges pack updated to pack: $newPack") },
+            { sww() }
+        )
+    }
+
+    fun updateSelectedRankingsPack(newPack: Int) {
+        executeUseCase(
+            { updateSelectedRankingsPackUseCase(newPack) },
+            { print("rankings pack updated to pack: $newPack") },
             { sww() }
         )
     }

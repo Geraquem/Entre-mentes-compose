@@ -39,6 +39,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.packs.components.PacksQuestions
 import com.mmfsin.betweenminds.presentation.packs.components.PacksRanges
+import com.mmfsin.betweenminds.presentation.packs.components.PacksRankings
 import kotlinx.coroutines.launch
 
 @Preview
@@ -50,7 +51,7 @@ fun PacksScreenPV() {
         ),
         initialTab = 1,
         {}, {}, {}, {},
-        {},
+        {},{},
     )
 }
 
@@ -70,6 +71,7 @@ fun PacksScreen(
         goToPackDetail = { goToPackDetail(it) },
         updateSelectedQuestionsPack = { viewModel.updateSelectedQuestionsPack(it) },
         updateSelectedRangesPack = { viewModel.updateSelectedRangesPack(it) },
+        updateSelectedRankingsPack = { viewModel.updateSelectedRankingsPack(it) },
         purchasePacks = { activity?.let { viewModel.purchasePacks(activity) } },
     )
 }
@@ -82,11 +84,12 @@ fun PacksContent(
     goToPackDetail: (String) -> Unit,
     updateSelectedQuestionsPack: (Int) -> Unit,
     updateSelectedRangesPack: (Int) -> Unit,
+    updateSelectedRankingsPack: (Int) -> Unit,
     purchasePacks: () -> Unit,
 ) {
 
     val pagerState = rememberPagerState(
-        pageCount = { 2 },
+        pageCount = { 3 },
         initialPage = initialTab
     )
 
@@ -123,7 +126,8 @@ fun PacksContent(
                 ) {
                     listOf(
                         stringResource(R.string.pack_questions),
-                        stringResource(R.string.pack_ranges)
+                        stringResource(R.string.pack_ranges),
+                        stringResource(R.string.pack_rankings)
                     ).forEachIndexed { i, txtTab ->
                         Tab(
                             selected = pagerState.currentPage == i,
@@ -154,12 +158,20 @@ fun PacksContent(
                             updateQuestionsPack = { updateSelectedQuestionsPack(it) }
                         )
 
-                        else -> PacksRanges(
+                        1-> PacksRanges(
                             packs = uiStates.rangesPacks,
                             selected = uiStates.selectedRangesPack,
                             purchased = uiStates.packsPurchased,
                             seeMore = { goToPackDetail(it) },
                             updateRangesPack = { updateSelectedRangesPack(it) }
+                        )
+
+                        else -> PacksRankings(
+                            packs = uiStates.rankingsPacks,
+                            selected = uiStates.selectedRankingPack,
+                            purchased = uiStates.packsPurchased,
+                            seeMore = { goToPackDetail(it) },
+                            updateRangesPack = { updateSelectedRankingsPack(it) }
                         )
                     }
                 }

@@ -97,6 +97,14 @@ class PacksRepository @Inject constructor(
         dataStore.updateSelectedRangesPack(packNumber)
     }
 
+    override fun getSelectedRankingsPackId(): Flow<Int> {
+        return dataStore.getSelectedRankingsPack()
+    }
+
+    override suspend fun updateSelectedRankingsPackId(packNumber: Int) {
+        dataStore.updateSelectedRankingsPack(packNumber)
+    }
+
     override fun setFreePacks() = prefs.updatePacksPurchased(true)
 
     override suspend fun checkIfPurchasedPacks(): Pair<Boolean, String?> {

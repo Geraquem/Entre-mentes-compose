@@ -11,11 +11,13 @@ import com.mmfsin.betweenminds.domain.models.Pack
 import com.mmfsin.betweenminds.domain.usecases.CreateRoomUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetSelectedRankingsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSinglePackUseCase
 import com.mmfsin.betweenminds.domain.usecases.JoinRoomUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_ONLINE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ class ConnectionViewModel @Inject constructor(
     private val joinRoomUseCase: JoinRoomUseCase,
     private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
+    private val getSelectedRankingsPackUseCase: GetSelectedRankingsPackUseCase,
     private val getSinglePackUseCase: GetSinglePackUseCase,
 ) : BaseViewModel<ConnectionStates>(ConnectionStates()) {
 
@@ -74,13 +77,13 @@ class ConnectionViewModel @Inject constructor(
             }
 
             RANKING -> {
-//                _uiState.update {
-//                    NAV_INSTR_RANGES_ONLINE
-//                    it.copy(
-//                        packsTab = 1,
-//                        instructionsNavGraph = NAV_INSTR_RANGES_ONLINE
-//                    )
-//                }
+                _uiState.update {
+                    NAV_INSTR_RANGES_ONLINE
+                    it.copy(
+                        packsTab = 2,
+                        instructionsNavGraph = NAV_INSTR_RANKING_ONLINE
+                    )
+                }
             }
         }
     }
@@ -117,7 +120,20 @@ class ConnectionViewModel @Inject constructor(
                 }
             }
 
-            RANKING -> {}
+            RANKING -> {
+                viewModelScope.launch {
+                    getSelectedRankingsPackUseCase().collect { rankingsPackNumber ->
+                        executeUseCase(
+                            { getSinglePackUseCase(RANKING, rankingsPackNumber) },
+                            { pack ->
+                                if (pack == null) sww()
+                                else updateSelectedPack(pack)
+                            },
+                            { sww() }
+                        )
+                    }
+                }
+            }
         }
     }
 

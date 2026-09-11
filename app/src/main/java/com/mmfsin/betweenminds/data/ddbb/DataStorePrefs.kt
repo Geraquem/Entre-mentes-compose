@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.mmfsin.betweenminds.utils.DS_SELECTED_QUESTIONS_PACK
 import com.mmfsin.betweenminds.utils.DS_SELECTED_RANGES_PACK
+import com.mmfsin.betweenminds.utils.DS_SELECTED_RANKINGS_PACK
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -36,8 +37,20 @@ class DataStorePrefs @Inject constructor(
         }
     }
 
+    fun getSelectedRankingsPack(): Flow<Int> =
+        dataStore.data.map { preferences ->
+            preferences[SELECTED_RANKINGS_PACK] ?: 0
+        }
+
+    suspend fun updateSelectedRankingsPack(value: Int) {
+        dataStore.edit { preferences ->
+            preferences[SELECTED_RANKINGS_PACK] = value
+        }
+    }
+
     companion object {
         val SELECTED_QUESTIONS_PACK = intPreferencesKey(DS_SELECTED_QUESTIONS_PACK)
         val SELECTED_RANGES_PACK = intPreferencesKey(DS_SELECTED_RANGES_PACK)
+        val SELECTED_RANKINGS_PACK = intPreferencesKey(DS_SELECTED_RANKINGS_PACK)
     }
 }

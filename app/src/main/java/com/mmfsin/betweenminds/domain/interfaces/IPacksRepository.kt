@@ -17,6 +17,9 @@ interface IPacksRepository {
     fun getSelectedRPackId(): Flow<Int>
     suspend fun updateSelectedRPackId(packNumber: Int)
 
+    fun getSelectedRankingsPackId(): Flow<Int>
+    suspend fun updateSelectedRankingsPackId(packNumber: Int)
+
     fun setFreePacks()
 
     suspend fun checkIfPurchasedPacks(): Pair<Boolean, String?>

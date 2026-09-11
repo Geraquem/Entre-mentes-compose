@@ -15,6 +15,11 @@ data class RangesPack(
     var ranges: List<Range> = emptyList()
 )
 
+data class RankingsPack(
+    val pack: Pack,
+    var rankings: List<Ranking> = emptyList()
+)
+
 data class Pack(
     var packId: String = "",
     var packType: String = "",
