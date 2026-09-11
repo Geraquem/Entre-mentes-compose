@@ -7,6 +7,7 @@ import com.mmfsin.betweenminds.domain.usecases.CheckIfPurchasedPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetSelectedRankingsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdatePacksPurchasedUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedRangesPackUseCase
@@ -23,6 +24,7 @@ class PacksViewModel @Inject constructor(
     private val getPacksUseCase: GetPacksUseCase,
     private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
+    private val getSelectedRankingsPackUseCase: GetSelectedRankingsPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
     private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
     private val updateSelectedRankingsPackUseCase: UpdateSelectedRankingsPackUseCase,
@@ -50,6 +52,7 @@ class PacksViewModel @Inject constructor(
                     it.copy(
                         questionsPacks = packs.questionsPacks,
                         rangesPacks = packs.rangesPacks,
+                        rankingsPacks = packs.rankingsPacks,
                         isLoading = false
                     )
                 }
@@ -68,6 +71,12 @@ class PacksViewModel @Inject constructor(
         viewModelScope.launch {
             getSelectedRangesPackUseCase().collect { rangesPackNumber ->
                 _uiState.update { it.copy(selectedRangesPack = rangesPackNumber) }
+            }
+        }
+
+        viewModelScope.launch {
+            getSelectedRankingsPackUseCase().collect { rankingsPackNumber ->
+                _uiState.update { it.copy(selectedRankingPack = rankingsPackNumber) }
             }
         }
     }

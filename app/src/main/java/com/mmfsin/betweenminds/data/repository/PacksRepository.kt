@@ -9,6 +9,7 @@ import com.mmfsin.betweenminds.data.ddbb.SharedPrefs
 import com.mmfsin.betweenminds.data.ddbb.daos.PacksDAO
 import com.mmfsin.betweenminds.data.mappers.getQuestionsPacks
 import com.mmfsin.betweenminds.data.mappers.getRangesPacks
+import com.mmfsin.betweenminds.data.mappers.getRankingsPacks
 import com.mmfsin.betweenminds.data.mappers.toPack
 import com.mmfsin.betweenminds.data.models.PackDTO
 import com.mmfsin.betweenminds.domain.interfaces.IPacksRepository
@@ -18,7 +19,7 @@ import com.mmfsin.betweenminds.domain.models.Packs
 import com.mmfsin.betweenminds.utils.PACKS
 import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
-import com.mmfsin.betweenminds.utils.RANKING
+import com.mmfsin.betweenminds.utils.RANKINGS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
@@ -63,7 +64,7 @@ class PacksRepository @Inject constructor(
         val result = when (gameType) {
             GameType.QUESTIONS -> packs.find { it.packType == QUESTIONS && it.packNumber.toInt() == packNumber }
             GameType.RANGES -> packs.find { it.packType == RANGES && it.packNumber.toInt() == packNumber }
-            GameType.RANKING -> packs.find { it.packType == RANKING && it.packNumber.toInt() == packNumber }
+            GameType.RANKING -> packs.find { it.packType == RANKINGS && it.packNumber.toInt() == packNumber }
         }
         return result?.toPack()
     }
@@ -74,10 +75,12 @@ class PacksRepository @Inject constructor(
         val packs = getPacks()
         val questions = packs.filter { it.packType == QUESTIONS }.getQuestionsPacks()
         val ranges = packs.filter { it.packType == RANGES }.getRangesPacks()
+        val rankings = packs.filter { it.packType == RANKINGS }.getRankingsPacks()
 
         return Packs(
             questionsPacks = questions.sortedBy { it.pack.packNumber },
             rangesPacks = ranges.sortedBy { it.pack.packNumber },
+            rankingsPacks = rankings.sortedBy { it.pack.packNumber },
         )
     }
 

@@ -10,6 +10,7 @@ import com.mmfsin.betweenminds.domain.models.QuestionsPack
 import com.mmfsin.betweenminds.domain.models.Range
 import com.mmfsin.betweenminds.domain.models.RangesPack
 import com.mmfsin.betweenminds.domain.models.Ranking
+import com.mmfsin.betweenminds.domain.models.RankingsPack
 
 fun QuestionDTO.toQuestion() = Question(
     question = question,
@@ -50,3 +51,6 @@ fun List<PackDTO>.getQuestionsPacks() = this.map { it.toQuestionPack() }
 
 fun PackDTO.toRangesPack() = RangesPack(pack = this.toPack())
 fun List<PackDTO>.getRangesPacks() = this.map { it.toRangesPack() }
+
+fun PackDTO.toRankingsPack() = RankingsPack(pack = this.toPack())
+fun List<PackDTO>.getRankingsPacks() = this.map { it.toRankingsPack() }

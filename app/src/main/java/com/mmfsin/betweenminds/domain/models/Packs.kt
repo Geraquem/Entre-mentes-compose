@@ -3,6 +3,7 @@ package com.mmfsin.betweenminds.domain.models
 data class Packs(
     val questionsPacks: List<QuestionsPack>,
     val rangesPacks: List<RangesPack>,
+    val rankingsPacks: List<RankingsPack>,
 )
 
 data class QuestionsPack(

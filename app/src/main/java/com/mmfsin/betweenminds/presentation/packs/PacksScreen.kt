@@ -189,6 +189,8 @@ fun PacksContent(
                         onClick = { purchasePacks() }
                     )
                 }
+
+                SpacerMedium()
             }
         }
 
