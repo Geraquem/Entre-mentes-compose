@@ -19,14 +19,9 @@ fun getPointsColor(dif: Int): Color {
     }
 }
 
-fun getTotalPoints(points: List<Int?>): Int {
-    var result = 0
-    points.forEach { p -> if (p != null) result += p }
-    return result
-}
-
-fun getAffinity(points: Int): String {
-    val value = (points.toFloat() / 60f) * 100f
+fun getAffinity(isOnline: Boolean, points: Int): String {
+    val totalScore = if (isOnline) 24f else 16f
+    val value = (points.toFloat() / totalScore) * 100f
     return if (value % 1f == 0f) value.toInt().toString()
     else "%.2f".format(value)
 }

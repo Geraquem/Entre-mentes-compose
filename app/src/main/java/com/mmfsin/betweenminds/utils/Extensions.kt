@@ -179,3 +179,9 @@ fun Modifier.shakeItemVertical(shake: Boolean): Modifier {
         IntOffset(x = 0, y = offsetY.value.roundToInt())
     }
 }
+
+fun getTotalPoints(points: List<Int?>): Int {
+    var result = 0
+    points.forEach { p -> if (p != null) result += p }
+    return result
+}

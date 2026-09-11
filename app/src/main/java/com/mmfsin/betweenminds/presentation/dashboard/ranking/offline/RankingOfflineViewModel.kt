@@ -134,7 +134,7 @@ class RankingOfflineViewModel @Inject constructor(
                     showComparativeList = true,
 
                     shakeVerticalTrigger = false,
-                    phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
+                    phase = if (states.roundCount != 0) NEXT_ROUND else RESULTS,
 
                     rankingPos = states.rankingPos + 1,
                     roundCount = states.roundCount + 1
@@ -185,6 +185,12 @@ class RankingOfflineViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
+
+    fun replay() {
+
     }
 
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }

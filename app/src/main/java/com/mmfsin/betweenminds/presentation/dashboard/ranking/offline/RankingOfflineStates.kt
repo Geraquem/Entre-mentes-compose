@@ -13,6 +13,7 @@ data class RankingOfflineStates(
 
     val showInitialDialog: Boolean = true,
     val showDialogBetweenPhases: Boolean = false,
+    val showResultDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
 

@@ -36,8 +36,8 @@ import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.august_shining
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getAffinityOffline
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getTotalPoints
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getAffinity
+import com.mmfsin.betweenminds.utils.getTotalPoints
 
 @Preview
 @Composable
@@ -53,7 +53,7 @@ fun ResultOfflineRangesDialog(
 ) {
 
     val totalPoints = getTotalPoints(points)
-    val affinity = getAffinityOffline(false, totalPoints)
+    val affinity = getAffinity(false, totalPoints)
 
     Dialog(
         onDismissRequest = {},

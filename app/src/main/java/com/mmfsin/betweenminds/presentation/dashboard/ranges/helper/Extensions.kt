@@ -26,13 +26,7 @@ fun getPointsColor(points: Int): Color {
     }
 }
 
-fun getTotalPoints(points: List<Int?>): Int {
-    var result = 0
-    points.forEach { p -> if (p != null) result += p }
-    return result
-}
-
-fun getAffinityOffline(isOnline: Boolean, points: Int): String {
+fun getAffinity(isOnline: Boolean, points: Int): String {
     val totalScore = if (isOnline) 30f else 20f
     val value = (points.toFloat() / totalScore) * 100f
     return if (value % 1f == 0f) value.toInt().toString()

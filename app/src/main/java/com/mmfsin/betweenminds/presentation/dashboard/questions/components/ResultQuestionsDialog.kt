@@ -38,7 +38,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.getAffinity
-import com.mmfsin.betweenminds.presentation.dashboard.questions.helper.getTotalPoints
+import com.mmfsin.betweenminds.utils.getTotalPoints
 
 @Preview
 @Composable

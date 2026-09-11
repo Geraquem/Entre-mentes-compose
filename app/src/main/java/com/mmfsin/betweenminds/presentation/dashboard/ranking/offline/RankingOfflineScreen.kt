@@ -64,6 +64,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.Draggab
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.ResultRankingOfflineDialog
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
@@ -91,6 +92,7 @@ fun RankingOfflineScreenPV() {
         ),
         {}, {}, {}, { _, _ -> },
         {}, {}, {}, {},
+        {},{},
     )
 }
 
@@ -109,7 +111,8 @@ fun RankingOfflineScreen(viewModel: RankingOfflineViewModel = hiltViewModel()) {
         readyOrderOne = { viewModel.readyOrderOne() },
         readyOrderTwo = { viewModel.readyOrderTwo() },
         handleNextRound = { viewModel.handleNextRound() },
-
+        showResultDialog = { viewModel.showResultDialog(it) },
+        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
     )
 }
@@ -124,7 +127,8 @@ fun RankingOfflineContent(
     readyOrderOne: () -> Unit,
     readyOrderTwo: () -> Unit,
     handleNextRound: () -> Unit,
-
+    showResultDialog: (Boolean) -> Unit,
+    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
@@ -352,7 +356,7 @@ fun RankingOfflineContent(
                                 ORDER_FIRST -> readyOrderOne()
                                 ORDER_SECOND -> readyOrderTwo()
                                 NEXT_ROUND -> handleNextRound()
-                                RESULTS -> {} //showResultDialog(true)
+                                RESULTS -> showResultDialog(true)
                             }
                         }
                     },
@@ -381,6 +385,15 @@ fun RankingOfflineContent(
                     isLoading = uiStates.isLoading
                 )
             }
+
+            if (uiStates.showResultDialog) {
+                ResultRankingOfflineDialog(
+                    points = uiStates.points,
+                    exit = { goBack() },
+                    replay = { replay() },
+                )
+            }
+
             if (uiStates.showExitDialog) {
                 ExitGameDialog(
                     exit = { goBack() },

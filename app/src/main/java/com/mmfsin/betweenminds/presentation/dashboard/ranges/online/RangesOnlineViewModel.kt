@@ -17,7 +17,7 @@ import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerORangesUseCase
 import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerRangesPointsUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.calculateRangePoints
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getTotalPoints
+import com.mmfsin.betweenminds.utils.getTotalPoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update

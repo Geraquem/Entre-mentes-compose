@@ -160,6 +160,9 @@
     <string name="endgame_online_ranges_your_teammate">Tu compañer@</string>
     <string name="endgame_online_ranges_total_points">Puntuación total</string>
 
+    <string name="endgame_ranking_max_points_offline">De un máximo de 16 puntos</string>
+    <string name="endgame_ranking_max_points_online">De un máximo de 24 puntos</string>
+
     <!-- ONLINE -->
     <string name="online_join_room">Unirse a sala</string>
     <string name="online_create_room">Crear sala</string>
