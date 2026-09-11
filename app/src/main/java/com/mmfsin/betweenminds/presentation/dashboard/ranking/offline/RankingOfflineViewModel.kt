@@ -190,7 +190,40 @@ class RankingOfflineViewModel @Inject constructor(
     fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
 
     fun replay() {
+        _uiState.update {
+            it.copy(
+                showResultDialog = false,
+                phase = ORDER_FIRST,
+                roundCount = 0,
+                showRoundView = true,
+                points = listOf(null, null, null, null),
+                buttonEnabled = false,
+            )
+        }
 
+        viewModelScope.launch {
+            delay(1500)
+            _uiState.update {
+                it.copy(
+                    showRoundView = false,
+                    actualRankingText = "",
+                    showComparativeList = false,
+
+                    actualRankings = listOf("", "", "", "").toMutableList(),
+                    actualRankingsAux = listOf("", "", "", "").toMutableList(),
+
+                    rankingBoxList = emptyRankingBoxList(),
+                    firstSortedList = emptyRankingBoxList(),
+                    secondSortedList = emptyRankingBoxList(),
+
+                    buttonEnabled = true,
+                    buttonText = R.string.btn_ready
+                )
+            }
+
+            delay(1000)
+            setRanking()
+        }
     }
 
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }

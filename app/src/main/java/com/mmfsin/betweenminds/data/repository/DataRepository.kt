@@ -110,23 +110,19 @@ class DataRepository @Inject constructor(
     }
 
     override suspend fun getRanking(): List<Ranking> {
-        return listOf(
-            RankingDTO(
-                pack = 0,
-                text = "AAAA",
-                option1 = "Desayuno",
-                option2 = "Comida",
-                option3 = "Merienda",
-                option4 = "Cena",
-            ),
-            RankingDTO(
-                pack = 0,
-                text = "BBB",
-                option1 = "BBBBB 1",
-                option2 = "BBBBB 2",
-                option3 = "BBBBB 3",
-                option4 = "BBBBB 4",
-            ),
-        ).toRankingList()
+        val a = mutableListOf<RankingDTO>()
+        repeat(6) { i ->
+            a.add(
+                RankingDTO(
+                    pack = 0,
+                    text = "text top ${i+1}",
+                    option1 = "option ${i+1}",
+                    option2 = "option ${i+1}",
+                    option3 = "option ${i+1}",
+                    option4 = "option ${i+1}",
+                ),
+            )
+        }
+        return a.toList().toRankingList()
     }
 }
