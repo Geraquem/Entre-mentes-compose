@@ -24,6 +24,7 @@ data class ConnectionStates(
 
     val startQuestionsOffline: Boolean = false,
     val startRangesOffline: Boolean = false,
+    val startRankingsOffline: Boolean = false,
 
     val packsTab: Int = 0,
     val instructionsNavGraph: String = "",

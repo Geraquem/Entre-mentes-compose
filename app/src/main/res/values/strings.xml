@@ -33,7 +33,7 @@
     <string name="selector_how_to_play">Aprender</string>
     <string name="selector_questions">Preguntas</string>
     <string name="selector_ranges">Escalas</string>
-    <string name="selector_ranking">Ranking</string>
+    <string name="selector_ranking">Rankings</string>
 
     <!-- GAME TYPE -->
     <string name="game_type_title">¿A qué quieres jugar?</string>

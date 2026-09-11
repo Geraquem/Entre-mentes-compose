@@ -200,7 +200,7 @@ class ConnectionViewModel @Inject constructor(
             when (type) {
                 QUESTIONS -> startQuestionsOffline(true)
                 RANGES -> startRangesOffline(true)
-                RANKING -> {}
+                RANKING -> startRankingsOffline(true)
             }
         }
     }
@@ -212,6 +212,7 @@ class ConnectionViewModel @Inject constructor(
 
     fun startQuestionsOffline(value: Boolean) = _uiState.update { it.copy(startQuestionsOffline = value) }
     fun startRangesOffline(value: Boolean) = _uiState.update { it.copy(startRangesOffline = value) }
+    fun startRankingsOffline(value: Boolean) = _uiState.update { it.copy(startRankingsOffline = value) }
 
     fun showLoading(value: Boolean) = _uiState.update { it.copy(isLoading = value) }
 
