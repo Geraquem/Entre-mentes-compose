@@ -249,18 +249,32 @@
     <string name="instr_ranking_1">Fase 1</string>
     <string name="instr_ranking_2">Dada una premisa, un jugador deberá ordenar bajo su propio criterio las opciones que aparecen en pantalla. Para ello arrastra con el dedo el texto hacia la caja que quiera.</string>
     <string name="instr_ranking_3">Las cajas también pueden reordenarse.</string>
-    <string name="instr_ranking_4">Cuando todas las cajas tengan una opción asignada, pulsa al botón Listo.</string>
+    <string name="instr_ranking_4">Cuando todas las cajas tengan una opción asignada, pulsa el botón Listo.</string>
     <string name="instr_ranking_5">Fase 2</string>
-    <string name="instr_ranking_6">Ahora las cajas y los textos vuelven a la posición inicial y es el turno del resto de jugadores, donde tratarán de adivinar el orden correcto que colocó el primer jugador.</string>
-    <string name="instr_ranking_7">Para ello hacen exactamente lo mismo, arrastran cada texto a la caja que consideren.</string>
-    <string name="instr_ranking_8">Cuando crean que tienen la asignación correcta, pulsan el botón Comprobar y se revelará la solución.</string>
-    <string name="instr_ranking_9">A la derecha de cada caja aparece la posición que el primer jugador asignó, si la caja se pone de color verde, está bien, si se pone roja, está mal.</string>
+    <string name="instr_ranking_6">Ahora las cajas y los textos vuelven a la posición inicial y es el turno del otro jugador, donde tratará de adivinar el orden correcto que colocó el primer jugador.</string>
+    <string name="instr_ranking_7">Para ello hace exactamente lo mismo, arrastra cada texto a la caja que considere.</string>
+    <string name="instr_ranking_8">Cuando crea que tiene la asignación correcta, pulsa el botón Comprobar para revelar la solución.</string>
+    <string name="instr_ranking_9">A la derecha de cada caja aparecerá la posición que el primer jugador asignó, si la caja se pone de color verde, está bien colocada, si se pone roja, está mal.</string>
     <string name="instr_ranking_10">Por cada caja colocada en la posición correcta, ganaréis 1 punto.</string>
     <string name="instr_ranking_11">El objetivo es obtener el mayor número de puntos en 4 rondas que dura la partida.</string>
     <string name="instr_ranking_example_top_text">Ordena de más a menos importante</string>
     <string name="instr_ranking_example_1">Dinero</string>
     <string name="instr_ranking_example_2">Amigos</string>
     <string name="instr_ranking_example_3">Salud</string>
-    <string name="instr_ranking_example_4">Pareja</string>
+    <string name="instr_ranking_example_4">Amor</string>
+
+    <string name="instr_online_ranking_1">Este modo cuenta con dos fases: la fase de ordenar y la fase de adivinar.</string>
+    <string name="instr_online_ranking_2">Fase de ordenar</string>
+    <string name="instr_online_ranking_3">A cada persona le aparecerá una frase y una serie de opciones que tendrá que ordenar siguiendo su propio criterio.</string>
+    <string name="instr_online_ranking_4">Para ordenar las opciones, basta con arrastrar cada opción a la caja que considere.</string>
+    <string name="instr_online_ranking_5">Una vez tenga el orden establecido, pulsará el botón Guardar respuesta.</string>
+    <string name="instr_online_ranking_6">Esta fase se repite 3 veces.</string>
+    <string name="instr_online_ranking_7">Fase de adivinar</string>
+    <string name="instr_online_ranking_8">Una vez los dos jugadores hayan enviado todas sus opciones ordenadas, se intercambian.</string>
+    <string name="instr_online_ranking_9">A cada jugador le llegarán las opciones que vio el otro jugador y el objetivo será tratar de ordenarlo de la misma manera.</string>
+    <string name="instr_online_ranking_10">En la solución, a la derecha de cada caja aparecerá el orden en el que debería estar, es decir, el orden que el otro jugador estableció previamente.</string>
+    <string name="instr_online_ranking_11">Las cajas que se pongan verde están bien colocadas, las que se pongan rojas mal.</string>
+    <string name="instr_online_ranking_12">Cuantas más opciones correctas ordenéis, más puntos conseguiréis.</string>
+    <string name="instr_online_ranking_13">El objetivo es sumar el máximo número de puntos entre los dos jugadores</string>
 
 </resources>
