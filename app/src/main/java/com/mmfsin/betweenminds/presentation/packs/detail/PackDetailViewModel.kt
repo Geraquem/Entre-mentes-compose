@@ -6,13 +6,17 @@ import com.mmfsin.betweenminds.domain.usecases.CheckIfPurchasedPacksUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPackByIdUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPackQuestionsUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetPackRangesUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetPackRankingsUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.GetSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.GetSelectedRankingsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedQuestionsPackUseCase
 import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedRangesPackUseCase
+import com.mmfsin.betweenminds.domain.usecases.UpdateSelectedRankingsPackUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
+import com.mmfsin.betweenminds.utils.RANKINGS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,10 +28,13 @@ class PackDetailViewModel @Inject constructor(
     private val getPackByIdUseCase: GetPackByIdUseCase,
     private val getPackQuestionsUseCase: GetPackQuestionsUseCase,
     private val getPackRangesUseCase: GetPackRangesUseCase,
+    private val getPackRankingsUseCase: GetPackRankingsUseCase,
     private val getSelectedQuestionsPackUseCase: GetSelectedQuestionsPackUseCase,
     private val getSelectedRangesPackUseCase: GetSelectedRangesPackUseCase,
+    private val getSelectedRankingsPackUseCase: GetSelectedRankingsPackUseCase,
     private val updateSelectedQuestionsPackUseCase: UpdateSelectedQuestionsPackUseCase,
     private val updateSelectedRangesPackUseCase: UpdateSelectedRangesPackUseCase,
+    private val updateSelectedRankingsPackUseCase: UpdateSelectedRankingsPackUseCase,
     private val checkIfPurchasedPacksUseCase: CheckIfPurchasedPacksUseCase,
 ) : BaseViewModel<PackDetailStates>(PackDetailStates()) {
 
@@ -79,6 +86,17 @@ class PackDetailViewModel @Inject constructor(
                 )
             }
 
+            RANKINGS -> {
+                executeUseCase(
+                    { getPackRankingsUseCase(packNumber) },
+                    { data ->
+                        _uiState.update { it.copy(rankings = data) }
+                        getSelectedRankingsPack()
+                    },
+                    { sww() }
+                )
+            }
+
             else -> sww()
         }
     }
@@ -104,6 +122,16 @@ class PackDetailViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = false) }
     }
 
+    private fun getSelectedRankingsPack() {
+        val states = uiState.value
+        viewModelScope.launch {
+            getSelectedRankingsPackUseCase().collect { selectedNumber ->
+                _uiState.update { it.copy(selected = states.pack?.packNumber == selectedNumber) }
+            }
+        }
+        _uiState.update { it.copy(isLoading = false) }
+    }
+
     fun selectPack() {
         val pack = uiState.value.pack
         if (pack == null) sww()
@@ -120,6 +148,14 @@ class PackDetailViewModel @Inject constructor(
                 RANGES -> {
                     executeUseCase(
                         { updateSelectedRangesPackUseCase(pack.packNumber) },
+                        {},
+                        { sww() }
+                    )
+                }
+
+                RANKINGS -> {
+                    executeUseCase(
+                        { updateSelectedRankingsPackUseCase(pack.packNumber) },
                         {},
                         { sww() }
                     )

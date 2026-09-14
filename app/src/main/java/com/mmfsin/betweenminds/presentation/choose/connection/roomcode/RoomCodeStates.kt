@@ -12,6 +12,7 @@ data class RoomCodeStates(
 
     val goToQuestionsCreator: Boolean = false,
     val goToRangesOnline: Boolean = false,
+    val goToRankingOnline: Boolean = false,
 
     val showSwwDialog: Boolean = false,
 )

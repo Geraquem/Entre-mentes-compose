@@ -109,7 +109,7 @@ class DataRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRanking(): List<Ranking> {
+    override suspend fun getRankings(): List<Ranking> {
         val a = mutableListOf<RankingDTO>()
         repeat(6) { i ->
             a.add(

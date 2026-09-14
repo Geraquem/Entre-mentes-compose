@@ -11,7 +11,7 @@ class GetRankingDataUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): List<Ranking> {
         val selectedPack = packRepository.getSelectedQPackId()
-        val rankings = dataRepository.getRanking()
+        val rankings = dataRepository.getRankings()
         return rankings/*.filter { it.pack == selectedPack.first() }.shuffled(Random(System.nanoTime()))*/
     }
 }

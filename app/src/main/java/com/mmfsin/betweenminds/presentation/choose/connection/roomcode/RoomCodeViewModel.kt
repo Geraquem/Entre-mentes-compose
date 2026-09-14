@@ -46,7 +46,7 @@ class RoomCodeViewModel @Inject constructor(
                 when (type) {
                     QUESTIONS -> goToQuestionsCreator()
                     RANGES -> goToRangesOnline()
-                    RANKING -> {}
+                    RANKING -> goToRankingOnline()
                 }
             },
             { sww() }
@@ -55,6 +55,7 @@ class RoomCodeViewModel @Inject constructor(
 
     private fun goToQuestionsCreator() = _uiState.update { it.copy(goToQuestionsCreator = true) }
     private fun goToRangesOnline() = _uiState.update { it.copy(goToRangesOnline = true) }
+    private fun goToRankingOnline() = _uiState.update { it.copy(goToRankingOnline = true) }
 
     private fun sww() = _uiState.update { it.copy(showSwwDialog = true) }
 }

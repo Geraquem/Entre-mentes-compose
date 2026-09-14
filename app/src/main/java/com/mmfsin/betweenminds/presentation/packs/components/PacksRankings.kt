@@ -129,7 +129,7 @@ fun RankingsPack(
         SpacerMedium()
 
         MediumText(
-            text = R.string.pack_include_ranges_as,
+            text = R.string.pack_include_rankings_as,
             fontWeight = FontWeight.SemiBold
         )
 
@@ -151,34 +151,16 @@ fun RankingsPack(
                         }
                         SpacerSmall(horizontal = true)
 
-                        SmallText(
-                            text = "ranking.leftRange",
-                            fontFamily = alphazet,
-                            gravity = TextAlign.Start,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                    SpacerSmall(horizontal = true)
-
-                    Row(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        SmallText(
-                            text = "ranking.rightRange",
-                            fontFamily = alphazet,
-                            gravity = TextAlign.End,
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        SpacerSmall(horizontal = true)
-
-                        Box(modifier = Modifier.padding(top = 8.dp)) {
-                            Box(
-                                modifier = Modifier.size(4.dp)
-                                    .clip(RoundedCornerShape(50))
-                                    .background(Black)
+                        Column {
+                            SmallText(
+                                text = ranking.text,
+                                fontFamily = alphazet,
+                                gravity = TextAlign.Start,
+                            )
+                            SmallText(
+                                text = ranking.rankings.joinToString(", "),
+                                fontFamily = alphazet,
+                                gravity = TextAlign.Start,
                             )
                         }
                     }

@@ -48,6 +48,7 @@ import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_ONLINE_JOINED
 import com.mmfsin.betweenminds.utils.NAV_RANGES_OFFLINE
 import com.mmfsin.betweenminds.utils.NAV_RANGES_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_RANKING_OFFLINE
+import com.mmfsin.betweenminds.utils.NAV_RANKING_ONLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
 @Preview
@@ -109,6 +110,15 @@ fun ConnectionScreen(
             boolArgs = false //isCreator = no
         )
         viewModel.joinToRangesOnline(false)
+    }
+
+    if (uiStates.joinToRankingOnline) {
+        context.openBedRockActivity(
+            NAV_RANKING_ONLINE,
+            uiStates.roomCodeToJoin,
+            boolArgs = false //isCreator = no
+        )
+        viewModel.joinToRankingOnline(false)
     }
 
     /**************** OFFLINE ****************/

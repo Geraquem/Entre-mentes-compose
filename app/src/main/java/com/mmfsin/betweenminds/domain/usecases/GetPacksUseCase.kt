@@ -13,6 +13,7 @@ class GetPacksUseCase @Inject constructor(
         val packs = packsRepository.getAllPacks()
         val questions = dataRepository.getQuestions()
         val ranges = dataRepository.getRanges()
+        val rankings = dataRepository.getRankings()
 
         val questionsPacks = packs.questionsPacks.map { p ->
             p.copy(questions = questions
@@ -28,9 +29,17 @@ class GetPacksUseCase @Inject constructor(
             )
         }
 
+        val rankingsPacks = packs.rankingsPacks.map { p ->
+            p.copy(rankings = rankings
+                .filter { it.pack == p.pack.packNumber }
+                .shuffled()
+            )
+        }
+
         return packs.copy(
             questionsPacks = questionsPacks,
-            rangesPacks = rangesPacks
+            rangesPacks = rangesPacks,
+            rankingsPacks = rankingsPacks,
         )
     }
 }

@@ -38,6 +38,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.instructions.questions.InstrOfflineQuestions
 import com.mmfsin.betweenminds.presentation.instructions.questions.InstrOnlineQuestions
 import com.mmfsin.betweenminds.presentation.instructions.ranges.InstrOfflineRanges
+import com.mmfsin.betweenminds.presentation.instructions.ranges.InstrOnlineRanges
 import com.mmfsin.betweenminds.presentation.instructions.ranking.InstrOfflineRanking
 import com.mmfsin.betweenminds.presentation.instructions.ranking.InstrOnlineRanking
 import kotlinx.coroutines.launch
@@ -126,7 +127,7 @@ fun InstructionsScreen(gameType: GameType, onlineMode: Boolean) {
                     0 -> {
                         when (gameType) {
                             QUESTIONS -> InstrOnlineQuestions()
-                            RANGES -> InstrOnlineQuestions()
+                            RANGES -> InstrOnlineRanges()
                             RANKING -> InstrOnlineRanking()
                         }
                     }

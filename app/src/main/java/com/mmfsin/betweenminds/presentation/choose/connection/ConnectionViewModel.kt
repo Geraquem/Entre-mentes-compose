@@ -78,7 +78,7 @@ class ConnectionViewModel @Inject constructor(
 
             RANKING -> {
                 _uiState.update {
-                    NAV_INSTR_RANGES_ONLINE
+                    NAV_INSTR_RANKING_ONLINE
                     it.copy(
                         packsTab = 2,
                         instructionsNavGraph = NAV_INSTR_RANKING_ONLINE
@@ -182,6 +182,7 @@ class ConnectionViewModel @Inject constructor(
                     when (states.gameType) {
                         QUESTIONS -> joinToQuestionsOnline(true)
                         RANGES -> joinToRangesOnline(true)
+                        RANKING -> joinToRankingOnline(true)
                         else -> sww()
                     }
                 } else joinedError(true)
@@ -209,6 +210,7 @@ class ConnectionViewModel @Inject constructor(
 
     fun joinToQuestionsOnline(value: Boolean) = _uiState.update { it.copy(joinToQuestionsOnline = value) }
     fun joinToRangesOnline(value: Boolean) = _uiState.update { it.copy(joinToRangesOnline = value) }
+    fun joinToRankingOnline(value: Boolean) = _uiState.update { it.copy(joinToRankingOnline = value) }
 
     fun startQuestionsOffline(value: Boolean) = _uiState.update { it.copy(startQuestionsOffline = value) }
     fun startRangesOffline(value: Boolean) = _uiState.update { it.copy(startRangesOffline = value) }

@@ -9,5 +9,5 @@ interface IDataRepository {
 
     suspend fun getQuestions(): List<Question>
     suspend fun getRanges(): List<Range>
-    suspend fun getRanking(): List<Ranking>
+    suspend fun getRankings(): List<Ranking>
 }

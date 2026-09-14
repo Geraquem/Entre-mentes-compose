@@ -6,7 +6,6 @@ import com.mmfsin.betweenminds.domain.models.Question
 import javax.inject.Inject
 
 class GetPackQuestionsUseCase @Inject constructor(
-    private val packRepository: IPacksRepository,
     private val dataRepository: IDataRepository
 ) {
     suspend operator fun invoke(packNumber: Int): List<Question> {

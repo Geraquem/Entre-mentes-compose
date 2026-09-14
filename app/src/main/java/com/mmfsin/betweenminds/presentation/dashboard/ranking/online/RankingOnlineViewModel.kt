@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline
+package com.mmfsin.betweenminds.presentation.dashboard.ranking.online
 
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.R
@@ -10,6 +10,7 @@ import com.mmfsin.betweenminds.domain.models.emptyRankingBoxList
 import com.mmfsin.betweenminds.domain.usecases.GetRankingDataUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.calculatePoints
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.RankingOfflineStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -17,12 +18,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RankingOfflineViewModel @Inject constructor(
+class RankingOnlineViewModel @Inject constructor(
     private val getRankingDataUseCase: GetRankingDataUseCase
-) : BaseViewModel<RankingOfflineStates>(RankingOfflineStates()) {
+) : BaseViewModel<RankingOnlineStates>(RankingOnlineStates()) {
 
     init {
         getRankings()
+    }
+
+    fun updateRoomCodeAndStatus(code: String?, isCreator: Boolean?) {
+        if (code == null || isCreator == null) {
+            sww()
+        } else _uiState.update {
+            it.copy(
+                roomCode = code,
+                isCreator = isCreator
+            )
+        }
     }
 
     fun getRankings() {

@@ -21,6 +21,7 @@ data class ConnectionStates(
 
     val joinToQuestionsOnline: Boolean = false,
     val joinToRangesOnline: Boolean = false,
+    val joinToRankingOnline: Boolean = false,
 
     val startQuestionsOffline: Boolean = false,
     val startRangesOffline: Boolean = false,

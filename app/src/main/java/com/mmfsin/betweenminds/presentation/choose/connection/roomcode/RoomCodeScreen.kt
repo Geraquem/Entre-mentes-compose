@@ -36,6 +36,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.utils.NAV_QUESTIONS_ONLINE_CREATOR
 import com.mmfsin.betweenminds.utils.NAV_RANGES_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_RANKING_ONLINE
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
 @Preview
@@ -73,6 +74,15 @@ fun RoomCodeScreen(
     if (uiStates.goToRangesOnline) {
         context.openBedRockActivity(
             navGraph = NAV_RANGES_ONLINE,
+            strArgs = uiStates.roomCode,
+            boolArgs = true //isCreator = yes
+        )
+        goBack()
+    }
+
+    if (uiStates.goToRankingOnline) {
+        context.openBedRockActivity(
+            navGraph = NAV_RANKING_ONLINE,
             strArgs = uiStates.roomCode,
             boolArgs = true //isCreator = yes
         )

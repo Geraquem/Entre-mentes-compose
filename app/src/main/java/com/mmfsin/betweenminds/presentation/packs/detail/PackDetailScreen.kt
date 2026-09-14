@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,7 @@ fun PackDetailPV() {
             pack = Pack(
                 packTitle = "Para parejas",
                 packDescription = "Si pensabas que ya os habíais exprimido al máximo, aquí hay otras 50 preguntas diferentes para que sigáis dándole al coco y descubriendo cómo de diferente pensáis sobre vosotros mismos."
-            )
+            ),
         ),
         {}, {}
     )
@@ -142,6 +143,9 @@ fun PackDetailComponent(
                             }
                             uiStates.ranges.forEach { r ->
                                 item { RangeItem(r.leftRange, r.rightRange) }
+                            }
+                            uiStates.rankings.forEach { r ->
+                                item { RankingItem(r.text, r.rankings) }
                             }
                         }
                     }
@@ -242,6 +246,41 @@ fun RangeItem(leftText: String, rightText: String) {
                     modifier = Modifier.size(4.dp)
                         .clip(RoundedCornerShape(50))
                         .background(White)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RankingItem(text: String, rankings: List<String>) {
+    Row {
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Box(modifier = Modifier.padding(top = 8.dp)) {
+                Box(
+                    modifier = Modifier.size(4.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(White)
+                )
+            }
+            SpacerSmall(horizontal = true)
+
+            Column {
+                SmallText(
+                    text = text,
+                    fontFamily = alphazet,
+                    fontWeight = FontWeight.SemiBold,
+                    gravity = TextAlign.Start,
+                    color = White,
+                )
+                SmallText(
+                    text = rankings.joinToString(", "),
+                    fontFamily = alphazet,
+                    gravity = TextAlign.Start,
+                    color = White,
                 )
             }
         }
