@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components
+package com.mmfsin.betweenminds.presentation.dashboard.ranking.online.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -36,23 +36,26 @@ import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.august_shining
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.PointsTable
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.getAffinity
 import com.mmfsin.betweenminds.utils.getTotalPoints
 
 @Preview
 @Composable
-fun ResultRankingOfflineDialogPV() {
-    ResultRankingOfflineDialog(listOf(2, 1, 4, 0), { }, {})
+fun ResultRankingOnlineDialogPV() {
+    ResultRankingOnlineDialog(listOf(2, 1, 0), 4,{ }, {})
 }
 
 @Composable
-fun ResultRankingOfflineDialog(
-    points: List<Int?>,
+fun ResultRankingOnlineDialog(
+    myPoints: List<Int?>,
+    otherPlayerPoints: Int,
     exit: () -> Unit,
     replay: () -> Unit,
 ) {
-    val totalPoints = getTotalPoints(points)
-    val affinity = getAffinity(false, totalPoints)
+    val userPoints = getTotalPoints(myPoints)
+    val totalPoints = userPoints + otherPlayerPoints
+    val affinity = getAffinity(true, totalPoints)
 
     Dialog(
         onDismissRequest = {},
@@ -82,7 +85,7 @@ fun ResultRankingOfflineDialog(
                 SpacerLarge()
 
                 MediumText(
-                    text = R.string.endgame_ranking_max_points_offline,
+                    text = R.string.endgame_ranking_max_points_online,
                     fontSize = 20.sp,
                 )
 
@@ -103,6 +106,13 @@ fun ResultRankingOfflineDialog(
                     fontWeight = FontWeight.Bold,
                     fontFamily = august_shining,
                     fontSize = 32.sp,
+                )
+
+                SpacerLarge()
+
+                PointsTable(
+                    userPoints = userPoints,
+                    otherPlayerPoints = otherPlayerPoints
                 )
 
                 SpacerLarge()

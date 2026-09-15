@@ -116,10 +116,10 @@ class DataRepository @Inject constructor(
                 RankingDTO(
                     pack = 0,
                     text = "text top ${i+1}",
-                    option1 = "option ${i+1}",
-                    option2 = "option ${i+1}",
-                    option3 = "option ${i+1}",
-                    option4 = "option ${i+1}",
+                    option1 = "option A${i+1}",
+                    option2 = "option B${i+1}",
+                    option3 = "option C${i+1}",
+                    option4 = "option D${i+1}",
                 ),
             )
         }

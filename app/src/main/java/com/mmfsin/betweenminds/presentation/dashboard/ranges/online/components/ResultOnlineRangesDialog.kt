@@ -163,7 +163,7 @@ fun ResultOnlineRangesDialog(
 
 @Composable
 fun PointsTable(userPoints: Int, otherPlayerPoints: Int) {
-    Column() {
+    Column {
         Row(modifier = Modifier.fillMaxWidth()) {
             SpacerMedium(horizontal = true)
 

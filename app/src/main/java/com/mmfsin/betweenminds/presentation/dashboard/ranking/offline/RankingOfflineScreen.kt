@@ -266,7 +266,6 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[0],
                                 index = 0,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 0,
                                 updateBounds = { bounds -> sourceBounds[0] = bounds },
@@ -286,7 +285,6 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[1],
                                 index = 1,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 1,
                                 updateBounds = { bounds -> sourceBounds[1] = bounds },
@@ -311,7 +309,6 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[2],
                                 index = 2,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 2,
                                 updateBounds = { bounds -> sourceBounds[2] = bounds },
@@ -331,7 +328,6 @@ fun RankingOfflineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[3],
                                 index = 3,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 3,
                                 updateBounds = { bounds -> sourceBounds[3] = bounds },

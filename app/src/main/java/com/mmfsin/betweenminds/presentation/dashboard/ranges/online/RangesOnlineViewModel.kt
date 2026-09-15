@@ -260,7 +260,7 @@ class RangesOnlineViewModel @Inject constructor(
                     buttonEnabled = false,
                     sliderEnabled = false,
                     phase = MOVE_ARROW,
-                    showOtherPlayerRangesDialog = true,
+                    showOtherPlayerDataDialog = true,
                 )
             }
             delay(2500)
@@ -288,7 +288,7 @@ class RangesOnlineViewModel @Inject constructor(
                 actualRangeLeft = newRange.leftRange,
                 actualRangeRight = newRange.rightRange,
                 buttonText = R.string.btn_check,
-                showOtherPlayerRangesDialog = false
+                showOtherPlayerDataDialog = false
             )
         }
     }
@@ -464,7 +464,7 @@ class RangesOnlineViewModel @Inject constructor(
     fun openCurtains() = _uiState.update { it.copy(curtainsOpen = true) }
     fun closeCurtains() = _uiState.update { it.copy(curtainsOpen = false) }
 
-    fun showOtherPlayerRangesDialog(value: Boolean) = _uiState.update { it.copy(showOtherPlayerRangesDialog = value) }
+    fun showOtherPlayerRangesDialog(value: Boolean) = _uiState.update { it.copy(showOtherPlayerDataDialog = value) }
     fun showWaitingOtherPlayerDialog(value: Boolean) = _uiState.update { it.copy(showWaitingOtherPlayerDialog = value) }
     fun showExitDialog(value: Boolean) = _uiState.update { it.copy(showExitDialog = value) }
 

@@ -17,7 +17,7 @@ data class RangesOnlineStates(
 
     val showInitialDialog: Boolean = true,
     val showResultDialog: Boolean = false,
-    val showOtherPlayerRangesDialog: Boolean = false,
+    val showOtherPlayerDataDialog: Boolean = false,
     val showWaitingOtherPlayerDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,

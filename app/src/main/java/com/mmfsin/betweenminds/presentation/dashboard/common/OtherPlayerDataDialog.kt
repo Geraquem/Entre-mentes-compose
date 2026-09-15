@@ -1,4 +1,4 @@
-package com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components
+package com.mmfsin.betweenminds.presentation.dashboard.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.courier
 
 @Preview(showBackground = true)
 @Composable
-fun OtherPlayerRangesDialog(
+fun OtherPlayerDataDialog(
 ) {
     Dialog(
         onDismissRequest = {},

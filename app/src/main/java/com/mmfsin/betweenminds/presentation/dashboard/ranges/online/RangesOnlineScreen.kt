@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.domain.models.GameType.*
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.MOVE_ARROW
 import com.mmfsin.betweenminds.domain.models.RangePhaseType.NEXT_ROUND
@@ -73,7 +72,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.Bullseye
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeLimits
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.components.RangeRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.InitialOnlineRangesDialog
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.OtherPlayerRangesDialog
+import com.mmfsin.betweenminds.presentation.dashboard.common.OtherPlayerDataDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.ResultOnlineRangesDialog
 import com.mmfsin.betweenminds.utils.AnimateX
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
@@ -374,8 +373,8 @@ fun RangesOnlineContent(
                 WaitingPartnerDialog(goBack = { showExitDialog(true) })
             }
 
-            if (uiStates.showOtherPlayerRangesDialog) {
-                OtherPlayerRangesDialog()
+            if (uiStates.showOtherPlayerDataDialog) {
+                OtherPlayerDataDialog()
             }
 
             if (uiStates.showResultDialog) {

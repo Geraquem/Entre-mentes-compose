@@ -13,6 +13,7 @@ import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsO
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRangesOffline
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRangesOnline
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRankingOffline
+import com.mmfsin.betweenminds.presentation.core.navigation.NavigationRankingsOnline
 import com.mmfsin.betweenminds.presentation.instructions.InstructionsScreen
 import com.mmfsin.betweenminds.utils.BEDROCK_BOOL_ARGS
 import com.mmfsin.betweenminds.utils.BEDROCK_NAV_GRAPH
@@ -52,7 +53,7 @@ class BedRockActivity : ComponentActivity() {
                 NAV_RANGES_ONLINE -> NavigationRangesOnline(roomCode = strArgs, isCreator = boolArgs)
                 NAV_RANGES_OFFLINE -> NavigationRangesOffline()
 
-                NAV_RANKING_ONLINE -> {}
+                NAV_RANKING_ONLINE -> NavigationRankingsOnline(roomCode = strArgs, isCreator = boolArgs)
                 NAV_RANKING_OFFLINE -> NavigationRankingOffline()
 
                 /** Instructions */

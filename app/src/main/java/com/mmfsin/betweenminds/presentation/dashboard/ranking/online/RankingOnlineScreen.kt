@@ -59,13 +59,15 @@ import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
+import com.mmfsin.betweenminds.presentation.dashboard.common.OtherPlayerDataDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
+import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.DraggableOption
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
-import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.ResultRankingOfflineDialog
-import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.online.components.ResultRankingOnlineDialog
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
@@ -83,7 +85,8 @@ fun RankingOnlineScreenPV() {
 
         ),
         {}, {}, {}, { _, _ -> },
-        {},
+        {}, {}, {}, {},
+        {},{},
     )
 }
 
@@ -107,8 +110,11 @@ fun RankingOnlineScreen(
         goToInstructions = { context.goToInstructions() },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         swapTexts = { targetIndex, sourceIndex -> viewModel.swapTexts(targetIndex, sourceIndex) },
-
-
+        checkFirstPhase = { viewModel.checkFirstPhase() },
+        checkSecondPhase = { viewModel.checkSecondPhase() },
+        handleNextRoundSecondPhase = { viewModel.handleNextRoundSecondPhase() },
+        sendMyResult = { viewModel.sendMyResult() },
+        replay = { viewModel.replay() },
         showExitDialog = { viewModel.showExitDialog(it) }
     )
 }
@@ -120,8 +126,11 @@ fun RankingOnlineContent(
     goToInstructions: () -> Unit,
     hideInitialDialog: () -> Unit,
     swapTexts: (Int, Int) -> Unit,
-
-
+    checkFirstPhase: () -> Unit,
+    checkSecondPhase: () -> Unit,
+    handleNextRoundSecondPhase: () -> Unit,
+    sendMyResult: () -> Unit,
+    replay: () -> Unit,
     showExitDialog: (Boolean) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
@@ -259,7 +268,6 @@ fun RankingOnlineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[0],
                                 index = 0,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 0,
                                 updateBounds = { bounds -> sourceBounds[0] = bounds },
@@ -279,7 +287,6 @@ fun RankingOnlineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[1],
                                 index = 1,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 1,
                                 updateBounds = { bounds -> sourceBounds[1] = bounds },
@@ -304,7 +311,6 @@ fun RankingOnlineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[2],
                                 index = 2,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 2,
                                 updateBounds = { bounds -> sourceBounds[2] = bounds },
@@ -324,7 +330,6 @@ fun RankingOnlineContent(
                             DraggableOption(
                                 text = uiStates.actualRankings[3],
                                 index = 3,
-                                dragEnabled = uiStates.dragEnabled,
                                 sourceBounds = sourceBounds,
                                 sourceBoundsIndex = 3,
                                 updateBounds = { bounds -> sourceBounds[3] = bounds },
@@ -346,10 +351,10 @@ fun RankingOnlineContent(
                     onClick = {
                         if (uiStates.buttonEnabled) {
                             when (uiStates.phase) {
-                                ORDER_FIRST -> {} //readyOrderOne()
-                                ORDER_SECOND -> {} //readyOrderTwo()
-                                NEXT_ROUND -> {} //handleNextRound()
-                                RESULTS -> {} //showResultDialog(true)
+                                ORDER_FIRST -> checkFirstPhase()
+                                ORDER_SECOND -> checkSecondPhase()
+                                NEXT_ROUND -> handleNextRoundSecondPhase()
+                                RESULTS -> sendMyResult()
                             }
                         }
                     },
@@ -379,11 +384,20 @@ fun RankingOnlineContent(
                 )
             }
 
+            if (uiStates.showWaitingOtherPlayerDialog) {
+                WaitingPartnerDialog(goBack = { showExitDialog(true) })
+            }
+
+            if (uiStates.showOtherPlayerDataDialog) {
+                OtherPlayerDataDialog()
+            }
+
             if (uiStates.showResultDialog) {
-                ResultRankingOfflineDialog(
-                    points = uiStates.points,
+                ResultRankingOnlineDialog(
+                    myPoints = uiStates.points,
+                    otherPlayerPoints = uiStates.otherPlayerPoints,
                     exit = { goBack() },
-                    replay = { /*replay()*/ },
+                    replay = { replay() },
                 )
             }
 
@@ -401,4 +415,4 @@ fun RankingOnlineContent(
     }
 }
 
-private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANGES_ONLINE)
+private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANKING_ONLINE)

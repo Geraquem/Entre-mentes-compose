@@ -2,15 +2,23 @@ package com.mmfsin.betweenminds.presentation.dashboard.ranking.online
 
 import androidx.lifecycle.viewModelScope
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.OnlineRankingData
+import com.mmfsin.betweenminds.domain.models.OnlineRankingRoundData
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.NEXT_ROUND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_FIRST
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.ORDER_SECOND
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType.RESULTS
 import com.mmfsin.betweenminds.domain.models.emptyRankingBoxList
 import com.mmfsin.betweenminds.domain.usecases.GetRankingDataUseCase
+import com.mmfsin.betweenminds.domain.usecases.RestartGameAndResetRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.SendMyORankingDataToRoomUseCase
+import com.mmfsin.betweenminds.domain.usecases.SendMyRankingsPointsUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitCreatorToRestartORangesUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerORankingsUseCase
+import com.mmfsin.betweenminds.domain.usecases.WaitOtherPlayerRankingsPointsUseCase
 import com.mmfsin.betweenminds.presentation.core.base.BaseViewModel
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.calculatePoints
-import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.RankingOfflineStates
+import com.mmfsin.betweenminds.utils.getTotalPoints
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
@@ -19,7 +27,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RankingOnlineViewModel @Inject constructor(
-    private val getRankingDataUseCase: GetRankingDataUseCase
+    private val getRankingDataUseCase: GetRankingDataUseCase,
+    private val sendMyORankingDataToRoomUseCase: SendMyORankingDataToRoomUseCase,
+    private val waitOtherPlayerORankingsUseCase: WaitOtherPlayerORankingsUseCase,
+    private val sendMyRankingsPointsUseCase: SendMyRankingsPointsUseCase,
+    private val waitOtherPlayerRankingsPointsUseCase: WaitOtherPlayerRankingsPointsUseCase,
+    private val waitCreatorToRestartORangesUseCase: WaitCreatorToRestartORangesUseCase,
+    private val restartGameAndResetRoomUseCase: RestartGameAndResetRoomUseCase
 ) : BaseViewModel<RankingOnlineStates>(RankingOnlineStates()) {
 
     init {
@@ -43,17 +57,12 @@ class RankingOnlineViewModel @Inject constructor(
             { rankings ->
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
-                        rankings = rankings
+                        rankings = rankings,
+                        isLoading = false
                     )
                 }
 
                 setRanking()
-
-                /** */
-                hideInitialDialog()
-                /** */
-
             },
             { sww() }
         )
@@ -74,7 +83,7 @@ class RankingOnlineViewModel @Inject constructor(
                 it.copy(
                     actualRankingText = newRanking.text,
                     actualRankings = newRanking.rankings.toMutableList(),
-                    actualRankingsAux = newRanking.rankings.toMutableList()
+                    actualRankingsAux = newRanking.rankings.toMutableList(),
                 )
             }
         }
@@ -93,37 +102,137 @@ class RankingOnlineViewModel @Inject constructor(
         val boxItem = states.rankingBoxList[targetIndex]
         val optionItem = states.actualRankings[sourceIndex]
 
-        states.rankingBoxList[targetIndex] = boxItem.copy(text = optionItem)
-        states.actualRankings[sourceIndex] = boxItem.text
+        if (optionItem != "") {
+            states.rankingBoxList[targetIndex] = boxItem.copy(text = optionItem)
+            states.actualRankings[sourceIndex] = boxItem.text
+        }
     }
 
-    fun readyOrderOne() {
+    fun checkFirstPhase() {
         val states = uiState.value
-        if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
-            _uiState.update {
-                it.copy(
-                    phase = ORDER_SECOND,
-                    buttonEnabled = false,
-                    buttonText = R.string.btn_check,
-                    firstSortedList = states.rankingBoxList,
-                    actualRankings = states.actualRankingsAux,
-                    rankingBoxList = emptyRankingBoxList(),
-                    shakeVerticalTrigger = true
-                )
-            }
 
-            viewModelScope.launch {
-                delay(1000)
-                _uiState.update {
-                    it.copy(
-                        buttonEnabled = true,
-                    )
+        if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
+
+            val data = OnlineRankingRoundData(
+                round = states.roundCount,
+                text = states.actualRankingText,
+                rankingTexts = states.actualRankingsAux,
+                rankingsSorted = states.rankingBoxList
+            )
+
+            _uiState.update { it.copy(roundData = states.roundData.toMutableList().apply { this[states.roundCount] = data }) }
+
+            if ((states.roundCount) > 1) {
+                readyFirstPhase()
+            } else {
+                viewModelScope.launch {
+                    _uiState.update {
+                        it.copy(
+                            showRoundView = true,
+                            roundCount = states.roundCount + 1,
+                            rankingPos = states.rankingPos + 1,
+                            buttonEnabled = false,
+                            dragEnabled = false,
+                        )
+                    }
+                    delay(1500)
+                    setRanking()
+                    _uiState.update {
+                        it.copy(
+                            showRoundView = false,
+                            rankingBoxList = emptyRankingBoxList(),
+                        )
+                    }
+                    delay(750)
+                    _uiState.update {
+                        it.copy(
+                            dragEnabled = true,
+                            buttonEnabled = true
+                        )
+                    }
                 }
             }
         }
     }
 
-    fun readyOrderTwo() {
+    fun readyFirstPhase() {
+        val states = uiState.value
+        _uiState.update {
+            it.copy(
+                showWaitingOtherPlayerDialog = true,
+                phase = ORDER_SECOND,
+                buttonEnabled = false,
+                dragEnabled = false,
+                rankingBoxList = emptyRankingBoxList(),
+            )
+        }
+
+        if (states.roundData.all { it != null }) {
+            val myData = OnlineRankingData(
+                roomId = states.roomCode,
+                isCreator = states.isCreator,
+                data = states.roundData.filterNotNull()
+            )
+            executeUseCase(
+                { sendMyORankingDataToRoomUseCase.execute(myData) },
+                { waitForOtherPlayerData() },
+                { sww() }
+            )
+        } else sww()
+    }
+
+    private fun waitForOtherPlayerData() {
+        val states = uiState.value
+        executeUseCase(
+            {
+                waitOtherPlayerORankingsUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = states.isCreator
+                )
+            },
+            { data ->
+                _uiState.update {
+                    it.copy(
+                        otherPlayerData = data,
+                        showWaitingOtherPlayerDialog = false
+                    )
+                }
+                if (data.isEmpty()) sww() else startSecondPhase()
+            },
+            { sww() }
+        )
+    }
+
+    private fun startSecondPhase() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(showOtherPlayerDataDialog = true) }
+            delay(2500)
+            _uiState.update {
+                it.copy(
+                    buttonText = R.string.btn_check,
+                    buttonEnabled = true,
+                    dragEnabled = true,
+                    roundCount = 0,
+                    showOtherPlayerDataDialog = false,
+                )
+            }
+            setOtherPlayerData()
+        }
+    }
+
+    fun setOtherPlayerData() {
+        val states = uiState.value
+        val newRange = states.otherPlayerData[states.roundCount]
+        _uiState.update {
+            it.copy(
+                actualRankingText = newRange.text,
+                actualRankings = newRange.rankingTexts.toMutableList(),
+                firstSortedList = newRange.rankingsSorted.toMutableList()
+            )
+        }
+    }
+
+    fun checkSecondPhase() {
         val states = uiState.value
         if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
 
@@ -144,11 +253,10 @@ class RankingOnlineViewModel @Inject constructor(
                     shakeTrigger = roundPoints == 0,
 
                     showComparativeList = true,
-
                     shakeVerticalTrigger = false,
-                    phase = if (states.roundCount != 3) NEXT_ROUND else RESULTS,
 
-                    rankingPos = states.rankingPos + 1,
+                    phase = if (states.roundCount != 2) NEXT_ROUND else RESULTS,
+
                     roundCount = states.roundCount + 1
                 )
             }
@@ -158,14 +266,14 @@ class RankingOnlineViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         buttonEnabled = true,
-                        buttonText = if (states.roundCount != 3) R.string.btn_next_round else R.string.btn_see_result
+                        buttonText = if (states.roundCount != 2) R.string.btn_next_round else R.string.btn_see_result
                     )
                 }
             }
         }
     }
 
-    fun handleNextRound() {
+    fun handleNextRoundSecondPhase() {
         _uiState.update {
             it.copy(
                 showRoundView = true,
@@ -181,12 +289,12 @@ class RankingOnlineViewModel @Inject constructor(
                     showComparativeList = false,
                     confettiTrigger = 0,
                     rankingBoxList = emptyRankingBoxList(),
-                    phase = ORDER_FIRST,
-                    buttonText = R.string.btn_ready,
+                    phase = ORDER_SECOND,
+                    buttonText = R.string.btn_check,
                     showRoundView = false,
                 )
             }
-            setRanking()
+            setOtherPlayerData()
 
             delay(250)
 
@@ -199,17 +307,83 @@ class RankingOnlineViewModel @Inject constructor(
         }
     }
 
-    fun showResultDialog(value: Boolean) = _uiState.update { it.copy(showResultDialog = value) }
+    fun sendMyResult() {
+        _uiState.update { it.copy(showWaitingOtherPlayerDialog = true) }
+        val states = uiState.value
+        val points = getTotalPoints(states.points)
+
+        executeUseCase(
+            {
+                sendMyRankingsPointsUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = states.isCreator,
+                    points = points
+                )
+            },
+            { waitToOtherPlayerResult() },
+            { sww() }
+        )
+    }
+
+    private fun waitToOtherPlayerResult() {
+        val states = uiState.value
+        executeUseCase(
+            {
+                waitOtherPlayerRankingsPointsUseCase.execute(
+                    roomId = states.roomCode,
+                    isCreator = states.isCreator
+                )
+            },
+            { otherPlayerPoints ->
+                _uiState.update {
+                    it.copy(
+                        otherPlayerPoints = otherPlayerPoints,
+                        showWaitingOtherPlayerDialog = false,
+                        showResultDialog = true
+                    )
+                }
+            },
+            { sww() }
+        )
+    }
 
     fun replay() {
+        val states = uiState.value
+        if (states.isCreator) {
+            executeUseCase(
+                { restartGameAndResetRoomUseCase.execute(states.roomCode) },
+                { gameRestarted() },
+                { sww() }
+            )
+        } else {
+            _uiState.update {
+                it.copy(
+                    showResultDialog = false,
+                    showWaitingOtherPlayerDialog = true
+                )
+            }
+            executeUseCase(
+                { waitCreatorToRestartORangesUseCase.execute(states.roomCode) },
+                { gameRestarted() },
+                { sww() }
+            )
+        }
+    }
+
+    fun gameRestarted() {
+        val states = uiState.value
         _uiState.update {
             it.copy(
                 showResultDialog = false,
+                showWaitingOtherPlayerDialog = false,
                 phase = ORDER_FIRST,
                 roundCount = 0,
                 showRoundView = true,
-                points = listOf(null, null, null, null),
+                points = listOf(null, null, null),
+                otherPlayerPoints = 0,
+                rankingPos = states.rankingPos + 1,
                 buttonEnabled = false,
+                dragEnabled = false
             )
         }
 
@@ -229,7 +403,8 @@ class RankingOnlineViewModel @Inject constructor(
                     secondSortedList = emptyRankingBoxList(),
 
                     buttonEnabled = true,
-                    buttonText = R.string.btn_ready
+                    dragEnabled = true,
+                    buttonText = R.string.online_btn_save_answer
                 )
             }
 

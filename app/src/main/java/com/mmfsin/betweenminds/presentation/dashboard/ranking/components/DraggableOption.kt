@@ -20,12 +20,10 @@ import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 
-
 @Composable
 fun DraggableOption(
     text: String,
     index: Int,
-    dragEnabled: Boolean,
 
     sourceBounds: SnapshotStateMap<Int, Rect>,
     sourceBoundsIndex: Int,
@@ -59,41 +57,35 @@ fun DraggableOption(
 
                 detectDragGestures(
                     onDragStart = {
-                        if (dragEnabled) {
-                            currentOffset = Offset.Zero
-                            currentTargetIndex = -1
+                        currentOffset = Offset.Zero
+                        currentTargetIndex = -1
 
-                            updateDraggedIndex(index)
-                            updateDragOffset(Offset.Zero)
-                        }
+                        updateDraggedIndex(index)
+                        updateDragOffset(Offset.Zero)
                     },
                     onDrag = { change, amount ->
-                        if (dragEnabled) {
-                            change.consume()
+                        change.consume()
 
-                            currentOffset += amount
-                            updateDragOffset(amount)
+                        currentOffset += amount
+                        updateDragOffset(amount)
 
-                            val source = sourceBounds[sourceBoundsIndex]
-                            val position = source?.center?.plus(currentOffset)
+                        val source = sourceBounds[sourceBoundsIndex]
+                        val position = source?.center?.plus(currentOffset)
 
-                            currentTargetIndex = boxBounds.entries
-                                .firstOrNull { (_, bounds) ->
-                                    position != null && bounds.contains(position)
-                                }?.key ?: -1
+                        currentTargetIndex = boxBounds.entries
+                            .firstOrNull { (_, bounds) ->
+                                position != null && bounds.contains(position)
+                            }?.key ?: -1
 
-                            updateTargetIndex(currentTargetIndex)
-                        }
+                        updateTargetIndex(currentTargetIndex)
                     },
                     onDragEnd = {
-                        if (dragEnabled) {
-                            if (currentTargetIndex != -1) {
-                                swapTexts()
-                            }
-
-                            updateDraggedIndex(-1)
-                            updateDragOffset(Offset.Zero)
+                        if (currentTargetIndex != -1) {
+                            swapTexts()
                         }
+
+                        updateDraggedIndex(-1)
+                        updateDragOffset(Offset.Zero)
                     }
                 )
             },

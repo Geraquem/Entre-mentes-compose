@@ -81,8 +81,10 @@ class RankingOfflineViewModel @Inject constructor(
         val boxItem = states.rankingBoxList[targetIndex]
         val optionItem = states.actualRankings[sourceIndex]
 
-        states.rankingBoxList[targetIndex] = boxItem.copy(text = optionItem)
-        states.actualRankings[sourceIndex] = boxItem.text
+        if (optionItem != "") {
+            states.rankingBoxList[targetIndex] = boxItem.copy(text = optionItem)
+            states.actualRankings[sourceIndex] = boxItem.text
+        }
     }
 
     fun readyOrderOne() {

@@ -1,6 +1,7 @@
 package com.mmfsin.betweenminds.presentation.dashboard.ranking.online
 
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.OnlineRankingRoundData
 import com.mmfsin.betweenminds.domain.models.Ranking
 import com.mmfsin.betweenminds.domain.models.RankingBox
 import com.mmfsin.betweenminds.domain.models.RankingPhaseType
@@ -17,12 +18,17 @@ data class RankingOnlineStates(
     val showInitialDialog: Boolean = true,
     val showDialogBetweenPhases: Boolean = false,
     val showResultDialog: Boolean = false,
+    val showOtherPlayerDataDialog: Boolean = false,
+    val showWaitingOtherPlayerDialog: Boolean = false,
     val showExitDialog: Boolean = false,
     val showSwwDialog: Boolean = false,
 
     val showRoundView: Boolean = true,
     var roundCount: Int = 0,
     val phase: RankingPhaseType = ORDER_FIRST,
+
+    val roundData: List<OnlineRankingRoundData?> = listOf(null, null, null),
+    val otherPlayerData: List<OnlineRankingRoundData> = kotlin.collections.emptyList(),
 
     val rankings: List<Ranking> = emptyList(),
     var rankingPos: Int = 0,
@@ -36,12 +42,13 @@ data class RankingOnlineStates(
     val secondSortedList: MutableList<RankingBox> = emptyRankingBoxList(),
     val showComparativeList: Boolean = false,
 
-    val points: List<Int?> = listOf(null, null, null, null),
+    val points: List<Int?> = listOf(null, null, null),
+    val otherPlayerPoints: Int = 0,
     val confettiTrigger: Int = 0,
     val shakeTrigger: Boolean = false,
     val shakeVerticalTrigger: Boolean = false,
 
     val dragEnabled: Boolean = true,
     val buttonEnabled: Boolean = true,
-    val buttonText: Int = R.string.btn_ready
+    val buttonText: Int = R.string.online_btn_save_answer
 )

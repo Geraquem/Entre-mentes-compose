@@ -1,0 +1,152 @@
+package com.mmfsin.betweenminds.data.repository
+
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.mmfsin.betweenminds.domain.interfaces.IRankingsOnlineRepository
+import com.mmfsin.betweenminds.domain.models.OnlineRankingData
+import com.mmfsin.betweenminds.domain.models.OnlineRankingRoundData
+import com.mmfsin.betweenminds.domain.models.RankingBox
+import com.mmfsin.betweenminds.utils.PLAYER_1
+import com.mmfsin.betweenminds.utils.PLAYER_2
+import com.mmfsin.betweenminds.utils.POINTS
+import com.mmfsin.betweenminds.utils.ROOMS
+import com.mmfsin.betweenminds.utils.ROUNDS
+import com.mmfsin.betweenminds.utils.ROUND_DATA
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+
+class RankingsOnlineRepository @Inject constructor(
+) : IRankingsOnlineRepository {
+
+    override suspend fun sendMyORankingsDataToRoom(onlineData: OnlineRankingData) {
+        val db = Firebase.firestore
+        val playerId = if (onlineData.isCreator) PLAYER_1 else PLAYER_2
+
+        val data = onlineData.data.map { round ->
+            mapOf(
+                "topText" to round.text,
+                "rankingTexts" to round.rankingTexts,
+                "rankingsSorted" to round.rankingsSorted
+            )
+        }
+
+        db.collection(ROOMS).document(onlineData.roomId).collection(playerId).document(ROUNDS)
+            .set(mapOf(ROUND_DATA to data)).await()
+    }
+
+    override suspend fun waitOtherPlayerORankings(
+        roomId: String,
+        isCreator: Boolean
+    ): List<OnlineRankingRoundData> = suspendCancellableCoroutine { cont ->
+        val db = Firebase.firestore
+        val opponentId = if (isCreator) PLAYER_2 else PLAYER_1
+
+        val docRef = db.collection(ROOMS).document(roomId).collection(opponentId).document(ROUNDS)
+
+        var hasResumed = false
+
+        val listener = docRef.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                cont.resumeWithException(error)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val roundsList = snapshot.get(ROUND_DATA) as? List<Map<String, Any>>
+                if (roundsList != null && roundsList.size == 3 && !hasResumed && cont.isActive) {
+                    hasResumed = true
+                    val parsedRounds = roundsList.mapNotNull { map ->
+                        try {
+                            val rankingsSorted = (map["rankingsSorted"] as? List<Map<String, Any>>)
+                                ?.mapNotNull { rankingMap ->
+                                    RankingBox(
+                                        id = (rankingMap["id"] as? Long)?.toInt() ?: return@mapNotNull null,
+                                        text = rankingMap["text"] as? String ?: return@mapNotNull null
+                                    )
+                                } ?: emptyList()
+
+                            OnlineRankingRoundData(
+                                round = (map["round"] as? Long)?.toInt() ?: 0,
+                                text = map["topText"] as? String ?: "",
+                                rankingTexts = map["rankingTexts"] as? List<String> ?: emptyList(),
+                                rankingsSorted = rankingsSorted
+                            )
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+
+                    cont.resume(parsedRounds)
+                }
+            }
+        }
+
+        cont.invokeOnCancellation { listener.remove() }
+    }
+
+    override suspend fun sendPoints(
+        roomId: String,
+        isCreator: Boolean,
+        points: Int
+    ) {
+        val db = Firebase.firestore
+        val playerId = if (isCreator) PLAYER_1 else PLAYER_2
+
+        val data = mapOf(POINTS to points)
+
+        db.collection(ROOMS).document(roomId).collection(playerId).document(POINTS).set(data)
+            .await()
+    }
+
+    override suspend fun waitOtherPlayerPoints(roomId: String, isCreator: Boolean): Int =
+        suspendCancellableCoroutine { cont ->
+            val db = Firebase.firestore
+            val opponentId = if (isCreator) PLAYER_2 else PLAYER_1
+
+            val opponentRef = db.collection(ROOMS)
+                .document(roomId)
+                .collection(opponentId)
+                .document(POINTS)
+
+            val listener = opponentRef.addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    cont.resumeWithException(error)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot?.exists() == true) {
+                    val points = (snapshot.get(POINTS) as? Long)?.toInt()
+                    if (points != null && cont.isActive) {
+                        cont.resume(points)
+                    }
+                }
+            }
+
+            cont.invokeOnCancellation { listener.remove() }
+        }
+
+    override suspend fun waitCreatorToRestartGame(roomId: String) =
+        suspendCancellableCoroutine { cont ->
+            val db = Firebase.firestore
+            val roomRef = db.collection(ROOMS).document(roomId).collection(PLAYER_2)
+
+            var hasResumed = false
+
+            val listener = roomRef.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    if (cont.isActive) cont.resumeWith(Result.failure(e))
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null && snapshot.isEmpty && !hasResumed && cont.isActive) {
+                    hasResumed = true
+                    if (cont.isActive) cont.resumeWith(Result.success(Unit))
+                }
+            }
+
+            cont.invokeOnCancellation { listener.remove() }
+        }
+}
