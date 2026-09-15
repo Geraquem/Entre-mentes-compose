@@ -128,6 +128,12 @@
     <string name="raking_initial_dialog_3">Cuantas más opciones correctas, más puntos conseguís</string>
     <string name="raking_sheet_description">Una persona ordena opciones y el resto tiene que intentar adivinar ese orden.</string>
 
+    <string name="raking_online_initial_dialog_1">Ordena las opciones y haz un ranking según tus propias preferencias.</string>
+    <string name="raking_online_initial_dialog_2">Repite este paso 3 veces, es decir, vas a tener que hacer 3 rankings distintos.</string>
+    <string name="raking_online_initial_dialog_3">Después, recibirás los 3 rankings de tu compañer@ y tendrás que tratar de adivinar el orden en el que puso las opciones.</string>
+    <string name="raking_online_initial_dialog_4">Cuantas más opciones en la posición correcta, más puntos recibiréis.</string>
+
+
     <!-- SCOREBOARD -->
     <string name="scoreboard_rounds">Rondas</string>
     <string name="scoreboard_pt">pt</string>

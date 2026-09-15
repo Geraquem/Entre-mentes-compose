@@ -65,7 +65,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.common.WaitingPartnerDialo
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.DraggableOption
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
-import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.online.components.InitialOnlineRankingDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.online.components.ResultRankingOnlineDialog
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
@@ -86,7 +86,7 @@ fun RankingOnlineScreenPV() {
         ),
         {}, {}, {}, { _, _ -> },
         {}, {}, {}, {},
-        {},{},
+        {}, {},
     )
 }
 
@@ -376,7 +376,7 @@ fun RankingOnlineContent(
             ShowAlpha(uiStates.showRoundView) { RoundCount(uiStates.roundCount) }
 
             if (uiStates.showInitialDialog) {
-                InitialOfflineRankingDialog(
+                InitialOnlineRankingDialog(
                     startGame = { hideInitialDialog() },
                     howToPlay = { goToInstructions() },
                     exit = { goBack() },
