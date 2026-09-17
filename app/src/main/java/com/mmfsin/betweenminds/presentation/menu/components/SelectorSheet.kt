@@ -13,21 +13,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
@@ -38,6 +43,7 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
+import com.mmfsin.betweenminds.presentation.core.theme.GrayLight
 import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import kotlinx.coroutines.launch
@@ -92,144 +98,36 @@ fun SelectorSheet(
                     .background(White)
                     .align(Alignment.CenterHorizontally)
             )
+
             SpacerCustom(32.dp)
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_human_down), null,
-                    tint = BlueMedium
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_human_down), null,
-                    tint = OrangeHard
-                )
-
-                SpacerSmall(horizontal = true)
-
-                BigText(
-                    text = stringResource(R.string.selector_questions),
-                    allCaps = true,
-                    color = White
-                )
-            }
-
-            SpacerSmall()
-
-            MediumText(text = stringResource(R.string.questions_sheet_description), color = White)
+            ModeBox(
+                icon1 = R.drawable.ic_human_down,
+                icon1Color = BlueMedium,
+                icon2 = R.drawable.ic_human_down,
+                icon2Color = OrangeHard,
+                title = R.string.selector_questions,
+                description = R.string.selector_questions_description_1
+            )
 
             SpacerMedium()
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SelectorButton(
-                    icon = R.drawable.ic_book,
-                    text = R.string.selector_how_to_play,
-                    onClick = { questionsInstructions() }
-                )
-
-                SelectorButton(
-                    icon = null,
-                    text = R.string.menu_play,
-                    modifier = Modifier.weight(1f),
-                    onClick = { closeDialog { questions() } }
-                )
-            }
-
-            SpacerLarge()
-
-            Box(Modifier.fillMaxWidth().padding(horizontal = 24.dp).height(1.dp).background(White))
-
-            SpacerLarge()
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow), null,
-                    tint = White
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow), null,
-                    tint = White,
-                    modifier = Modifier.graphicsLayer { scaleX = -1f }
-                )
-
-                SpacerSmall(horizontal = true)
-
-                BigText(
-                    text = stringResource(R.string.selector_ranges),
-                    allCaps = true,
-                    color = White
-                )
-            }
-
-            SpacerSmall()
-
-            MediumText(text = stringResource(R.string.ranges_sheet_description), color = White)
+            ModeBox(
+                icon1 = R.drawable.ic_arrow,
+                icon2 = R.drawable.ic_arrow,
+                title = R.string.selector_ranges,
+                description = R.string.ranges_sheet_description
+            )
 
             SpacerMedium()
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SelectorButton(
-                    icon = R.drawable.ic_book,
-                    text = R.string.selector_how_to_play,
-                    onClick = { rangesInstructions() }
-                )
-
-                SelectorButton(
-                    icon = null,
-                    text = R.string.menu_play,
-                    modifier = Modifier.weight(1f),
-                    onClick = { closeDialog { ranges() } }
-                )
-            }
+            ModeBox(
+                icon1 = R.drawable.ic_ranking,
+                title = R.string.selector_ranking,
+                description = R.string.raking_sheet_description
+            )
 
             SpacerLarge()
-
-            Box(Modifier.fillMaxWidth().padding(horizontal = 24.dp).height(1.dp).background(White))
-
-            SpacerLarge()
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_ranking), null,
-                    tint = White
-                )
-                SpacerSmall(horizontal = true)
-                BigText(
-                    text = stringResource(R.string.selector_ranking),
-                    allCaps = true,
-                    color = White
-                )
-            }
-
-            SpacerSmall()
-
-            MediumText(text = stringResource(R.string.raking_sheet_description), color = White)
-
-            SpacerMedium()
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SelectorButton(
-                    icon = R.drawable.ic_book,
-                    text = R.string.selector_how_to_play,
-                    onClick = { rankingsInstructions() }
-                )
-                SelectorButton(
-                    icon = null,
-                    text = R.string.menu_play,
-                    modifier = Modifier.weight(1f),
-                    onClick = { closeDialog { rankings() } }
-                )
-            }
-
-            SpacerCustom(space = 40.dp)
         }
     }
 }
@@ -261,5 +159,51 @@ fun SelectorButton(
             color = BackgroundBlack,
             fontWeight = FontWeight.SemiBold
         )
+    }
+}
+
+@Composable
+fun ModeBox(
+    icon1: Int,
+    icon1Color: Color = BackgroundBlack,
+    icon2: Int? = null,
+    icon2Color: Color = BackgroundBlack,
+    title: Int,
+    description: Int
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = GrayLight),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
+    ) {
+        Column(Modifier.padding(8.dp)) {
+            Row() {
+                Icon(
+                    painterResource(icon1), null,
+                    tint = icon1Color
+                )
+                icon2?.let {
+                    Icon(
+                        painterResource(icon2), null,
+                        tint = icon2Color
+                    )
+                }
+
+                SpacerSmall(horizontal = true)
+
+                BigText(text = title)
+            }
+
+            SpacerSmall()
+
+            Text(
+                text = stringResource(description),
+                style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp),
+                color = BackgroundBlack
+            )
+        }
     }
 }

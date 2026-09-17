@@ -1,6 +1,8 @@
 package com.mmfsin.betweenminds.presentation.menu
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -34,6 +36,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.menu.components.ParticlesBackground
+import com.mmfsin.betweenminds.presentation.menu.components.selector.SelectorScreen
 import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
 import com.mmfsin.betweenminds.utils.AnimateY
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
@@ -48,10 +51,10 @@ fun MenuScreenPV() {
     MenuContent(
         uiStates = MenuStates(
             positonButtons = 0f,
-            showSelectorSheet = true
+            showSelectorScreen = true
         ),
         {}, {}, {}, {},
-        {}, {}
+        {}, {}, {}, {},
     )
 }
 
@@ -63,16 +66,19 @@ fun MenuScreen(
     goToPacksScreen: () -> Unit,
 ) {
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MenuContent(
         uiStates = uiState,
         showSelectorSheet = { value -> viewModel.showSelectorSheet(value) },
+        showSelectorScreen = { value -> viewModel.showSelectorScreen(value) },
         openInstructions = { context.goToInstructions(it) },
         goToGameTypeScreen = { goToGameTypeScreen() },
         goToConnectionScreen = { goToConnectionScreen(it) },
         goToPacksScreen = { goToPacksScreen() },
-        setFreePacks = { viewModel.setFreePacks() }
+        setFreePacks = { viewModel.setFreePacks() },
+        closeApp = { activity?.finish() }
     )
 }
 
@@ -80,16 +86,18 @@ fun MenuScreen(
 fun MenuContent(
     uiStates: MenuStates,
     showSelectorSheet: (value: Boolean) -> Unit,
+    showSelectorScreen: (value: Boolean) -> Unit,
     openInstructions: (String) -> Unit,
     goToGameTypeScreen: () -> Unit,
     goToConnectionScreen: (String) -> Unit,
     goToPacksScreen: () -> Unit,
     setFreePacks: () -> Unit,
+    closeApp: () -> Unit
 ) {
 
     /********************************************************************/
     /********************************************************************/
-    goToConnectionScreen(GameType.RANKING.id)
+    //    goToConnectionScreen(GameType.RANKING.id)
     /********************************************************************/
     /********************************************************************/
 
@@ -139,7 +147,8 @@ fun MenuContent(
         ) {
             Column {
                 ButtonCustom(
-                    onClick = { showSelectorSheet(true) },
+                    //                    onClick = { showSelectorSheet(true) },
+                    onClick = { showSelectorScreen(true) },
                     //                    onClick = { goToGameTypeScreen() },
                     text = R.string.menu_play,
                     modifier = Modifier.fillMaxWidth(),
@@ -169,11 +178,28 @@ fun MenuContent(
         )
     }
 
+    ShowAlpha(uiStates.showSelectorScreen) {
+        SelectorScreen(
+            onDismiss = { showSelectorScreen(false) },
+            questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
+            questions = { goToConnectionScreen(GameType.QUESTIONS.id) },
+            rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
+            ranges = { goToConnectionScreen(GameType.RANGES.id) },
+            rankingsInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
+            rankings = { goToConnectionScreen(GameType.RANKING.id) }
+        )
+    }
+
     ShowAlpha(
         visibleTrigger = uiStates.isLoading,
         duration = 200
     ) {
         LoadingLottie()
+    }
+
+    BackHandler {
+        if (uiStates.showSelectorScreen) showSelectorScreen(false)
+        else closeApp()
     }
 }
 

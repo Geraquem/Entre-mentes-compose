@@ -35,6 +35,7 @@ class MenuViewModel @Inject constructor(
     }
 
     fun showSelectorSheet(value: Boolean) = _uiState.update { it.copy(showSelectorSheet = value) }
+    fun showSelectorScreen(value: Boolean) = _uiState.update { it.copy(showSelectorScreen = value) }
 
     fun setFreePacks() {
         executeUseCase(

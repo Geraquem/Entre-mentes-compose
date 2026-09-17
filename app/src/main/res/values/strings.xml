@@ -30,8 +30,22 @@
     <!-- MENU -->
     <string name="menu_play">Jugar</string>
     <string name="menu_packs">Ver packs</string>
+
+    <!-- SELECTOR -->
+    <string name="selector_title">Seleccionar juego</string>
     <string name="selector_how_to_play">Aprender</string>
+
     <string name="selector_questions">Preguntas</string>
+    <string name="selector_questions_you">Tú</string>
+    <string name="selector_questions_your_partner">Otro jugador</string>
+
+    <string name="selector_questions_example1">¿Quién es más ordenado?</string>
+    <string name="selector_questions_example2">¿Quién cocina mejor?</string>
+    <string name="selector_questions_example3">¿Quién hace mejores regalos?</string>
+    <string name="selector_questions_example4">¿Quién tiene más amor propio?</string>
+    <string name="selector_questions_description_1">Dos personas opinan sí mismas para ver cuánto se parece aquello que piensan.</string>
+    <string name="selector_questions_description_2">Cuanto más se parezcan sus opiniones, más puntos conseguirán.</string>
+
     <string name="selector_ranges">Escalas</string>
     <string name="selector_ranking">Rankings</string>
 
