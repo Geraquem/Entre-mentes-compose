@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.domain.models.GameType
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.LoadingLottie
@@ -39,9 +38,6 @@ import com.mmfsin.betweenminds.presentation.menu.components.ParticlesBackground
 import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
 import com.mmfsin.betweenminds.presentation.menu.components.selector.SelectorScreen
 import com.mmfsin.betweenminds.utils.AnimateY
-import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
-import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
-import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_ONLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 
@@ -51,7 +47,6 @@ fun MenuScreenPV() {
     MenuContent(
         uiStates = MenuStates(
             positonButtons = 0f,
-            showSelectorScreen = true
         ),
         {}, {}, {}, {},
         {}, {}, {}, {},
@@ -147,8 +142,8 @@ fun MenuContent(
         ) {
             Column {
                 ButtonCustom(
-                    //                    onClick = { showSelectorSheet(true) },
-                    onClick = { showSelectorScreen(true) },
+                    onClick = { showSelectorSheet(true) },
+                    //                    onClick = { showSelectorScreen(true) },
                     //                    onClick = { goToGameTypeScreen() },
                     text = R.string.menu_play,
                     modifier = Modifier.fillMaxWidth(),
@@ -169,12 +164,8 @@ fun MenuContent(
     if (uiStates.showSelectorSheet) {
         SelectorSheet(
             onDismiss = { showSelectorSheet(false) },
-            questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
-            questions = { goToConnectionScreen(GameType.QUESTIONS.id) },
-            rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
-            ranges = { goToConnectionScreen(GameType.RANGES.id) },
-            rankingsInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
-            rankings = { goToConnectionScreen(GameType.RANKING.id) }
+            openInstructions = { navGraph -> openInstructions(navGraph) },
+            play = { gameId -> goToConnectionScreen(gameId) },
         )
     }
 
@@ -182,13 +173,7 @@ fun MenuContent(
         SelectorScreen(
             onDismiss = { showSelectorScreen(false) },
             openInstructions = { navGraph -> openInstructions(navGraph) },
-            play = {gameId->goToConnectionScreen(gameId)},
-//                    questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
-//            questions = { goToConnectionScreen(GameType.QUESTIONS.id) },
-//            rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
-//            ranges = { goToConnectionScreen(GameType.RANGES.id) },
-//            rankingsInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
-//            rankings = { goToConnectionScreen(GameType.RANKING.id) }
+            play = { gameId -> goToConnectionScreen(gameId) },
         )
     }
 

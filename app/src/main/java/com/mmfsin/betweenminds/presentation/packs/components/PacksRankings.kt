@@ -136,7 +136,7 @@ fun RankingsPack(
         SpacerSmall()
 
         Column {
-            pack.rankings.take(4).forEach { ranking ->
+            pack.rankings.take(2).forEach { ranking ->
                 Row {
                     Row(
                         modifier = Modifier.weight(1f),

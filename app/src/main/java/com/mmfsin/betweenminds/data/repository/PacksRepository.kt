@@ -35,7 +35,8 @@ class PacksRepository @Inject constructor(
 ) : IPacksRepository {
 
     private suspend fun getPacks(): List<PackDTO> {
-        return if (prefs.getPacksFromServer()) {
+        return if (true) {
+            //        return if (prefs.getPacksFromServer()) {
             val snapshot = Firebase.firestore
                 .collection(PACKS)
                 .get()
@@ -220,6 +221,38 @@ class PacksRepository @Inject constructor(
                 "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Ffour-fingers.png?alt=media&token=139dd119-0215-444a-846b-5ca3b2bd5c39",
                 "title" to "Relojito tardón",
                 "description" to "Tú sigue intentandolo que seguro que algo aciertas.",
+            ),
+            hashMapOf(
+                "packId" to "pack_ranking_free",
+                "packNumber" to 0,
+                "packType" to "rankings",
+                "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Fstairs.png?alt=media&token=fd70bba1-aac8-4036-9dcd-c58b714c8c2a",
+                "title" to "Paquete básico",
+                "description" to "Ordena tus cositas sin que nadie te lo impida.",
+            ),
+            hashMapOf(
+                "packId" to "pack_ranking_movies",
+                "packNumber" to 1,
+                "packType" to "rankings",
+                "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Fmovies.png?alt=media&token=50fb8daa-1f93-4f48-96d3-4ed9d6695fb1",
+                "title" to "Películas y series",
+                "description" to "Apto únicamente para los más cinéfilos.",
+            ),
+            hashMapOf(
+                "packId" to "pack_ranking_music",
+                "packNumber" to 2,
+                "packType" to "rankings",
+                "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Fmusic.png?alt=media&token=b2b29c3b-9350-4bb8-8bdb-3d77ff2dda59",
+                "title" to "Musiquita pal body",
+                "description" to "Ordena tus estilos de música y sus cantantes.",
+            ),
+            hashMapOf(
+                "packId" to "pack_ranking_videogames",
+                "packNumber" to 3,
+                "packType" to "rankings",
+                "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Fcontroller.png?alt=media&token=c70769f3-ef3c-43e9-abf5-32fd09c254da",
+                "title" to "Sobre videojuegos",
+                "description" to "Frikis absolutos, yo os invoco.",
             ),
         )
     }

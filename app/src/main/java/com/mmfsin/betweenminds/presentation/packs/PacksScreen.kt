@@ -51,7 +51,7 @@ fun PacksScreenPV() {
         ),
         initialTab = 1,
         {}, {}, {}, {},
-        {},{},
+        {}, {},
     )
 }
 
@@ -109,7 +109,11 @@ fun PacksContent(
                 .padding(innerPadding)
         ) {
 
-            Column(modifier = Modifier.weight(1f).padding(12.dp)) {
+            Column(
+                modifier = Modifier.weight(1f)
+                    .padding(horizontal = 12.dp)
+                    .padding(bottom = 12.dp)
+            ) {
                 PrimaryTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     containerColor = BackgroundBlack,
@@ -158,7 +162,7 @@ fun PacksContent(
                             updateQuestionsPack = { updateSelectedQuestionsPack(it) }
                         )
 
-                        1-> PacksRanges(
+                        1 -> PacksRanges(
                             packs = uiStates.rangesPacks,
                             selected = uiStates.selectedRangesPack,
                             purchased = uiStates.packsPurchased,
