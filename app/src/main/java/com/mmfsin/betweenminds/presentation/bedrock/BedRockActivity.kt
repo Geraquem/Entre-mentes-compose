@@ -39,6 +39,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BedRockActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         setStatusBarIconsWhite()
 
@@ -46,7 +47,6 @@ class BedRockActivity : ComponentActivity() {
         val strArgs = intent?.getStringExtra(BEDROCK_STR_ARGS)
         val boolArgs = intent?.getBooleanExtra(BEDROCK_BOOL_ARGS, false)
 
-        enableEdgeToEdge()
         setContent {
             when (navGraph) {
                 /** Dashboard */

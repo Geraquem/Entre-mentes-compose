@@ -82,7 +82,8 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 fun RankingOnlineScreenPV() {
     RankingOnlineContent(
         uiStates = RankingOnlineStates(
-
+            showInitialDialog = false,
+            showRoundView = false
         ),
         {}, {}, {}, { _, _ -> },
         {}, {}, {}, {},
@@ -161,6 +162,7 @@ fun RankingOnlineContent(
                 .background(BackgroundBlack)
                 .padding(innerPadding)
                 .padding(horizontal = 18.dp)
+                .padding(bottom = 12.dp)
         ) {
             Column {
 

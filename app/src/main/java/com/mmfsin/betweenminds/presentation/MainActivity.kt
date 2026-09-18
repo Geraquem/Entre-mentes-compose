@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
 
         immersiveMode()
         setStatusBarIconsWhite()
+
         setContent { BMCTheme { NavigationMain() } }
     }
 

@@ -85,7 +85,7 @@ fun QuestionsOnlineJoinPV() {
         ),
         {}, {}, {}, {},
         {}, {}, {},
-        {}, {}, {},
+        {}, {},
     )
 }
 
@@ -105,12 +105,9 @@ fun QuestionsOnlineJoinScreen(
         uiStates = uiStates,
         goBack = { activity?.finish() },
         goToInstructions = { context.goToInstructions() },
-        waitForOtherPlayer = { viewModel.showWaitingOtherPlayerDialog(it) },
         hideInitialDialog = { viewModel.hideInitialDialog() },
         updateMyOpinionPercents = { viewModel.updateMyOpinionPercents(it) },
-        //        updateSecondOpinionPercents = { viewModel.updateSecondOpinionPercents(it) },
         readyMyOpinion = { viewModel.readyMyOpinion() },
-        //        readyOpinionTwo = { viewModel.readyOpinionTwo() },
         handleNextRound = { viewModel.handleNextRound() },
         showResultDialog = { viewModel.showResultDialog(it) },
         replay = { viewModel.replay() },
@@ -123,12 +120,9 @@ fun QuestionsOnlineJoinContent(
     uiStates: QuestionsOnlineJoinStates,
     goBack: () -> Unit,
     goToInstructions: () -> Unit,
-    waitForOtherPlayer: (Boolean) -> Unit,
     hideInitialDialog: () -> Unit,
     updateMyOpinionPercents: (Int) -> Unit,
-    //    updateSecondOpinionPercents: (Int) -> Unit,
     readyMyOpinion: () -> Unit,
-    //    readyOpinionTwo: () -> Unit,
     handleNextRound: () -> Unit,
     showResultDialog: (Boolean) -> Unit,
     replay: () -> Unit,
@@ -149,7 +143,8 @@ fun QuestionsOnlineJoinContent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(12.dp)
+                .padding(horizontal = 12.dp)
+                .padding(bottom = 12.dp)
         ) {
             if (uiStates.confettiTrigger > 0) {
                 key(uiStates.confettiTrigger) {

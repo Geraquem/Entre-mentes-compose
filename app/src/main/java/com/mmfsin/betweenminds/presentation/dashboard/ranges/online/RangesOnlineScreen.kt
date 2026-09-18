@@ -159,7 +159,8 @@ fun RangesOnlineContent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(vertical = 12.dp, horizontal = 18.dp)
+                .padding(horizontal = 18.dp)
+                .padding(bottom = 12.dp)
         ) {
 
             if (uiStates.confettiTrigger > 0) {

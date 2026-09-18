@@ -154,7 +154,8 @@ fun QuestionsOfflineContent(
             modifier = Modifier.fillMaxSize()
                 .background(BackgroundBlack)
                 .padding(innerPadding)
-                .padding(12.dp)
+                .padding(horizontal = 12.dp)
+                .padding(bottom = 12.dp)
         ) {
 
             if (uiStates.confettiTrigger > 0) {

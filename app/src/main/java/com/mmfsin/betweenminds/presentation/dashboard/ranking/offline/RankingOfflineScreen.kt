@@ -159,6 +159,7 @@ fun RankingOfflineContent(
                 .background(BackgroundBlack)
                 .padding(innerPadding)
                 .padding(horizontal = 18.dp)
+                .padding(bottom = 12.dp)
         ) {
             Column {
 
