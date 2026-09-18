@@ -66,7 +66,7 @@ import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.Ranking
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.InitialOfflineRankingDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.offline.components.ResultRankingOfflineDialog
-import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_OFFLINE
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_OFFLINE
 import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
@@ -404,4 +404,4 @@ fun RankingOfflineContent(
     }
 }
 
-private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANGES_OFFLINE)
+private fun Context.goToInstructions() = openBedRockActivity(NAV_INSTR_RANKING_OFFLINE)
