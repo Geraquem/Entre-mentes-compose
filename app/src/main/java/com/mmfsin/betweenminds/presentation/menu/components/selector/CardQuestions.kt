@@ -12,23 +12,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mmfsin.betweenminds.R
-import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
-import com.mmfsin.betweenminds.presentation.core.components.ButtonCustomIcon
+import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SmallText
-import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
+import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
@@ -36,10 +33,19 @@ import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.OrangeMedium
 import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.core.theme.kineks
+import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 
 @Preview(showBackground = true)
 @Composable
-fun CardQuestions() {
+fun CardQuestionsPV() {
+    CardQuestions({}, {})
+}
+
+@Composable
+fun CardQuestions(
+    openInstructions: (String) -> Unit,
+    play: (String) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,9 +55,9 @@ fun CardQuestions() {
         Spacer(Modifier.weight(1f))
 
         val questions = listOf(
-            R.string.selector_questions_example1,
-            R.string.selector_questions_example2,
-            R.string.selector_questions_example3,
+            R.string.selector_questions_example_1,
+            R.string.selector_questions_example_2,
+            R.string.selector_questions_example_3,
             //            R.string.selector_questions_example4,
         )
 
@@ -66,7 +72,7 @@ fun CardQuestions() {
             SpacerSmall()
         }
 
-        SpacerLarge()
+        SpacerMedium()
 
         Column(
             Modifier.padding(horizontal = 24.dp)
@@ -88,26 +94,6 @@ fun CardQuestions() {
             }
 
             SpacerMini()
-
-            //            Row(modifier = Modifier.fillMaxWidth()) {
-            //
-            //                SmallText(
-            //                    text = R.string.selector_questions_you,
-            //                    color = BlueMedium,
-            //                    gravity = TextAlign.Center,
-            //                    fontWeight = FontWeight.SemiBold,
-            //                    modifier = Modifier.weight(1f)
-            //                )
-            //                SmallText(
-            //                    text = R.string.selector_questions_your_partner,
-            //                    color = OrangeMedium,
-            //                    gravity = TextAlign.Center,
-            //                    fontWeight = FontWeight.SemiBold,
-            //                    modifier = Modifier.weight(1f)
-            //                )
-            //            }
-            //
-            //            SpacerMini()
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -145,11 +131,9 @@ fun CardQuestions() {
 
         Spacer(Modifier.weight(1f))
 
-        ButtonCustomIcon(
-            onClick = {},
-            text = R.string.selector_how_to_play,
-            icon = R.drawable.ic_book,
-            color = BackgroundBlack
+        CardButtons(
+            openInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
+            play = { play(QUESTIONS.id) }
         )
     }
 }

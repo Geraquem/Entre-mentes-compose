@@ -6,6 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.mmfsin.betweenminds.data.ddbb.SharedPrefs
 import com.mmfsin.betweenminds.data.ddbb.daos.QuestionsDAO
 import com.mmfsin.betweenminds.data.ddbb.daos.RangesDAO
+import com.mmfsin.betweenminds.data.ddbb.daos.RankingsDAO
 import com.mmfsin.betweenminds.data.mappers.toQuestionList
 import com.mmfsin.betweenminds.data.mappers.toRangeList
 import com.mmfsin.betweenminds.data.mappers.toRankingList
@@ -18,6 +19,7 @@ import com.mmfsin.betweenminds.domain.models.Range
 import com.mmfsin.betweenminds.domain.models.Ranking
 import com.mmfsin.betweenminds.utils.QUESTIONS
 import com.mmfsin.betweenminds.utils.RANGES
+import com.mmfsin.betweenminds.utils.RANKINGS
 import com.mmfsin.betweenminds.utils.VERSION
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -30,6 +32,7 @@ class DataRepository @Inject constructor(
     val prefs: SharedPrefs,
     val questionsDAO: QuestionsDAO,
     val rangesDAO: RangesDAO,
+    val rankingsDAO: RankingsDAO,
 ) : IDataRepository {
 
     override suspend fun checkVersion() {
@@ -110,19 +113,24 @@ class DataRepository @Inject constructor(
     }
 
     override suspend fun getRankings(): List<Ranking> {
-        val a = mutableListOf<RankingDTO>()
-        repeat(6) { i ->
-            a.add(
-                RankingDTO(
-                    pack = 0,
-                    text = "text top ${i+1}",
-                    option1 = "option A${i+1}",
-                    option2 = "option B${i+1}",
-                    option3 = "option C${i+1}",
-                    option4 = "option D${i+1}",
-                ),
-            )
+        if (prefs.getRankingsFromServer()) {
+            val snapshot = FirebaseDatabase
+                .getInstance()
+                .getReference(RANKINGS)
+                .get()
+                .await()
+
+            val firebaseRankings = snapshot.children
+                .mapNotNull { it.getValue(RankingDTO::class.java) }
+
+            if (firebaseRankings.isNotEmpty()) {
+                prefs.updateRankingsFromServer(false)
+                rankingsDAO.insertRankings(firebaseRankings)
+            }
+            return firebaseRankings.toRankingList()
+
+        } else {
+            return rankingsDAO.getRankings().toRankingList()
         }
-        return a.toList().toRankingList()
     }
 }

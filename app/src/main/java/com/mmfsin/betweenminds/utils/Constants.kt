@@ -47,6 +47,7 @@ const val SHARED_PREFS_NAME = "betweenminds_shared_prefs"
 const val SP_VERSION_SAVED = "sp_version_saved"
 const val SP_QUESTIONS_SERVER = "sp_questions_server"
 const val SP_RANGES_SERVER = "sp_ranges_server"
+const val SP_RANKINGS_SERVER = "sp_rankings_server"
 const val SP_PACKS_SERVER = "sp_packs_server"
 const val SP_PACKS_PURCHASED = "sp_packs_purchased"
 

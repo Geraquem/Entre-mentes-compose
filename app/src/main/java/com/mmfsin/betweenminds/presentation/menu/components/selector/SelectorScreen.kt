@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,11 +45,11 @@ import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.presentation.core.components.BigText
+import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.GrayHard
-import com.mmfsin.betweenminds.presentation.core.theme.GrayLight
 import com.mmfsin.betweenminds.presentation.core.theme.GrayMedium
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
@@ -57,26 +58,19 @@ import kotlin.math.absoluteValue
 @Preview
 @Composable
 fun SelectorScreenPV() {
-    SelectorScreen(
-        {}, {}, {}, {},
-        {}, {}, {},
-    )
+    SelectorScreen({}, {}, {})
 }
 
 @Composable
 fun SelectorScreen(
     onDismiss: () -> Unit,
-    questionsInstructions: () -> Unit,
-    questions: () -> Unit,
-    ranges: () -> Unit,
-    rangesInstructions: () -> Unit,
-    rankings: () -> Unit,
-    rankingsInstructions: () -> Unit,
+    openInstructions: (String) -> Unit,
+    play: (String) -> Unit,
 ) {
     val modes = GameType.entries
 
     val pagerState = rememberPagerState(
-        initialPage = 0,
+        initialPage = 1,
         pageCount = { modes.size }
     )
 
@@ -136,7 +130,8 @@ fun SelectorScreen(
                     scaleY = scale
                 },
                 mode = mode,
-                onClick = {/* onModeSelected(mode) */ },
+                openInstructions = { openInstructions(it) },
+                play = { play(it) },
             )
         }
 
@@ -155,7 +150,8 @@ fun SelectorScreen(
 fun GameModeCard(
     modifier: Modifier,
     mode: GameType,
-    onClick: () -> Unit,
+    openInstructions: (String) -> Unit,
+    play: (String) -> Unit,
 ) {
     val title = when (mode) {
         QUESTIONS -> R.string.selector_questions
@@ -164,8 +160,9 @@ fun GameModeCard(
     }
 
     val color = when (mode) {
-        QUESTIONS, RANKING -> GrayLight
-        RANGES -> GrayMedium
+        QUESTIONS -> Color(0xFFCAD9F6)
+        RANGES -> Color(0xFFFFEEB7)
+        RANKING -> Color(0xFFF5F5F5)
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -190,9 +187,19 @@ fun GameModeCard(
             )
         ) {
             when (mode) {
-                QUESTIONS -> CardQuestions()
-                RANGES -> CardRanges()
-                RANKING -> CardRankings()
+                QUESTIONS -> CardQuestions(
+                    openInstructions = { openInstructions(it) },
+                    play = { play(it) }
+                )
+
+                RANGES -> CardRanges(
+                    openInstructions = { openInstructions(it) },
+                    play = { play(it) }
+                )
+
+                RANKING -> CardRankings(
+                    openInstructions = { openInstructions(it) },
+                    play = { play(it) })
             }
         }
     }
@@ -231,5 +238,34 @@ fun StretchPagerIndicator(
                     )
             )
         }
+    }
+}
+
+@Composable
+fun CardButtons(
+    openInstructions: () -> Unit,
+    play: () -> Unit
+) {
+    Row(Modifier.fillMaxWidth()) {
+
+        IconButton(
+            onClick = { openInstructions() },
+            modifier = Modifier.background(color = BackgroundBlack, shape = CircleShape)
+        ) {
+            Icon(
+                painterResource(R.drawable.ic_book), null,
+                tint = White
+            )
+        }
+
+        SpacerSmall(horizontal = true)
+
+        ButtonCustom(
+            onClick = { play() },
+            text = R.string.menu_play,
+            color = BackgroundBlack,
+            textColor = White,
+            modifier = Modifier.weight(1f)
+        )
     }
 }

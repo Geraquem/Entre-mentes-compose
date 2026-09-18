@@ -6,6 +6,7 @@ import com.mmfsin.betweenminds.utils.SP_PACKS_PURCHASED
 import com.mmfsin.betweenminds.utils.SP_PACKS_SERVER
 import com.mmfsin.betweenminds.utils.SP_QUESTIONS_SERVER
 import com.mmfsin.betweenminds.utils.SP_RANGES_SERVER
+import com.mmfsin.betweenminds.utils.SP_RANKINGS_SERVER
 import com.mmfsin.betweenminds.utils.SP_VERSION_SAVED
 import javax.inject.Inject
 
@@ -24,6 +25,10 @@ class SharedPrefs @Inject constructor(
     fun getRangesFromServer(): Boolean = prefs.getBoolean(SP_RANGES_SERVER, true)
     fun updateRangesFromServer(value: Boolean) = prefs.edit { putBoolean(SP_RANGES_SERVER, value) }
 
+    /** RANKINGS SERVER */
+    fun getRankingsFromServer(): Boolean = prefs.getBoolean(SP_RANKINGS_SERVER, true)
+    fun updateRankingsFromServer(value: Boolean) = prefs.edit { putBoolean(SP_RANKINGS_SERVER, value) }
+
     /** PACKS SERVER */
     fun getPacksFromServer(): Boolean = prefs.getBoolean(SP_PACKS_SERVER, true)
     fun updatePacksFromServer(value: Boolean) = prefs.edit { putBoolean(SP_PACKS_SERVER, value) }
@@ -37,6 +42,7 @@ class SharedPrefs @Inject constructor(
         prefs.edit {
             putBoolean(SP_QUESTIONS_SERVER, true)
             putBoolean(SP_RANGES_SERVER, true)
+            putBoolean(SP_RANKINGS_SERVER, true)
             putBoolean(SP_PACKS_SERVER, true)
         }
     }

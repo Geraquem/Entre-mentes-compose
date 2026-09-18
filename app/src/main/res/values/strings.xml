@@ -39,14 +39,21 @@
     <string name="selector_questions_you">Tú</string>
     <string name="selector_questions_your_partner">Otro jugador</string>
 
-    <string name="selector_questions_example1">¿Quién es más ordenado?</string>
-    <string name="selector_questions_example2">¿Quién cocina mejor?</string>
-    <string name="selector_questions_example3">¿Quién hace mejores regalos?</string>
-    <string name="selector_questions_example4">¿Quién tiene más amor propio?</string>
+    <string name="selector_questions_example_1">¿Quién es más ordenado?</string>
+    <string name="selector_questions_example_2">¿Quién cocina mejor?</string>
+    <string name="selector_questions_example_3">¿Quién hace mejores regalos?</string>
+    <string name="selector_questions_example_4">¿Quién tiene más amor propio?</string>
     <string name="selector_questions_description_1">Dos personas opinan sí mismas para ver cuánto se parece aquello que piensan.</string>
     <string name="selector_questions_description_2">Cuanto más se parezcan sus opiniones, más puntos conseguirán.</string>
 
     <string name="selector_ranges">Escalas</string>
+    <string name="selector_ranges_description_1">Dos extremos incompatibles, una diana. Un jugador da una pista y el resto trata de acertar.</string>
+    <string name="selector_ranges_description_2">Dos extremos, una diana. Un jugador da una pista y el resto trata de acertar.</string>
+    <string name="selector_ranges_example_1_left">Mala pelicula</string>
+    <string name="selector_ranges_example_1_right">Buena pelicula</string>
+    <string name="selector_ranges_example_2_left">Algo inútil</string>
+    <string name="selector_ranges_example_2_right">Algo útil</string>
+
     <string name="selector_ranking">Rankings</string>
 
     <!-- GAME TYPE -->

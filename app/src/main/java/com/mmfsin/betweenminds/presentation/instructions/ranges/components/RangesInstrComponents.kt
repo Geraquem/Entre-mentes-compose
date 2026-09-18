@@ -93,6 +93,7 @@ fun RangesSliderInstr(
     showSlider: Boolean,
     bullseyePosition: Float,
     sliderPosition: Float,
+    showRangeLimits: Boolean = true
 ) {
     Column {
         Box(
@@ -134,9 +135,11 @@ fun RangesSliderInstr(
 
         SpacerSmall()
 
-        RangeLimits(
-            leftRange = stringResource(R.string.instr_ranges_example_left),
-            rightRange = stringResource(R.string.instr_ranges_example_right)
-        )
+        if (showRangeLimits) {
+            RangeLimits(
+                leftRange = stringResource(R.string.instr_ranges_example_left),
+                rightRange = stringResource(R.string.instr_ranges_example_right)
+            )
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.mmfsin.betweenminds.data.ddbb.RoomConfiguration
 import com.mmfsin.betweenminds.data.ddbb.daos.PacksDAO
 import com.mmfsin.betweenminds.data.ddbb.daos.QuestionsDAO
 import com.mmfsin.betweenminds.data.ddbb.daos.RangesDAO
+import com.mmfsin.betweenminds.data.ddbb.daos.RankingsDAO
 import com.mmfsin.betweenminds.utils.DDBB_NAME
 import dagger.Module
 import dagger.Provides
@@ -36,6 +37,9 @@ object RoomModule {
 
     @Provides
     fun provideRangesDAO(db: RoomConfiguration): RangesDAO = db.rangesDAO()
+
+    @Provides
+    fun provideRankingsDAO(db: RoomConfiguration): RankingsDAO = db.rankingsDAO()
 
     @Provides
     fun providePacksDAO(db: RoomConfiguration): PacksDAO = db.packsDAO()

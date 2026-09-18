@@ -36,8 +36,8 @@ import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.menu.components.ParticlesBackground
-import com.mmfsin.betweenminds.presentation.menu.components.selector.SelectorScreen
 import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
+import com.mmfsin.betweenminds.presentation.menu.components.selector.SelectorScreen
 import com.mmfsin.betweenminds.utils.AnimateY
 import com.mmfsin.betweenminds.utils.NAV_INSTR_QUESTIONS_ONLINE
 import com.mmfsin.betweenminds.utils.NAV_INSTR_RANGES_ONLINE
@@ -181,12 +181,14 @@ fun MenuContent(
     ShowAlpha(uiStates.showSelectorScreen) {
         SelectorScreen(
             onDismiss = { showSelectorScreen(false) },
-            questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
-            questions = { goToConnectionScreen(GameType.QUESTIONS.id) },
-            rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
-            ranges = { goToConnectionScreen(GameType.RANGES.id) },
-            rankingsInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
-            rankings = { goToConnectionScreen(GameType.RANKING.id) }
+            openInstructions = { navGraph -> openInstructions(navGraph) },
+            play = {gameId->goToConnectionScreen(gameId)},
+//                    questionsInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
+//            questions = { goToConnectionScreen(GameType.QUESTIONS.id) },
+//            rangesInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
+//            ranges = { goToConnectionScreen(GameType.RANGES.id) },
+//            rankingsInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
+//            rankings = { goToConnectionScreen(GameType.RANKING.id) }
         )
     }
 
