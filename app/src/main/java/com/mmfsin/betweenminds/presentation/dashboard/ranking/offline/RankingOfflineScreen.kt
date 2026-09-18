@@ -60,6 +60,7 @@ import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.courier
 import com.mmfsin.betweenminds.presentation.dashboard.common.ExitGameDialog
 import com.mmfsin.betweenminds.presentation.dashboard.common.RoundCount
+import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.BetweenPhasesDialog
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.DraggableOption
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.components.RankingRounds
 import com.mmfsin.betweenminds.presentation.dashboard.ranking.helper.checkBoxColor
@@ -70,7 +71,6 @@ import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 import com.mmfsin.betweenminds.utils.shakeItem
-import com.mmfsin.betweenminds.utils.shakeItemVertical
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -92,7 +92,7 @@ fun RankingOfflineScreenPV() {
         ),
         {}, {}, {}, { _, _ -> },
         {}, {}, {}, {},
-        {}, {},
+        {}, {}, {},
     )
 }
 
@@ -109,6 +109,7 @@ fun RankingOfflineScreen(viewModel: RankingOfflineViewModel = hiltViewModel()) {
         hideInitialDialog = { viewModel.hideInitialDialog() },
         swapTexts = { targetIndex, sourceIndex -> viewModel.swapTexts(targetIndex, sourceIndex) },
         readyOrderOne = { viewModel.readyOrderOne() },
+        showBetweenPhases = { viewModel.showBetweenPhases(it) },
         readyOrderTwo = { viewModel.readyOrderTwo() },
         handleNextRound = { viewModel.handleNextRound() },
         showResultDialog = { viewModel.showResultDialog(it) },
@@ -125,6 +126,7 @@ fun RankingOfflineContent(
     hideInitialDialog: () -> Unit,
     swapTexts: (Int, Int) -> Unit,
     readyOrderOne: () -> Unit,
+    showBetweenPhases: (Boolean) -> Unit,
     readyOrderTwo: () -> Unit,
     handleNextRound: () -> Unit,
     showResultDialog: (Boolean) -> Unit,
@@ -251,12 +253,7 @@ fun RankingOfflineContent(
 
                 SpacerLarge()
 
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .shakeItemVertical(uiStates.shakeVerticalTrigger),
-                ) {
+                Column(Modifier.fillMaxWidth().weight(1f)) {
                     Row(
                         modifier = Modifier.fillMaxWidth().weight(1f),
                         verticalAlignment = Alignment.CenterVertically
@@ -379,6 +376,10 @@ fun RankingOfflineContent(
                     exit = { goBack() },
                     isLoading = uiStates.isLoading
                 )
+            }
+
+            if (uiStates.showDialogBetweenPhases) {
+                BetweenPhasesDialog(onEnd = { showBetweenPhases(false) })
             }
 
             if (uiStates.showResultDialog) {

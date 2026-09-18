@@ -10,6 +10,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.mmfsin.betweenminds.presentation.core.components.setStatusBarIconsWhite
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationMain
 import com.mmfsin.betweenminds.presentation.core.theme.BMCTheme
+import com.mmfsin.betweenminds.utils.NAV_INSTR_RANKING_ONLINE
+import com.mmfsin.betweenminds.utils.NAV_RANKING_OFFLINE
+import com.mmfsin.betweenminds.utils.openBedRockActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

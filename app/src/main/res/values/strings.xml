@@ -85,10 +85,10 @@
 
     <!-- PACKS -->
     <string name="pack_questions">Preguntas</string>
-    <string name="pack_ranges">Rangos</string>
+    <string name="pack_ranges">Escalas</string>
     <string name="pack_rankings">Rankings</string>
     <string name="pack_include_questions_as">Incluye 50 preguntas como:</string>
-    <string name="pack_include_ranges_as">Incluye 50 rangos como:</string>
+    <string name="pack_include_ranges_as">Incluye 50 escalas como:</string>
     <string name="pack_include_rankings_as">Incluye 50 rankings como:</string>
     <string name="pack_change"><u>Cambiar</u></string>
     <string name="pack_price">%1s€</string>
@@ -251,7 +251,7 @@
     <string name="instr_online_questions_8">Cuanto más se parezcan, más puntos obtendréis.</string>
     <string name="instr_online_questions_9">El objetivo es obtener la máxima puntuación en las <b>4 rondas que dura la partida</b>.</string>
 
-    <string name="instr_mode_ranges">Modo rangos</string>
+    <string name="instr_mode_ranges">Modo escalas</string>
     <string name="instr_ranges_1">Fase 1</string>
     <string name="instr_ranges_2">Un jugador ve en secreto dónde está la zona para ganar puntos dentro de un segmento con dos conceptos opuestos en los extremos.\n<i>(Ejemplo: frío – caliente, sucio – limpio)</i>.</string>
     <string name="instr_ranges_3">Ese jugador escribe una pista (una palabra o idea) para <b>ayudar a que el resto de jugadores coloque el marcador</b> en el punto donde se encuentra la zona para ganar puntos.</string>
@@ -271,7 +271,7 @@
     <string name="instr_online_ranges_3">A cada jugador le aparecerá una zona para ganar puntos, situada aleatoriamente dentro de un rectángulo con dos conceptos opuestos en los extremos.\n<i>(Ejemplo: frío – caliente, sucio – limpio)</i></string>
     <string name="instr_online_ranges_4">Tendréis que escribir una pista para ayudar al otro jugador a orientarse y adivinar dónde se encuentra la zona de puntos que habéis visto.</string>
     <string name="instr_online_ranges_5">Cuando tengas la pista escrita, pulsa el botón <b><i>Guardar respuesta</i></b>.</string>
-    <string name="instr_online_ranges_6">Esta fase se repite <b>3 veces</b>. Por lo que aparecerán 3 rangos distintos y tendréis que dar una pista diferente para cada uno de ellos.</string>
+    <string name="instr_online_ranges_6">Esta fase se repite <b>3 veces</b>. Por lo que aparecerán 3 escalas distintas y tendréis que dar una pista diferente para cada uno de ellos.</string>
     <string name="instr_online_ranges_7">Fase de adivinar</string>
     <string name="instr_online_ranges_8">Una vez ambos jugadores hayan escrito y enviado todas sus pistas, estas se intercambian.</string>
     <string name="instr_online_ranges_9">El jugador 1 recibe los conceptos opuestos que vio el jugador 2 y debe <b>mover la barra y colocarla</b>, con ayuda de la pista que el jugador 2 le dio, <b>donde crea que está la zona de puntos oculta</b>.</string>

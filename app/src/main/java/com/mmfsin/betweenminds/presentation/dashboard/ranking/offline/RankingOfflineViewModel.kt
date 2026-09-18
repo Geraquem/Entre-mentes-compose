@@ -87,6 +87,7 @@ class RankingOfflineViewModel @Inject constructor(
         if (!(states.rankingBoxList.any { it.text.isEmpty() })) {
             _uiState.update {
                 it.copy(
+                    showDialogBetweenPhases = true,
                     phase = ORDER_SECOND,
                     buttonEnabled = false,
                     buttonText = R.string.btn_check,
@@ -107,6 +108,8 @@ class RankingOfflineViewModel @Inject constructor(
             }
         }
     }
+
+    fun showBetweenPhases(value: Boolean) = _uiState.update { it.copy(showDialogBetweenPhases = value) }
 
     fun readyOrderTwo() {
         val states = uiState.value

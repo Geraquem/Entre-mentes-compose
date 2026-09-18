@@ -72,7 +72,6 @@ import com.mmfsin.betweenminds.utils.ShowAlpha
 import com.mmfsin.betweenminds.utils.getKonfettiParty
 import com.mmfsin.betweenminds.utils.openBedRockActivity
 import com.mmfsin.betweenminds.utils.shakeItem
-import com.mmfsin.betweenminds.utils.shakeItemVertical
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -254,12 +253,7 @@ fun RankingOnlineContent(
 
                 SpacerLarge()
 
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .shakeItemVertical(uiStates.shakeVerticalTrigger),
-                ) {
+                Column(Modifier.fillMaxWidth().weight(1f)) {
                     Row(
                         modifier = Modifier.fillMaxWidth().weight(1f),
                         verticalAlignment = Alignment.CenterVertically

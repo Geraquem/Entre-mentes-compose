@@ -92,7 +92,7 @@ fun getKonfettiParty(gameType: GameType, points: Int): Party {
                 1 -> 10
                 2 -> 20
                 5 -> 100
-                else -> 0
+                else -> error("Esto no tendría que pasar: $points puntos")
             }
         }
 
@@ -101,7 +101,7 @@ fun getKonfettiParty(gameType: GameType, points: Int): Party {
                 1 -> 10
                 2 -> 20
                 4 -> 100
-                else -> 0
+                else -> error("Esto no tendría que pasar: $points puntos")
             }
         }
     }
@@ -125,7 +125,6 @@ fun getKonfettiParty(gameType: GameType, points: Int): Party {
 @Composable
 fun Modifier.shakeItem(shake: Boolean): Modifier {
     val offsetX = remember { Animatable(0f) }
-
     LaunchedEffect(shake) {
         if (shake) {
             offsetX.animateTo(
@@ -150,33 +149,6 @@ fun Modifier.shakeItem(shake: Boolean): Modifier {
 
     return this.offset {
         IntOffset(offsetX.value.roundToInt(), 0)
-    }
-}
-
-@Composable
-fun Modifier.shakeItemVertical(shake: Boolean): Modifier {
-    val offsetY = remember { Animatable(0f) }
-
-    LaunchedEffect(shake) {
-        if (shake) {
-            offsetY.animateTo(
-                targetValue = 0f,
-                animationSpec = keyframes {
-                    durationMillis = 400
-                    -30f at 50
-                    30f at 100
-                    -20f at 150
-                    20f at 200
-                    -10f at 250
-                    10f at 300
-                    0f at 400
-                }
-            )
-        }
-    }
-
-    return this.offset {
-        IntOffset(x = 0, y = offsetY.value.roundToInt())
     }
 }
 
