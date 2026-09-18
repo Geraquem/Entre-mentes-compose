@@ -35,8 +35,7 @@ class PacksRepository @Inject constructor(
 ) : IPacksRepository {
 
     private suspend fun getPacks(): List<PackDTO> {
-        return if (true) {
-            //        return if (prefs.getPacksFromServer()) {
+        return if (prefs.getPacksFromServer()) {
             val snapshot = Firebase.firestore
                 .collection(PACKS)
                 .get()
@@ -184,7 +183,7 @@ class PacksRepository @Inject constructor(
             ),
             hashMapOf(
                 "packId" to "pack_questions_more_2",
-                "packNumber" to 2,
+                "packNumber" to 3,
                 "packType" to "questions",
                 "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Fstar.png?alt=media&token=1be5260e-7b5a-415c-a1d6-83e42a1f2142",
                 "title" to "Todavía más preguntas",

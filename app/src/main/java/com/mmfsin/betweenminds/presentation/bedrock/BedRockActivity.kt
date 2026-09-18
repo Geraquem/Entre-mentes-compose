@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.domain.models.GameType.RANKING
+import com.mmfsin.betweenminds.presentation.core.components.setStatusBarIconsWhite
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOffline
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOnlineCreator
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationQuestionsOnlineJoin
@@ -37,6 +39,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class BedRockActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setStatusBarIconsWhite()
 
         val navGraph = intent?.getStringExtra(BEDROCK_NAV_GRAPH)
         val strArgs = intent?.getStringExtra(BEDROCK_STR_ARGS)

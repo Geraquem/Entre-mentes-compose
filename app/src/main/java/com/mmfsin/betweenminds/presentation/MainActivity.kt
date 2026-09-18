@@ -7,10 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.mmfsin.betweenminds.presentation.core.components.setStatusBarIconsWhite
 import com.mmfsin.betweenminds.presentation.core.navigation.NavigationMain
 import com.mmfsin.betweenminds.presentation.core.theme.BMCTheme
-import com.mmfsin.betweenminds.utils.NAV_RANKING_OFFLINE
-import com.mmfsin.betweenminds.utils.openBedRockActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,13 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         immersiveMode()
-
-        /********************************************/
-        /********************************************/
-//        this.openBedRockActivity(NAV_RANKING_OFFLINE)
-        /********************************************/
-        /********************************************/
-
+        setStatusBarIconsWhite()
         setContent { BMCTheme { NavigationMain() } }
     }
 

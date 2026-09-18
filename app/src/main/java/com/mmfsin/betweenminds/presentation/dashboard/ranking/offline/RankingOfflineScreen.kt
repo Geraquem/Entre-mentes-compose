@@ -92,7 +92,7 @@ fun RankingOfflineScreenPV() {
         ),
         {}, {}, {}, { _, _ -> },
         {}, {}, {}, {},
-        {},{},
+        {}, {},
     )
 }
 
@@ -178,9 +178,7 @@ fun RankingOfflineContent(
                 SpacerMedium()
 
                 LazyColumn(
-                    modifier = Modifier
-                        .shakeItem(uiStates.shakeTrigger)
-                        .shakeItemVertical(uiStates.shakeVerticalTrigger),
+                    modifier = Modifier.shakeItem(uiStates.shakeTrigger),
                     state = lazyListState,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {

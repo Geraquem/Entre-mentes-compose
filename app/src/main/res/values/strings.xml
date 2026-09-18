@@ -48,13 +48,15 @@
 
     <string name="selector_ranges">Escalas</string>
     <string name="selector_ranges_description_1">Dos extremos incompatibles, una diana. Un jugador da una pista y el resto trata de acertar.</string>
-    <string name="selector_ranges_description_2">Dos extremos, una diana. Un jugador da una pista y el resto trata de acertar.</string>
+    <string name="selector_ranges_description_2">No es tan fácil como parece.</string>
     <string name="selector_ranges_example_1_left">Mala pelicula</string>
     <string name="selector_ranges_example_1_right">Buena pelicula</string>
     <string name="selector_ranges_example_2_left">Algo inútil</string>
     <string name="selector_ranges_example_2_right">Algo útil</string>
 
     <string name="selector_ranking">Rankings</string>
+    <string name="selector_ranking_description_1">Una persona ordena en secreto una serie de opciones.</string>
+    <string name="selector_ranking_description_2"> El resto tiene que intentar adivinar cuál fue ese orden.</string>
 
     <!-- GAME TYPE -->
     <string name="game_type_title">¿A qué quieres jugar?</string>

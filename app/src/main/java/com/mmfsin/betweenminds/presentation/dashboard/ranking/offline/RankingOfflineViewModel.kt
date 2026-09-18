@@ -37,11 +37,6 @@ class RankingOfflineViewModel @Inject constructor(
                 }
 
                 setRanking()
-
-                /** */
-                hideInitialDialog()
-                /** */
-
             },
             { sww() }
         )
@@ -71,7 +66,7 @@ class RankingOfflineViewModel @Inject constructor(
     fun hideInitialDialog() {
         _uiState.update { it.copy(showInitialDialog = false) }
         viewModelScope.launch {
-            delay(1)
+            delay(1000)
             _uiState.update { it.copy(showRoundView = false) }
         }
     }

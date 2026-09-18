@@ -112,6 +112,7 @@ fun SelectorSheet(
                 icon2Color = OrangeHard,
                 title = R.string.selector_questions,
                 description = R.string.selector_questions_description_1,
+                description2 = R.string.selector_questions_description_2,
                 openInstructions = { openInstructions(NAV_INSTR_QUESTIONS_ONLINE) },
                 play = { closeDialog { play(QUESTIONS.id) } }
             )
@@ -122,7 +123,8 @@ fun SelectorSheet(
                 icon1 = R.drawable.ic_arrow,
                 icon2 = R.drawable.ic_arrow,
                 title = R.string.selector_ranges,
-                description = R.string.ranges_sheet_description,
+                description = R.string.selector_ranges_description_1,
+                description2 = R.string.selector_ranges_description_2,
                 openInstructions = { openInstructions(NAV_INSTR_RANGES_ONLINE) },
                 play = { closeDialog { play(RANGES.id) } })
 
@@ -131,7 +133,8 @@ fun SelectorSheet(
             ModeBox(
                 icon1 = R.drawable.ic_ranking,
                 title = R.string.selector_ranking,
-                description = R.string.raking_sheet_description,
+                description = R.string.selector_ranking_description_1,
+                description2 = R.string.selector_ranking_description_2,
                 openInstructions = { openInstructions(NAV_INSTR_RANKING_ONLINE) },
                 play = { closeDialog { play(RANKING.id) } }
             )
@@ -179,6 +182,7 @@ fun ModeBox(
     icon2Color: Color = GrayLight,
     title: Int,
     description: Int,
+    description2: Int? = null,
     openInstructions: () -> Unit,
     play: () -> Unit
 ) {
@@ -222,6 +226,16 @@ fun ModeBox(
                 style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp),
                 color = GrayLight
             )
+
+            description2?.let {
+                SpacerMini()
+                Text(
+                    text = stringResource(description2),
+                    style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp),
+                    color = GrayLight
+                )
+
+            }
 
             SpacerMedium()
 
