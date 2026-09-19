@@ -150,6 +150,7 @@
     <string name="raking_initial_dialog_2">Después, el resto de jugadores tiene que intentar adivinar y colocar en el mismo orden las mismas opciones.</string>
     <string name="raking_initial_dialog_3">Cuantas más opciones correctas, más puntos conseguís</string>
     <string name="raking_sheet_description">Una persona ordena opciones y el resto tiene que intentar adivinar ese orden.</string>
+    <string name="raking_change_player">Cambio de jugador</string>
 
     <string name="raking_online_initial_dialog_1">Ordena las opciones y haz un ranking según tus propias preferencias.</string>
     <string name="raking_online_initial_dialog_2">Repite este paso 3 veces, es decir, vas a tener que hacer 3 rankings distintos.</string>

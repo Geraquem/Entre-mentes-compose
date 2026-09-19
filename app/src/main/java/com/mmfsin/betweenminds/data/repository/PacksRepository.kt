@@ -195,7 +195,7 @@ class PacksRepository @Inject constructor(
                 "packType" to "ranges",
                 "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Fone-finger.png?alt=media&token=8051782b-de69-4aa5-bb40-79fc5d3658f1",
                 "title" to "Paquete básico",
-                "description" to "Pack básico de rangos para que ponerte a prueba con tus compañer@s.",
+                "description" to "Pack básico de escalas para ponerte a prueba con tus amigos, parejas o compañer@s.",
             ),
             hashMapOf(
                 "packId" to "pack_ranges_1",
@@ -219,7 +219,7 @@ class PacksRepository @Inject constructor(
                 "packType" to "ranges",
                 "icon" to "https://firebasestorage.googleapis.com/v0/b/entre-mentes.firebasestorage.app/o/Packs%2Ffour-fingers.png?alt=media&token=139dd119-0215-444a-846b-5ca3b2bd5c39",
                 "title" to "Relojito tardón",
-                "description" to "Tú sigue intentandolo que seguro que algo aciertas.",
+                "description" to "Tú sigue intentándolo que seguro que algo aciertas.",
             ),
             hashMapOf(
                 "packId" to "pack_ranking_free",

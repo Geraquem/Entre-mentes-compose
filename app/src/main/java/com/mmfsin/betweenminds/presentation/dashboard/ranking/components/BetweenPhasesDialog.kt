@@ -80,7 +80,7 @@ fun BetweenPhasesDialog(onEnd: () -> Unit) {
         ) {
 
             BigText(
-                "Cambio de mano",
+                R.string.raking_change_player,
                 color = White,
                 allCaps = true,
                 fontFamily = alphazet

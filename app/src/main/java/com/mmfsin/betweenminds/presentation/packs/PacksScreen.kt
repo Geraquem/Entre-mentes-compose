@@ -1,28 +1,32 @@
 package com.mmfsin.betweenminds.presentation.packs
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,7 +53,7 @@ fun PacksScreenPV() {
         uiStates = PacksStates(
             isLoading = false,
         ),
-        initialTab = 1,
+        initialTab = 0,
         {}, {}, {}, {},
         {}, {},
     )
@@ -114,35 +118,40 @@ fun PacksContent(
                     .padding(horizontal = 12.dp)
                     .padding(bottom = 12.dp)
             ) {
-                PrimaryTabRow(
-                    selectedTabIndex = pagerState.currentPage,
-                    containerColor = BackgroundBlack,
-                    indicator = {
-                        TabRowDefaults.PrimaryIndicator(
-                            modifier = Modifier.tabIndicatorOffset(pagerState.currentPage, matchContentSize = true),
-                            width = 120.dp,
-                            height = 6.dp,
-                            shape = RoundedCornerShape(0),
-                            color = BlueMedium
-                        )
-                    },
-                    divider = {}
+                CompositionLocalProvider(
+                    LocalOverscrollFactory provides null
                 ) {
-                    listOf(
-                        stringResource(R.string.pack_questions),
-                        stringResource(R.string.pack_ranges),
-                        stringResource(R.string.pack_rankings)
-                    ).forEachIndexed { i, txtTab ->
-                        Tab(
-                            selected = pagerState.currentPage == i,
-                            onClick = { scope.launch { pagerState.animateScrollToPage(i) } },
-                            text = {
-                                MediumText(
-                                    text = txtTab.uppercase(),
-                                    color = White
-                                )
-                            }
-                        )
+                    PrimaryScrollableTabRow(
+                        edgePadding = 10.dp,
+                        selectedTabIndex = pagerState.currentPage,
+                        containerColor = BackgroundBlack,
+                        indicator = {
+                            TabRowDefaults.PrimaryIndicator(
+                                modifier = Modifier.tabIndicatorOffset(pagerState.currentPage, matchContentSize = true),
+                                width = Dp.Unspecified,
+                                height = 6.dp,
+                                shape = RoundedCornerShape(0),
+                                color = BlueMedium
+                            )
+                        },
+                        divider = {}
+                    ) {
+                        listOf(
+                            stringResource(R.string.pack_questions),
+                            stringResource(R.string.pack_ranges),
+                            stringResource(R.string.pack_rankings),
+                        ).forEachIndexed { i, txtTab ->
+                            Tab(
+                                selected = pagerState.currentPage == i,
+                                onClick = { scope.launch { pagerState.animateScrollToPage(i) } },
+                                text = {
+                                    MediumText(
+                                        text = txtTab.uppercase(),
+                                        color = White
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
 

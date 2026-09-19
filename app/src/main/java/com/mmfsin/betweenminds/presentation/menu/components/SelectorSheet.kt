@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -42,13 +42,13 @@ import com.mmfsin.betweenminds.domain.models.GameType.QUESTIONS
 import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.domain.models.GameType.RANKING
 import com.mmfsin.betweenminds.presentation.core.components.BigText
-import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
 import com.mmfsin.betweenminds.presentation.core.components.SpacerCustom
 import com.mmfsin.betweenminds.presentation.core.components.SpacerLarge
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
+import com.mmfsin.betweenminds.presentation.core.components.alphazetFont
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.BlueMedium
 import com.mmfsin.betweenminds.presentation.core.theme.GrayLight
@@ -253,24 +253,52 @@ fun ActionButtons(
     play: () -> Unit
 ) {
     Row(Modifier.fillMaxWidth()) {
-        IconButton(
-            onClick = { openInstructions() },
-            modifier = Modifier.background(color = GrayLight, shape = CircleShape)
+
+        SpacerSmall(horizontal = true)
+
+        Button(
+            onClick = { play() },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = GrayLight
+            ),
+            shape = RoundedCornerShape(50)
         ) {
-            Icon(
-                painterResource(R.drawable.ic_book), null,
-                tint = BackgroundBlack
-            )
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painterResource(R.drawable.ic_book), null,
+                    tint = BackgroundBlack
+                )
+
+//                SpacerMini(horizontal = true)
+//
+//                MediumText(
+//                    text = R.string.selector_how_to_play,
+//                    color = BackgroundBlack,
+//                    fontFamily = alphazetFont,
+//                    allCaps = true,
+//                    fontWeight = FontWeight.SemiBold
+//                )
+            }
         }
 
         SpacerSmall(horizontal = true)
 
-        ButtonCustom(
+        Button(
             onClick = { play() },
-            text = R.string.menu_play,
-            color = GrayLight,
-            textColor = BackgroundBlack,
-            modifier = Modifier.weight(1f)
-        )
+            modifier = Modifier.weight(1f),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = GrayLight
+            ),
+            shape = RoundedCornerShape(50)
+        ) {
+            MediumText(
+                text = R.string.menu_play,
+                color = BackgroundBlack,
+                fontFamily = alphazetFont,
+                allCaps = true,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }
