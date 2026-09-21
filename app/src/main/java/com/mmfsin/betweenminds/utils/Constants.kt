@@ -1,5 +1,7 @@
 package com.mmfsin.betweenminds.utils
 
+import com.mmfsin.betweenminds.domain.models.GameType
+
 /** BEDROCK ARGS */
 const val BEDROCK_NAV_GRAPH = "bedrock_nav_graph"
 const val BEDROCK_STR_ARGS = "bedrock_str_args"

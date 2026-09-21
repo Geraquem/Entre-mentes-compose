@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
@@ -31,12 +32,11 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
-import com.mmfsin.betweenminds.presentation.core.theme.GreenHard
 import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.august_shining
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getAffinity
+import com.mmfsin.betweenminds.presentation.dashboard.common.AffinityPercentage
 import com.mmfsin.betweenminds.utils.getTotalPoints
 
 @Preview
@@ -53,7 +53,6 @@ fun ResultOfflineRangesDialog(
 ) {
 
     val totalPoints = getTotalPoints(points)
-    val affinity = getAffinity(false, totalPoints)
 
     Dialog(
         onDismissRequest = {},
@@ -108,18 +107,7 @@ fun ResultOfflineRangesDialog(
 
                 SpacerLarge()
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    BigText(text = R.string.endgame_you_have)
-                    SpacerSmall(horizontal = true)
-                    BigText(
-                        text = "$affinity%",
-                        color = GreenHard,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 26.sp,
-                    )
-                    SpacerSmall(horizontal = true)
-                    BigText(text = R.string.endgame_affinity)
-                }
+                AffinityPercentage(RANGES, totalPoints, isOnline = false)
 
                 SpacerCustom(34.dp)
 

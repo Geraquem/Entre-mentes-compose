@@ -1,7 +1,10 @@
 package com.mmfsin.betweenminds.presentation.dashboard.questions.helper
 
 import androidx.compose.ui.graphics.Color
+import com.mmfsin.betweenminds.domain.models.GameType
+import com.mmfsin.betweenminds.presentation.core.theme.GreenHard
 import com.mmfsin.betweenminds.presentation.core.theme.GreenMedium
+import com.mmfsin.betweenminds.presentation.core.theme.OrangeHard
 import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 
 fun calculatePoints(firstOpinion: Int, secondOpinion: Int): Int {
@@ -15,10 +18,4 @@ fun calculatePoints(firstOpinion: Int, secondOpinion: Int): Int {
 
 fun getPointsColor(dif: Int): Color {
     return if (dif != 0) GreenMedium else RedHard
-}
-
-fun getAffinity(points: Int): String {
-    val value = (points.toFloat() / 60f) * 100f
-    return if (value % 1f == 0f) value.toInt().toString()
-    else "%.2f".format(value)
 }

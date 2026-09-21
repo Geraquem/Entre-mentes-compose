@@ -25,10 +25,3 @@ fun getPointsColor(points: Int): Color {
         else -> RedHard
     }
 }
-
-fun getAffinity(isOnline: Boolean, points: Int): String {
-    val totalScore = if (isOnline) 30f else 20f
-    val value = (points.toFloat() / totalScore) * 100f
-    return if (value % 1f == 0f) value.toInt().toString()
-    else "%.2f".format(value)
-}

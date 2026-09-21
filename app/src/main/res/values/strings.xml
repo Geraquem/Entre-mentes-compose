@@ -169,7 +169,7 @@
     <string name="endgame_get_one_point">habéis conseguido 1 punto</string>
     <string name="endgame_get_points">habéis conseguido %s puntos</string>
     <string name="endgame_you_have">Tenéis un</string>
-    <string name="endgame_affinity">de afinidad</string>
+    <string name="endgame_affinity">Afinidad</string>
 
     <string name="endgame_ranges_max_points_offline">De un máximo de 20 puntos</string>
     <string name="endgame_ranges_max_points_online">De un máximo de 30 puntos</string>

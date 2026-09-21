@@ -19,13 +19,6 @@ fun getPointsColor(dif: Int): Color {
     }
 }
 
-fun getAffinity(isOnline: Boolean, points: Int): String {
-    val totalScore = if (isOnline) 24f else 16f
-    val value = (points.toFloat() / totalScore) * 100f
-    return if (value % 1f == 0f) value.toInt().toString()
-    else "%.2f".format(value)
-}
-
 fun checkBoxColor(
     isEnabled: Boolean,
     firstText: String,

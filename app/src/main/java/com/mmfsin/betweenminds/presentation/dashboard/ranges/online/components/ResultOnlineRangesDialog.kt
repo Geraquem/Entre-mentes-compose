@@ -16,13 +16,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mmfsin.betweenminds.R
+import com.mmfsin.betweenminds.domain.models.GameType.RANGES
 import com.mmfsin.betweenminds.presentation.core.components.BigText
 import com.mmfsin.betweenminds.presentation.core.components.ButtonCustom
 import com.mmfsin.betweenminds.presentation.core.components.MediumText
@@ -32,12 +32,12 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.components.SpacerMini
 import com.mmfsin.betweenminds.presentation.core.components.SpacerSmall
 import com.mmfsin.betweenminds.presentation.core.theme.Black
-import com.mmfsin.betweenminds.presentation.core.theme.GreenHard
 import com.mmfsin.betweenminds.presentation.core.theme.RedHard
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.alphazet
 import com.mmfsin.betweenminds.presentation.core.theme.august_shining
-import com.mmfsin.betweenminds.presentation.dashboard.ranges.helper.getAffinity
+import com.mmfsin.betweenminds.presentation.dashboard.common.AffinityPercentage
+import com.mmfsin.betweenminds.presentation.dashboard.common.PointsTable
 import com.mmfsin.betweenminds.utils.getTotalPoints
 
 @Preview
@@ -56,7 +56,6 @@ fun ResultOnlineRangesDialog(
 
     val userPoints = getTotalPoints(myPoints)
     val totalPoints = userPoints + otherPlayerPoints
-    val affinity = getAffinity(true, totalPoints)
 
     Dialog(
         onDismissRequest = {},
@@ -109,27 +108,16 @@ fun ResultOnlineRangesDialog(
                     fontSize = 32.sp,
                 )
 
-                SpacerLarge()
+                SpacerMedium()
+
+                AffinityPercentage(RANGES, totalPoints, isOnline = true)
+
+                SpacerMedium()
 
                 PointsTable(
                     userPoints = userPoints,
                     otherPlayerPoints = otherPlayerPoints
                 )
-
-                SpacerLarge()
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    BigText(text = R.string.endgame_you_have)
-                    SpacerSmall(horizontal = true)
-                    BigText(
-                        text = "$affinity%",
-                        color = GreenHard,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 26.sp,
-                    )
-                    SpacerSmall(horizontal = true)
-                    BigText(text = R.string.endgame_affinity)
-                }
 
                 SpacerCustom(34.dp)
 
@@ -157,54 +145,6 @@ fun ResultOnlineRangesDialog(
 
                 SpacerSmall()
             }
-        }
-    }
-}
-
-@Composable
-fun PointsTable(userPoints: Int, otherPlayerPoints: Int) {
-    Column {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            SpacerMedium(horizontal = true)
-
-            MediumText(
-                text = R.string.endgame_online_ranges_you,
-                modifier = Modifier.weight(1f),
-                gravity = TextAlign.End
-            )
-
-            SpacerSmall(horizontal = true)
-
-            val myPointsText = if (userPoints == 1) stringResource(R.string.endgame_one_point)
-            else stringResource(R.string.endgame_pts, userPoints)
-
-            MediumText(
-                text = myPointsText,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-
-        Row(modifier = Modifier.fillMaxWidth()) {
-            SpacerMedium(horizontal = true)
-
-            MediumText(
-                text = R.string.endgame_online_ranges_your_teammate,
-                modifier = Modifier.weight(1f),
-                gravity = TextAlign.End
-            )
-
-            SpacerSmall(horizontal = true)
-
-            val otherPointsText = if (otherPlayerPoints == 1) stringResource(R.string.endgame_one_point)
-            else stringResource(R.string.endgame_pts, otherPlayerPoints)
-
-            MediumText(
-                text = otherPointsText,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.weight(1f)
-            )
         }
     }
 }
