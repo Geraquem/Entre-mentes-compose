@@ -257,7 +257,7 @@ fun ActionButtons(
         SpacerSmall(horizontal = true)
 
         Button(
-            onClick = { play() },
+            onClick = { openInstructions() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = GrayLight
             ),
