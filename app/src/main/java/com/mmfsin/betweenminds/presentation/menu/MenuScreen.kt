@@ -34,6 +34,8 @@ import com.mmfsin.betweenminds.presentation.core.components.SpacerMedium
 import com.mmfsin.betweenminds.presentation.core.theme.BackgroundBlack
 import com.mmfsin.betweenminds.presentation.core.theme.White
 import com.mmfsin.betweenminds.presentation.core.theme.courier
+import com.mmfsin.betweenminds.presentation.dashboard.questions.components.ResultQuestionsDialog
+import com.mmfsin.betweenminds.presentation.dashboard.ranges.online.components.ResultOnlineRangesDialog
 import com.mmfsin.betweenminds.presentation.menu.components.ParticlesBackground
 import com.mmfsin.betweenminds.presentation.menu.components.SelectorSheet
 import com.mmfsin.betweenminds.presentation.menu.components.selector.SelectorScreen
@@ -89,12 +91,6 @@ fun MenuContent(
     setFreePacks: () -> Unit,
     closeApp: () -> Unit
 ) {
-
-    /********************************************************************/
-    /********************************************************************/
-    //    goToConnectionScreen(GameType.RANKING.id)
-    /********************************************************************/
-    /********************************************************************/
 
     var freeCount by remember { mutableIntStateOf(0) }
 

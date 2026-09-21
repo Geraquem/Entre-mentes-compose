@@ -1,5 +1,6 @@
 package com.mmfsin.betweenminds.presentation.dashboard.common
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -10,7 +11,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -42,26 +45,29 @@ fun AffinityPercentage(
 
     val affinity = getAffinity(type, points, isOnline)
 
-    val animatedValue by animateFloatAsState(
-        targetValue = affinity.first,
-        animationSpec = tween(
-            durationMillis = 2000,
-            easing = FastOutSlowInEasing
-        ),
-        label = ""
-    )
+    val animatedValue = remember { Animatable(0f) }
+
+    LaunchedEffect(affinity.first) {
+        animatedValue.animateTo(
+            targetValue = affinity.first,
+            animationSpec = tween(
+                durationMillis = 2000,
+                easing = FastOutSlowInEasing
+            )
+        )
+    }
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(150.dp)
+        modifier = Modifier.size(180.dp)
     ) {
 
         CircularProgressIndicator(
-            progress = { animatedValue },
+            progress = { animatedValue.value },
             modifier = Modifier.fillMaxSize(),
             color = getPercentageColor(affinity.first),
             trackColor = GrayHard,
-            strokeWidth = 16.dp,
+            strokeWidth = 24.dp,
             strokeCap = StrokeCap.Butt
         )
 
