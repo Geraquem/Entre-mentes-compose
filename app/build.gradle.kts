@@ -20,8 +20,8 @@ android {
         applicationId = "com.mmfsin.betweenminds"
         minSdk = 26
         targetSdk = 36
-        versionCode = 20
-        versionName = "1.2.0"
+        versionCode = 22
+        versionName = "1.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,6 +32,7 @@ android {
             isShrinkResources = true
 
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
